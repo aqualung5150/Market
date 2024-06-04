@@ -19,9 +19,13 @@ function Callback() {
   }, [code]);
 
   return (
-    <h1>
-      ${userData?.name} - ${userData?.email}
-    </h1>
+    <div>
+      <li>${userData?.message}</li>
+      <li>${userData?.name}</li>
+      <li>${userData?.email}</li>
+      <li>${userData?.nickname}</li>
+      <li>${userData?.access_token}</li>
+    </div>
   );
 }
 

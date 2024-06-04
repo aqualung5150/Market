@@ -1,5 +1,8 @@
 interface ResLogin {
-  id: string;
+  message: string;
+  id: number;
   name: string;
   email: string;
+  nickname: string;
+  access_token: string;
 }
