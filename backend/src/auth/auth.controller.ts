@@ -7,6 +7,7 @@ import {
   Res,
   UseGuards,
   Req,
+  Post,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
@@ -87,6 +88,20 @@ export class AuthController {
       message: 'generate new access token',
       access_token: access_token,
       access_token_exp: process.env.JWT_ACCESS_EXPIRATION_TIME,
+    });
+  }
+
+  @UseGuards(JwtRefreshGuard)
+  @Post('logout')
+  async logout(@Req() req: Request, @Res() res: Response) {
+    await this.userService.updateUserById(req.user.id, {
+      refreshToken: null,
+    });
+    res.clearCookie('access_token');
+    res.clearCookie('refresh_token');
+    // this.chatGateway.logout(req.user.id);
+    return res.send({
+      message: 'logout - success',
     });
   }
 }
