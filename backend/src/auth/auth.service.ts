@@ -13,28 +13,23 @@ export class AuthService {
   ) {}
 
   async getGoogleUser(code: string) {
-    const tokenReq = this.httpService.post(process.env.GOOGLE_OAUTH_URL, {
-      grant_type: process.env.GOOGLE_OAUTH_GRANT_TYPE,
-      code: code,
-      client_id: process.env.GOOGLE_OAUTH_ID,
-      client_secret: process.env.GOOGLE_OAUTH_SECRET,
-      redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT,
-    });
-
-    const tokenData = await lastValueFrom(tokenReq);
+    const tokenData = await lastValueFrom(
+      this.httpService.post(process.env.GOOGLE_OAUTH_URL, {
+        grant_type: process.env.GOOGLE_OAUTH_GRANT_TYPE,
+        code: code,
+        client_id: process.env.GOOGLE_OAUTH_ID,
+        client_secret: process.env.GOOGLE_OAUTH_SECRET,
+        redirect_uri: process.env.GOOGLE_OAUTH_REDIRECT,
+      }),
+    );
 
     const accessToken = tokenData.data.access_token;
 
-    this.logger.debug(accessToken);
-
-    const userReq = this.httpService.get(
-      'https://www.googleapis.com/oauth2/v3/userinfo',
-      {
+    const userData = await lastValueFrom(
+      this.httpService.get('https://www.googleapis.com/oauth2/v3/userinfo', {
         headers: { Authorization: `Bearer ${accessToken}` },
-      },
+      }),
     );
-
-    const userData = await lastValueFrom(userReq);
 
     return userData.data;
   }
