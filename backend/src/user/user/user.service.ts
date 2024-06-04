@@ -37,11 +37,32 @@ export class UserService {
     return returnData;
   }
 
+  async findUserById(userId: number) {
+    return await this.prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+  }
+
   async updateUserById(id: number, data: Prisma.UserUpdateInput) {
     await this.prisma.user.update({
       where: { id: id },
       data: {
         ...data,
+      },
+    });
+  }
+
+  async getUserById(id: number) {
+    return await this.prisma.user.findUniqueOrThrow({
+      where: { id: id },
+      select: {
+        id: true,
+        nickname: true,
+        email: true,
+        image: true,
+        lastLogin: true,
       },
     });
   }

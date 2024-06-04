@@ -21,6 +21,7 @@ function Callback() {
   return (
     <div>
       <li>${userData?.message}</li>
+      <li>${userData?.id}</li>
       <li>${userData?.name}</li>
       <li>${userData?.email}</li>
       <li>${userData?.nickname}</li>

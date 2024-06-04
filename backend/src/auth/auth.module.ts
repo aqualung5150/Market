@@ -5,6 +5,8 @@ import { HttpModule } from '@nestjs/axios';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from 'src/user/user/user.module';
 import { UserService } from 'src/user/user/user.service';
+import { JwtStrategy } from './strategy/jwt.strategy';
+import { JwtRefreshStrategy } from './strategy/jwt-refresh.strategy';
 
 @Module({
   imports: [
@@ -20,6 +22,6 @@ import { UserService } from 'src/user/user/user.service';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy, JwtRefreshStrategy],
 })
 export class AuthModule {}
