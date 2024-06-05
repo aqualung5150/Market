@@ -1,7 +1,4 @@
-import { useNavigate } from "react-router-dom";
-
 const logout = async () => {
-  //   const navigate = useNavigate();
   localStorage.removeItem("isLoggedIn");
   localStorage.removeItem("id");
   localStorage.removeItem("name");
@@ -12,9 +9,8 @@ const logout = async () => {
   fetch(url, {
     method: "POST",
   })
-    .then((res) => {
+    .then(() => {
       alert("로그아웃 되었습니다.");
-      //   navigate("/");
       window.location.href = "/";
     })
     .catch((err) => alert(err.message));

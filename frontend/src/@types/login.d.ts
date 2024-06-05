@@ -6,3 +6,7 @@ interface ResLogin {
   nickname: string;
   access_token: string;
 }
+
+interface LogProps {
+  isLoggedIn: boolean;
+}

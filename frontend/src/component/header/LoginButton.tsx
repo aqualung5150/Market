@@ -1,14 +1,13 @@
 import { Link } from "react-router-dom";
-import useIsLoggedIn from "../hooks/useIsLoggedIn";
-import Button from "./Button";
-import logout from "../utils/logout";
+import logout from "../../utils/logout";
+import Button from "../Button";
+import isLoggedIn from "../../utils/isLoggedIn";
 
-const Navbar = () => {
-  const isLoggedIn = useIsLoggedIn();
-
+const LoginButton = () => {
+  const login = isLoggedIn();
   return (
     <div>
-      {isLoggedIn ? (
+      {login ? (
         <Button text="로그아웃" onClick={logout} />
       ) : (
         <Link to={"/login"}>
@@ -19,4 +18,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default LoginButton;
