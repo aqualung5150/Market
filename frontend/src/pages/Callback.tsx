@@ -22,7 +22,8 @@ function Callback() {
         localStorage.setItem("id", data.id);
         localStorage.setItem("name", data.name);
         localStorage.setItem("nickname", data.nickname);
-        localStorage.setItem("access_token", data.access_token);
+        //todo - 토큰을 로컬스토리지말고 쿠키에 저장하는 방법 생각해보기
+        // localStorage.setItem("access_token", data.access_token);
         const decoded = jwtDecode<JwtPayload>(data.access_token);
         const exp = decoded.exp?.toString() as string;
         localStorage.setItem("access_token_exp", exp);
