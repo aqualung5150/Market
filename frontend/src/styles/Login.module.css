@@ -5,6 +5,18 @@
   justify-content: center;
 }
 
+.home {
+  position: absolute;
+  margin: 10px;
+  top: 5%;
+  left: 5%;
+}
+
+.home h1 {
+  font-size: 40px;
+  margin: auto;
+}
+
 .login {
   position: absolute;
   top: 50%;
