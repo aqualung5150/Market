@@ -1,23 +1,14 @@
-import { useEffect } from "react";
 import googleLoginImg from "../assets/google_login.svg";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "../styles/Login.module.css";
 
-function Login() {
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (localStorage.getItem("isLoggedIn") === "true") {
-      alert("이미 로그인되어 있습니다.");
-      navigate("/");
-    }
-  }, []);
-
+const Login = () => {
   return (
     <div className={styles.container}>
       <div className={styles.home}>
-        <Link to="/">
-          <h1>HOME</h1>
-        </Link>
+        <h1>
+          <Link to="/">HOME</Link>
+        </h1>
       </div>
       <div className={styles.login}>
         <a
@@ -33,6 +24,6 @@ function Login() {
       </div>
     </div>
   );
-}
+};
 
 export default Login;

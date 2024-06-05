@@ -1,13 +1,12 @@
-import { Link } from "react-router-dom";
-import Login from "./Login";
+import Navbar from "../component/Navbar";
 
-function Home() {
+const Home = () => {
   return (
     <div>
+      <Navbar />
       <h1>This is Home.</h1>
-      <Link to={"/login"}>@로그인@</Link>
     </div>
   );
-}
+};
 
 export default Home;

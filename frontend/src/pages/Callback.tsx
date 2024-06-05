@@ -2,7 +2,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { JwtPayload, jwtDecode } from "jwt-decode";
 
-function Callback() {
+const Callback = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const code = searchParams.get("code");
   const navigate = useNavigate();
@@ -38,6 +38,6 @@ function Callback() {
   }, [code]);
 
   return <h1>유저 정보를 불러오는 중입니다</h1>;
-}
+};
 
 export default Callback;
