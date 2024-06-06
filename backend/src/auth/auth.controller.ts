@@ -26,8 +26,6 @@ export class AuthController {
 
   @Get('google')
   async googleAuth(@Res() res: Response, @Query('code') code: string) {
-    if (!code) throw new UnauthorizedException('No code in query string');
-
     const userData = await this.authService.getGoogleUser(code);
 
     const user = await this.userService.createUser({
