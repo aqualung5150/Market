@@ -54,11 +54,12 @@ export class UserService {
     });
   }
 
-  async getUserById(id: number) {
+  async getUserById(id: number): Promise<UserData> {
     return await this.prisma.user.findUniqueOrThrow({
       where: { id: id },
       select: {
         id: true,
+        name: true,
         nickname: true,
         email: true,
         image: true,

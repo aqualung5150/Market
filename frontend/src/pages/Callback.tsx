@@ -1,6 +1,5 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
-import { JwtPayload, jwtDecode } from "jwt-decode";
 
 const Callback = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -21,13 +20,10 @@ const Callback = () => {
       .then((data) => {
         localStorage.setItem("id", data.id);
         localStorage.setItem("name", data.name);
+        localStorage.setItem("email", data.name);
         localStorage.setItem("nickname", data.nickname);
-        const decoded = jwtDecode<JwtPayload>(data.access_token);
-        const exp = decoded.exp?.toString() as string;
-        localStorage.setItem("access_token_exp", exp);
-        //todo
-        // localStorage.setItem("avatar", `/api/user/${userId}/photo?timestamp=${Date.now()}`);
-        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("iat", data.exp);
+        localStorage.setItem("exp", data.exp);
 
         // useNavigate를 안쓴 이유
         // Header의 isLoggedIn스테이트를 변경하기 위해 리렌더링할 필요가 있음.

@@ -1,14 +1,15 @@
 import logout from "../../utils/logout";
 import Button from "../Button";
 import isLoggedIn from "../../utils/isLoggedIn";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "../Modal";
 import Login from "../Login";
 import styles from "../../styles/Header.module.css";
+import { LoggedInContext } from "../../context/LoggedInContext";
 
 const LoginButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const loggedIn = isLoggedIn();
+  const { loggedIn } = useContext(LoggedInContext);
   return (
     <div className={styles.login}>
       {loggedIn ? (
