@@ -1,18 +1,27 @@
-import { Link } from "react-router-dom";
 import logout from "../../utils/logout";
 import Button from "../Button";
 import isLoggedIn from "../../utils/isLoggedIn";
+import { useState } from "react";
+import Modal from "../Modal";
+import Login from "../Login";
+import styles from "../../styles/Header.module.css";
 
 const LoginButton = () => {
-  const login = isLoggedIn();
+  const [modalOpen, setModalOpen] = useState(false);
+  const loggedIn = isLoggedIn();
   return (
-    <div>
-      {login ? (
-        <Button text="로그아웃" onClick={logout} />
+    <div className={styles.login}>
+      {loggedIn ? (
+        <div>
+          <Button text="logout" onClick={() => logout()} />
+        </div>
       ) : (
-        <Link to={"/login"}>
-          <Button text="로그인" />
-        </Link>
+        <div>
+          <Button text="login" onClick={() => setModalOpen(true)}></Button>
+          <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
+            <Login />
+          </Modal>
+        </div>
       )}
     </div>
   );

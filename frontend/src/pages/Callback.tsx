@@ -33,7 +33,7 @@ const Callback = () => {
         // Header의 isLoggedIn스테이트를 변경하기 위해 리렌더링할 필요가 있음.
         // window.location.replace("/");
         // **수정 - Callback을 Layout 밖에 두면 페이지가 전환될 때 리렌더링이 일어나서 Header의 isLoggedIn이 업데이트됨.
-        navigate(-2);
+        navigate(-1);
       })
       .catch((err) => alert(err.message));
   }, [code]);

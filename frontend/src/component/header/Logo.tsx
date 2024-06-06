@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import homeButton from "../../assets/home_button.png";
-import styles from "../../styles/Logo.module.css";
+import styles from "../../styles/Header.module.css";
 
 const Logo = () => {
   return (
