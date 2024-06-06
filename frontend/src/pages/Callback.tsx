@@ -1,5 +1,6 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
+import axios from "axios";
 
 const Callback = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -7,31 +8,19 @@ const Callback = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(
-      `http://${process.env.REACT_APP_BASE_URL}/api/auth/google?code=${code}`
-    )
-      .then((res) => {
-        if (!res.ok || res.status === 500) {
-          navigate(-1);
-          throw new Error("다시 시도해주세요");
-        }
-        return res.json();
-      })
-      .then((data) => {
-        localStorage.setItem("id", data.id);
-        localStorage.setItem("name", data.name);
-        localStorage.setItem("email", data.name);
-        localStorage.setItem("nickname", data.nickname);
-        localStorage.setItem("iat", data.exp);
-        localStorage.setItem("exp", data.exp);
-
-        // useNavigate를 안쓴 이유
-        // Header의 isLoggedIn스테이트를 변경하기 위해 리렌더링할 필요가 있음.
-        // window.location.replace("/");
-        // **수정 - Callback을 Layout 밖에 두면 페이지가 전환될 때 리렌더링이 일어나서 Header의 isLoggedIn이 업데이트됨.
+    axios
+      .get(
+        `http://${process.env.REACT_APP_BASE_URL}/api/auth/google?code=${code}`
+      )
+      .then(() => {
+        // App.tsx에서 useLoggedIn을 호출하기 때문에 따로 유저데이터를 저장할 필요가 없음.
+        // * Callback url에서만 다뤄야 하는 데이터가 있다면 수정될 수 있음.
         navigate(-1);
       })
-      .catch((err) => alert(err.message));
+      .catch((err) => {
+        navigate(-1);
+        alert(err);
+      });
   }, [code]);
 
   return <div></div>;
