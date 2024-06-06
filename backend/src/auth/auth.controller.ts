@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
 import { UserService } from 'src/user/user/user.service';
 import { JwtRefreshGuard } from './guard/jwt-refresh.guard';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +21,7 @@ export class AuthController {
   constructor(
     private readonly authService: AuthService,
     private readonly userService: UserService,
+    private readonly jwtService: JwtService,
   ) {}
 
   @Get('google')
@@ -60,13 +62,16 @@ export class AuthController {
       httpOnly: true,
     });
 
+    const decode = await this.jwtService.decode<JwtPayload>(accessToken);
+
     res.send({
       message: 'login - success',
-      id: user.id,
-      name: user.name,
-      email: user.email,
+      id: decode.id,
+      name: decode.name,
+      email: decode.email,
       nickname: user.nickname,
-      access_token: accessToken,
+      iat: decode.iat,
+      exp: decode.exp,
     });
   }
 
@@ -75,19 +80,27 @@ export class AuthController {
   async refresh(@Req() req: Request, @Res() res: Response) {
     const user = await this.userService.findUserById(req.user.id);
 
-    const access_token = await this.authService.jwtAccessToken({
+    const accessToken = await this.authService.jwtAccessToken({
       id: user.id,
       name: user.name,
       email: user.email,
     });
-    res.setHeader('Authorization', 'Bearer ' + access_token);
-    res.cookie('access_token', access_token, {
+
+    res.setHeader('Authorization', 'Bearer ' + accessToken);
+    res.cookie('access_token', accessToken, {
       httpOnly: true,
     });
+
+    const decode = await this.jwtService.decode<JwtPayload>(accessToken);
+
     return res.send({
       message: 'generate new access token',
-      access_token: access_token,
-      access_token_exp: process.env.JWT_ACCESS_EXPIRATION_TIME,
+      id: decode.id,
+      name: decode.name,
+      email: decode.email,
+      nickname: user.nickname,
+      iat: decode.iat,
+      exp: decode.exp,
     });
   }
 

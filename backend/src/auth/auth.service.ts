@@ -34,7 +34,7 @@ export class AuthService {
     return userData.data;
   }
 
-  async jwtAccessToken(payload: JwtPayload) {
+  async jwtAccessToken(payload: JwtClaim) {
     return await this.jwtService.signAsync({
       id: payload.id,
       name: payload.name,
@@ -42,7 +42,7 @@ export class AuthService {
     });
   }
 
-  async jwtRefreshToken(payload: JwtPayload) {
+  async jwtRefreshToken(payload: JwtClaim) {
     return await this.jwtService.signAsync(
       {
         id: payload.id,
