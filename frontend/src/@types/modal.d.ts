@@ -1,5 +1,5 @@
 interface ModalProps {
-  open: boolean;
-  onClose: () => void;
   children: React.ReactElement;
+  open: boolean;
+  onClose?: () => void;
 }

@@ -1,6 +1,5 @@
 import logout from "../../utils/logout";
 import Button from "../Button";
-import isLoggedIn from "../../utils/isLoggedIn";
 import { useContext, useState } from "react";
 import Modal from "../Modal";
 import Login from "../Login";
@@ -10,6 +9,7 @@ import { LoggedInContext } from "../../context/LoggedInContext";
 const LoginButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { loggedIn } = useContext(LoggedInContext);
+  console.log(loggedIn + " Home");
   return (
     <div className={styles.login}>
       {loggedIn ? (
@@ -19,9 +19,11 @@ const LoginButton = () => {
       ) : (
         <div>
           <Button text="login" onClick={() => setModalOpen(true)}></Button>
-          <Modal open={modalOpen} onClose={() => setModalOpen(false)}>
-            <Login />
-          </Modal>
+          <Modal
+            children={<Login />}
+            open={modalOpen}
+            onClose={() => setModalOpen(false)}
+          />
         </div>
       )}
     </div>
