@@ -14,7 +14,7 @@ const LoginButton = () => {
     <div className={styles.login}>
       {loggedIn ? (
         <div>
-          <Button text="logout" onClick={() => logout()} />
+          <Button text="logout" onClick={() => logout("/")} />
         </div>
       ) : (
         <div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import setUserStorage from "../utils/setUserStorage";
+import setLocalStorage from "../utils/setLocalStorage";
 import axios from "axios";
 
 const useLoggedIn = () => {
@@ -11,7 +11,7 @@ const useLoggedIn = () => {
       .get(url)
       .then((res) => {
         setLoggedIn(true);
-        setUserStorage(res.data);
+        setLocalStorage(res.data);
       })
       .catch((err) => console.log("not yet logged in"));
   }, []);
