@@ -9,9 +9,7 @@ const Callback = () => {
 
   useEffect(() => {
     axios
-      .get(
-        `http://${process.env.REACT_APP_BASE_URL}/api/auth/google?code=${code}`
-      )
+      .get(`${process.env.REACT_APP_BASE_URL}/api/auth/google?code=${code}`)
       .then(() => {
         // App.tsx에서 useLoggedIn을 호출하기 때문에 따로 유저데이터를 저장할 필요가 없음.
         // * Callback url에서만 다뤄야 하는 데이터가 있다면 수정될 수 있음.
