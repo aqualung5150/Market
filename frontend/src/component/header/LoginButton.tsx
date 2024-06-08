@@ -4,14 +4,14 @@ import { useContext, useState } from "react";
 import Modal from "../Modal";
 import Login from "../Login";
 import styles from "../../styles/Header.module.css";
-import { LoggedInContext } from "../../context/LoggedInContext";
+import { ConnectionContext } from "../../context/ConnectionContext";
 
 const LoginButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
-  const { loggedIn } = useContext(LoggedInContext);
+  const { connection } = useContext(ConnectionContext);
   return (
     <div className={styles.login}>
-      {loggedIn ? (
+      {connection ? (
         <div>
           <Button text="logout" onClick={() => logout("/")} />
         </div>

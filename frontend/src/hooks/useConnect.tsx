@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 import refreshToken from "../utils/refreshToken";
 
-const useLoggedIn = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
+const useConnect = () => {
+  const [connection, setConnection] = useState(false);
 
   useEffect(() => {
     (async () => {
       try {
         await refreshToken();
-        setLoggedIn(true);
+        setConnection(true);
       } catch (err) {
         localStorage.clear();
       }
@@ -16,9 +16,9 @@ const useLoggedIn = () => {
   }, []);
 
   return {
-    loggedIn,
-    setLoggedIn,
+    connection,
+    setConnection,
   };
 };
 
-export default useLoggedIn;
+export default useConnect;

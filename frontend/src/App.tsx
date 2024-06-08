@@ -2,21 +2,20 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Callback from "./pages/Callback";
 import Layout from "./component/Layout";
-import { LoggedInContext } from "./context/LoggedInContext";
-import useLoggedIn from "./hooks/useLoggedIn";
+import { ConnectionContext } from "./context/ConnectionContext";
 import Dummy from "./pages/Dummy";
 import Foo from "./pages/Foo";
 import useAxiosInterceptor from "./hooks/useAxiosInterceptor";
 import { axiosInstance } from "./data/axiosInstance";
-import { jwt } from "./data/jwt";
+import useConnect from "./hooks/useConnect";
 
 const App = () => {
   useAxiosInterceptor(axiosInstance);
-  const { loggedIn, setLoggedIn } = useLoggedIn();
+  const { connection, setConnection } = useConnect();
 
   return (
     <BrowserRouter>
-      <LoggedInContext.Provider value={{ loggedIn, setLoggedIn }}>
+      <ConnectionContext.Provider value={{ connection, setConnection }}>
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
@@ -25,7 +24,7 @@ const App = () => {
           </Route>
           <Route path="/callback" element={<Callback />} />
         </Routes>
-      </LoggedInContext.Provider>
+      </ConnectionContext.Provider>
     </BrowserRouter>
   );
 };

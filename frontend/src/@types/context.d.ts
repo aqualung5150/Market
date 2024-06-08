@@ -1,6 +1,6 @@
 import { AxiosInstance } from "axios";
 
-interface LoggedInContextProps {
-  loggedIn: boolean;
-  setLoggedIn: Dispatch<SetStateAction<boolean>>;
+interface ConnectionContextProps {
+  connection: boolean;
+  setConnection: Dispatch<SetStateAction<boolean>>;
 }
