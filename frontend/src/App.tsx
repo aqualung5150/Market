@@ -6,9 +6,14 @@ import { LoggedInContext } from "./context/LoggedInContext";
 import useLoggedIn from "./hooks/useLoggedIn";
 import Dummy from "./pages/Dummy";
 import Foo from "./pages/Foo";
+import useAxiosInterceptor from "./hooks/useAxiosInterceptor";
+import { axiosInstance } from "./data/axiosInstance";
+import { jwt } from "./data/jwt";
 
 const App = () => {
+  useAxiosInterceptor(axiosInstance);
   const { loggedIn, setLoggedIn } = useLoggedIn();
+
   return (
     <BrowserRouter>
       <LoggedInContext.Provider value={{ loggedIn, setLoggedIn }}>

@@ -9,7 +9,6 @@ import { LoggedInContext } from "../../context/LoggedInContext";
 const LoginButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
   const { loggedIn } = useContext(LoggedInContext);
-  console.log(loggedIn + " Home");
   return (
     <div className={styles.login}>
       {loggedIn ? (

@@ -1,6 +1,7 @@
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { useEffect } from "react";
 import axios from "axios";
+import { jwt } from "../data/jwt";
 
 const Callback = () => {
   const [searchParams, setSearchParams] = useSearchParams();

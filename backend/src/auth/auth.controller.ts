@@ -3,7 +3,6 @@ import {
   Get,
   Logger,
   Query,
-  UnauthorizedException,
   Res,
   UseGuards,
   Req,
@@ -33,11 +32,11 @@ export class AuthController {
       email: userData.email,
     });
 
-    const accessToken = await this.authService.jwtAccessToken({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-    });
+    // const accessToken = await this.authService.jwtAccessToken({
+    //   id: user.id,
+    //   name: user.name,
+    //   email: user.email,
+    // });
 
     const refreshToken = await this.authService.jwtRefreshToken({
       id: user.id,
@@ -52,15 +51,16 @@ export class AuthController {
       refreshToken: hashedRefreshToken,
     });
 
-    res.setHeader('Authorization', 'Bearer ' + [accessToken, refreshToken]);
-    res.cookie('access_token', accessToken, {
-      httpOnly: true,
-    });
+    // res.setHeader('Authorization', 'Bearer ' + [accessToken, refreshToken]);
+    // res.cookie('access_token', accessToken, {
+    //   httpOnly: true,
+    // });
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
+      // secure:true, <- ssl프로토콜 구현하자. todo
     });
 
-    const decode = await this.jwtService.decode<JwtPayload>(accessToken);
+    const decode = this.jwtService.decode<JwtPayload>(refreshToken);
 
     res.send({
       message: 'login - success',
@@ -71,6 +71,11 @@ export class AuthController {
       iat: decode.iat,
       exp: decode.exp,
     });
+
+    // res.send({
+    //   message: 'login - success',
+    //   access_token: accessToken,
+    // });
   }
 
   @UseGuards(JwtRefreshGuard)
@@ -84,21 +89,22 @@ export class AuthController {
       email: user.email,
     });
 
-    res.setHeader('Authorization', 'Bearer ' + accessToken);
-    res.cookie('access_token', accessToken, {
-      httpOnly: true,
-    });
+    // res.setHeader('Authorization', 'Bearer ' + accessToken);
+    // res.cookie('access_token', accessToken, {
+    //   httpOnly: true,
+    // });
 
-    const decode = await this.jwtService.decode<JwtPayload>(accessToken);
+    const decode = this.jwtService.decode<JwtPayload>(accessToken);
 
     return res.send({
-      message: 'generate new access token',
+      message: 'login - success',
       id: decode.id,
       name: decode.name,
       email: decode.email,
       nickname: user.nickname,
       iat: decode.iat,
       exp: decode.exp,
+      access_token: accessToken,
     });
   }
 
@@ -108,7 +114,6 @@ export class AuthController {
     await this.userService.updateUserById(req.user.id, {
       refreshToken: null,
     });
-    res.clearCookie('access_token');
     res.clearCookie('refresh_token');
     // this.chatGateway.logout(req.user.id);
     return res.send({

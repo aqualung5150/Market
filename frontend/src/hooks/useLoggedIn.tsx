@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
-import setLocalStorage from "../utils/setLocalStorage";
-import axios from "axios";
+import refreshToken from "../utils/refreshToken";
 
 const useLoggedIn = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    const url = `http://${process.env.REACT_APP_BASE_URL}/api/user/me`;
-    axios
-      .get(url)
-      .then((res) => {
+    (async () => {
+      try {
+        await refreshToken();
         setLoggedIn(true);
-        setLocalStorage(res.data);
-      })
-      .catch((err) => console.log("not yet logged in"));
+      } catch (err) {
+        localStorage.clear();
+      }
+    })();
   }, []);
 
   return {
