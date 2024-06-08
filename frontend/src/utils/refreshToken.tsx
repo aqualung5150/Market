@@ -7,7 +7,7 @@ const refreshToken = async () => {
   await axios
     .get(`${process.env.REACT_APP_BASE_URL}/api/auth/refresh`)
     .then((res) => {
-      console.log("token refreshed - " + res.data.message);
+      console.log('success - "' + res.data.message + '"');
       jwt.setToken(res.data.access_token);
       setLocalStorage({
         id: res.data.id,

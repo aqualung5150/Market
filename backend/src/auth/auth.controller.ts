@@ -97,7 +97,7 @@ export class AuthController {
     const decode = this.jwtService.decode<JwtPayload>(accessToken);
 
     return res.send({
-      message: 'login - success',
+      message: 'new access token is generated',
       id: decode.id,
       name: decode.name,
       email: decode.email,
