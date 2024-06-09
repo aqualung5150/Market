@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
-import { UserService } from 'src/user/user/user.service';
+import { UserService } from 'src/user/user.service';
 import { JwtRefreshGuard } from './guard/jwt-refresh.guard';
 import { JwtService } from '@nestjs/jwt';
 
@@ -79,7 +79,7 @@ export class AuthController {
   }
 
   @UseGuards(JwtRefreshGuard)
-  @Get('refresh')
+  @Post('refresh')
   async refresh(@Req() req: Request, @Res() res: Response) {
     const user = await this.userService.findUserById(req.user.id);
 
