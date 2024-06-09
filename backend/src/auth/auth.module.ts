@@ -3,8 +3,8 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { HttpModule } from '@nestjs/axios';
 import { JwtModule } from '@nestjs/jwt';
-import { UserModule } from 'src/user/user/user.module';
-import { UserService } from 'src/user/user/user.service';
+import { UserModule } from 'src/user/user.module';
+import { UserService } from 'src/user/user.service';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { JwtRefreshStrategy } from './strategy/jwt-refresh.strategy';
 
