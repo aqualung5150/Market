@@ -1,5 +1,5 @@
 export const jwt = (() => {
-  let token: string | undefined = undefined;
+  let token: string;
   return {
     getToken() {
       return token;

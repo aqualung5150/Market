@@ -1,4 +1,4 @@
-import {
+import axios, {
   AxiosError,
   AxiosInstance,
   AxiosResponse,
@@ -9,9 +9,10 @@ import refreshToken from "../utils/refreshToken";
 import { jwt } from "../data/jwt";
 import logout from "../utils/logout";
 import { useEffect } from "react";
+import setLocalStorage from "../utils/setLocalStorage";
 
 const useAxiosInterceptor = (instance: AxiosInstance) => {
-  const handleRequest = (config: InternalAxiosRequestConfig) => {
+  const handleRequest = async (config: InternalAxiosRequestConfig) => {
     const token = jwt.getToken();
     if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
@@ -25,13 +26,12 @@ const useAxiosInterceptor = (instance: AxiosInstance) => {
       if (isTokenExpired()) {
         try {
           await refreshToken();
+          return error.config && instance(error.config);
         } catch (err) {
           alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-          logout(window.location.href); // 현재경로(새로고침)
+          // 현재경로(새로고침) - connection을 false로 업데이트하고 socket연결을 끊기 위해
+          logout(window.location.href);
           localStorage.clear();
-        }
-        if (error.config) {
-          return instance(error.config);
         }
       }
     }
