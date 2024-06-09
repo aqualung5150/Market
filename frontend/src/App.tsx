@@ -11,11 +11,13 @@ import useConnect from "./hooks/useConnect";
 
 const App = () => {
   useAxiosInterceptor(axiosInstance);
-  const { connection, setConnection } = useConnect();
+  const { connection, setConnection, chatSocket } = useConnect();
 
   return (
     <BrowserRouter>
-      <ConnectionContext.Provider value={{ connection, setConnection }}>
+      <ConnectionContext.Provider
+        value={{ connection, setConnection, chatSocket }}
+      >
         <Routes>
           <Route element={<Layout />}>
             <Route path="/" element={<Home />} />
