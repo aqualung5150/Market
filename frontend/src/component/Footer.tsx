@@ -1,7 +1,11 @@
 import styles from "../styles/Footer.module.css";
 
 const Footer = () => {
-  return <footer className={styles.footer}>푸터입니다.</footer>;
+  return (
+    <footer className={styles.footer}>
+      <h2>푸터입니다.</h2>
+    </footer>
+  );
 };
 
 export default Footer;
