@@ -24,18 +24,23 @@ const rootReducer = persistReducer(
 );
 
 // redux-state-sync
-
 // https://github.com/aohua/redux-state-sync
 /*If you are using redux-persist, 
 you may need to blacklist some of the actions that is triggered by redux-persist. 
 e.g. persist/PERSIST, persist/REHYDRATE, etc.*/
 const stateSyncMiddleware = createStateSyncMiddleware({
-  blacklist: ["persist/PERSIST", "persist/REHYDRATE"],
+  blacklist: [
+    "persist/PERSIST",
+    "persist/REHYDRATE",
+    // "persist/FLUSH",
+    // "persist/PAUSE",
+    // "persist/PURGE",
+    // "persist/REGISTER",
+  ],
   whitelist: ["user"],
 });
 
 // createStore
-
 const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>

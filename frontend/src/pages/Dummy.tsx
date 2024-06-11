@@ -1,20 +1,18 @@
-import { useContext, useEffect, useState } from "react";
-import { ConnectionContext } from "../context/ConnectionContext";
+import { useEffect, useState } from "react";
 import Login from "../features/auth/components/Login";
 import Modal from "../components/Modal";
 import { axiosInstance } from "../data/axiosInstance";
 import { UserData } from "../@types/user";
-import { useSearchParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 
 const Dummy = () => {
   const [data, setData] = useState<UserData>();
-  const user = useSelector((state: RootState) => state.user);
+  const userId = useSelector((state: RootState) => state.user.id);
   // const { connection, setConnection } = useContext(ConnectionContext);
 
   useEffect(() => {
-    if (!user.id) return;
+    if (!userId) return;
     // fetching some data...
     axiosInstance
       .get("/user/me")
@@ -26,7 +24,7 @@ const Dummy = () => {
   }, []);
   return (
     <div>
-      {user.id ? (
+      {userId ? (
         <div>${data?.name}</div>
       ) : (
         <Modal children={<Login />} open={true} />

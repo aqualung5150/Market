@@ -7,12 +7,10 @@ import axios, {
 import isTokenExpired from "../utils/isTokenExpired";
 import refreshToken from "../utils/refreshToken";
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import userSlice, { logout, updateUser } from "../features/user/userSlice";
+import { useDispatch } from "react-redux";
+import { logout, updateUser } from "../features/user/userSlice";
 
 const useAxiosInterceptor = (instance: AxiosInstance) => {
-  const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
 
   const handleRequest = async (config: InternalAxiosRequestConfig) => {
@@ -24,7 +22,7 @@ const useAxiosInterceptor = (instance: AxiosInstance) => {
 
   const handleError = async (error: AxiosError) => {
     if (error.response?.status === 401) {
-      if (isTokenExpired(user.exp)) {
+      if (isTokenExpired()) {
         try {
           const res = await refreshToken();
           console.log(res.data.message);
