@@ -37,7 +37,6 @@ export class AuthService {
   async jwtAccessToken(payload: JwtClaim) {
     return await this.jwtService.signAsync({
       id: payload.id,
-      name: payload.name,
       email: payload.email,
     });
   }
@@ -46,7 +45,6 @@ export class AuthService {
     return await this.jwtService.signAsync(
       {
         id: payload.id,
-        name: payload.name,
         email: payload.email,
       },
       {

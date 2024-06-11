@@ -1,6 +1,7 @@
 import { INestApplicationContext, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IoAdapter } from '@nestjs/platform-socket.io';
+import cookieParser from 'cookie-parser';
 import { Namespace, Server, ServerOptions } from 'socket.io';
 import { ChatSocket } from 'src/@types/socket';
 // import { ChatSocket } from './chat/types';
@@ -27,8 +28,16 @@ export class SocketIOAdapter extends IoAdapter {
 
 const createJwtMiddleware =
   (jwtService: JwtService, logger: Logger) => (socket: ChatSocket, next) => {
-    const token = socket.handshake.auth.token;
-    // const token = socket.handshake.headers.authorization.split(' ')[2];
+    const cookief: string = socket.request.headers.cookie;
+
+    if (!cookief) return;
+    const cookies = cookief.split('; ').reduce((prev, current) => {
+      const [name, ...value] = current.split('=');
+      prev[name] = value.join('=');
+      return prev;
+    }, {}) as ReqCookies;
+
+    const token = cookies.access_token;
     if (!token) {
       return;
     }
@@ -38,7 +47,6 @@ const createJwtMiddleware =
       if (!token) {
         throw new Error();
       }
-      logger.debug(token);
       const payload = jwtService.verify(token, {
         secret: process.env.JWT_ACCESS_TOKEN_SECRET,
       });
@@ -48,6 +56,7 @@ const createJwtMiddleware =
       socket.nickname = nickname;
       next();
     } catch {
+      logger.debug('FORBIDDEN');
       next(new Error('FORBIDDEN'));
     }
   };

@@ -25,8 +25,6 @@ export class UserController {
       name: data.name,
       email: data.email,
       nickname: data.nickname,
-      iat: req.user.iat,
-      exp: req.user.exp,
     };
   }
 

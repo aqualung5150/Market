@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import styles from "../styles/Modal.module.css";
+import styles from "./Modal.module.css";
 
 const Modal = ({ open, onClose, children }: ModalProps) => {
   const navigate = useNavigate();

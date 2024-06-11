@@ -1,22 +1,19 @@
 import { combineReducers, configureStore, createStore } from "@reduxjs/toolkit";
-import { connectionSlice, fooReducer, fooSlice } from "./connectionSlice";
-
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
-import { buildGetDefaultMiddleware } from "@reduxjs/toolkit/dist/getDefaultMiddleware";
+import userSlice from "../features/user/userSlice";
 
 const persistConfig = {
   key: "root",
   version: 1,
   storage,
-  whitelist: ["connection"],
+  whitelist: ["user"],
 };
 
 const rootReducer = persistReducer(
   persistConfig,
   combineReducers({
-    connection: connectionSlice.reducer,
-    foo: fooReducer,
+    user: userSlice.reducer,
   })
 );
 

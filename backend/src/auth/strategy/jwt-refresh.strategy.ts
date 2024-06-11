@@ -40,7 +40,6 @@ export class JwtRefreshStrategy extends PassportStrategy(
     if (await bcrypt.compare(signature, user.refreshToken)) {
       return {
         id: payload.id,
-        name: payload.name,
         email: payload.email,
         iat: payload.iat,
         exp: payload.exp,

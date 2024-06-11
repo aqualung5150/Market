@@ -13,6 +13,7 @@ import { Request, Response } from 'express';
 import { UserService } from 'src/user/user.service';
 import { JwtRefreshGuard } from './guard/jwt-refresh.guard';
 import { JwtService } from '@nestjs/jwt';
+import { JwtGuard } from './guard/jwt.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -32,15 +33,13 @@ export class AuthController {
       email: userData.email,
     });
 
-    // const accessToken = await this.authService.jwtAccessToken({
-    //   id: user.id,
-    //   name: user.name,
-    //   email: user.email,
-    // });
+    const accessToken = await this.authService.jwtAccessToken({
+      id: user.id,
+      email: user.email,
+    });
 
     const refreshToken = await this.authService.jwtRefreshToken({
       id: user.id,
-      name: user.name,
       email: user.email,
     });
 
@@ -52,21 +51,21 @@ export class AuthController {
     });
 
     // res.setHeader('Authorization', 'Bearer ' + [accessToken, refreshToken]);
-    // res.cookie('access_token', accessToken, {
-    //   httpOnly: true,
-    // });
+    res.cookie('access_token', accessToken, {
+      httpOnly: true,
+    });
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
       // secure:true, <- ssl프로토콜 구현하자. todo
     });
 
-    const decode = this.jwtService.decode<JwtPayload>(refreshToken);
+    const decode = this.jwtService.decode<JwtPayload>(accessToken);
 
     res.send({
       message: 'login - success',
-      id: decode.id,
-      name: decode.name,
-      email: decode.email,
+      id: user.id,
+      email: user.email,
+      name: user.name,
       nickname: user.nickname,
       iat: decode.iat,
       exp: decode.exp,
@@ -78,43 +77,55 @@ export class AuthController {
     // });
   }
 
+  @UseGuards(JwtGuard)
+  @Post('check')
+  check() {
+    return {
+      message: 'valid access token',
+    };
+  }
+
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refresh(@Req() req: Request, @Res() res: Response) {
-    const user = await this.userService.findUserById(req.user.id);
+    // const user = await this.userService.findUserById(req.user.id);
 
     const accessToken = await this.authService.jwtAccessToken({
-      id: user.id,
-      name: user.name,
-      email: user.email,
+      id: req.user.id,
+      email: req.user.email,
     });
 
     // res.setHeader('Authorization', 'Bearer ' + accessToken);
-    // res.cookie('access_token', accessToken, {
-    //   httpOnly: true,
-    // });
+    res.cookie('access_token', accessToken, {
+      httpOnly: true,
+    });
 
     const decode = this.jwtService.decode<JwtPayload>(accessToken);
 
     return res.send({
       message: 'new access token is generated',
-      id: decode.id,
-      name: decode.name,
-      email: decode.email,
-      nickname: user.nickname,
+      // id: user.id,
+      // email: user.email,
+      // name: user.name,
+      // nickname: user.nickname,
       iat: decode.iat,
       exp: decode.exp,
-      access_token: accessToken,
     });
   }
 
-  @UseGuards(JwtRefreshGuard)
+  // @UseGuards(JwtRefreshGuard)
   @Post('logout')
   async logout(@Req() req: Request, @Res() res: Response) {
-    await this.userService.updateUserById(req.user.id, {
-      refreshToken: null,
+    // await this.userService.updateUserById(req.user.id, {
+    //   refreshToken: null,
+    // });
+
+    res.clearCookie('access_token', {
+      httpOnly: true,
     });
-    res.clearCookie('refresh_token');
+    res.clearCookie('refresh_token', {
+      httpOnly: true,
+    });
     // this.chatGateway.logout(req.user.id);
     return res.send({
       message: 'logout - success',

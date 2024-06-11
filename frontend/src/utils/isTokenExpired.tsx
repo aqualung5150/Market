@@ -1,9 +1,5 @@
-const isTokenExpired = (): boolean => {
-  const item = localStorage.getItem("exp");
-  if (item) {
-    const exp = parseInt(item);
-    if (exp * 1000 - 1000 <= Date.now()) return true;
-  }
+const isTokenExpired = (exp: number | null): boolean => {
+  if (exp) return exp * 1000 - 1000 <= Date.now();
   return false;
 };
 
