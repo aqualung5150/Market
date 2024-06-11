@@ -1,0 +1,3 @@
+interface SocketQuery {
+  nickname: string;
+}

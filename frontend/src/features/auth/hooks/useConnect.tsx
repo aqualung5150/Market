@@ -1,13 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useSyncExternalStore } from "react";
 import refreshToken from "../../../utils/refreshToken";
 import { Socket, io } from "socket.io-client";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../../../data/axiosInstance";
 import { resetUser } from "../../user/userSlice";
+import { RootState } from "../../../app/store";
+import chatSocket from "../../socket/chatSocket";
 
 const useConnect = () => {
   const [connection, setConnection] = useState(false);
-  const [chatSocket, setChatSocket] = useState<Socket>();
+  // const [chatSocket, setChatSocket] = useState<Socket>();
 
   // redux 연습
   const dispatch = useDispatch();
@@ -20,7 +22,6 @@ const useConnect = () => {
       // if (nickname && token) {
       const connection = io(`${process.env.REACT_APP_BASE_URL}/chat`, {
         query: { nickname: "default" },
-        auth: { token: token },
         transports: ["websocket"],
       });
       console.log("socket connect try");
@@ -31,8 +32,9 @@ const useConnect = () => {
       try {
         await refreshToken();
         const socketConnection = connectSocket();
+        // dispatch(setSocket(socketConnection));
         setConnection(true);
-        setChatSocket(socketConnection);
+        // setChatSocket(socketConnection);
       } catch (err) {
         localStorage.clear();
       }
@@ -42,8 +44,9 @@ const useConnect = () => {
     const initialConnect = async () => {
       try {
         await axiosInstance.post("auth/check");
-        const socketConnection = connectSocket();
-        setChatSocket(socketConnection);
+        chatSocket.connectSocket({ nickname: "default!!" });
+        // const socketConnection = connectSocket();
+        // setChatSocket(socketConnection);
       } catch (err) {
         dispatch(resetUser());
       }
@@ -56,7 +59,8 @@ const useConnect = () => {
     initialConnect();
 
     return () => {
-      if (chatSocket?.connected) chatSocket.disconnect();
+      chatSocket.disconnectSocket();
+      // if (chatSocket?.connected) chatSocket.disconnect();
       // jwt.setToken("");
     };
   }, []);
