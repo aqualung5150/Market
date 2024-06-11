@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import userSlice from "../../user/userSlice";
+import { setUser } from "../../user/userSlice";
 
 const useOauthCallback = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -19,7 +19,7 @@ const useOauthCallback = () => {
       .get(url)
       .then((res) => {
         console.log("useOauthCallback");
-        dispatch(userSlice.actions.setUser(res.data));
+        dispatch(setUser(res.data));
         navigate(-1);
       })
       .catch((err) => {

@@ -9,7 +9,7 @@ import refreshToken from "../utils/refreshToken";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import userSlice from "../features/user/userSlice";
+import userSlice, { logout, updateUser } from "../features/user/userSlice";
 
 const useAxiosInterceptor = (instance: AxiosInstance) => {
   const user = useSelector((state: RootState) => state.user);
@@ -28,15 +28,11 @@ const useAxiosInterceptor = (instance: AxiosInstance) => {
         try {
           const res = await refreshToken();
           console.log(res.data.message);
-          dispatch(userSlice.actions.updateUser(res.data));
+          dispatch(updateUser(res.data));
           return error.config && instance(error.config);
         } catch (err) {
           alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-          dispatch(
-            userSlice.actions.logout({
-              redirect: window.location.href,
-            })
-          );
+          dispatch(logout(window.location.href));
         }
       }
     }

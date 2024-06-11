@@ -2,7 +2,6 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "../pages/Home";
 import Callback from "../pages/Callback";
 import Layout from "../layouts/Layout";
-import { ConnectionContext } from "../context/ConnectionContext";
 import Dummy from "../pages/Dummy";
 import Foo from "../pages/Foo";
 import useAxiosInterceptor from "../hooks/useAxiosInterceptor";

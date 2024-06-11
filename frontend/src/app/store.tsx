@@ -1,7 +1,13 @@
-import { combineReducers, configureStore, createStore } from "@reduxjs/toolkit";
-import { persistReducer } from "redux-persist";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
+import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import userSlice from "../features/user/userSlice";
+import {
+  createStateSyncMiddleware,
+  initMessageListener,
+} from "redux-state-sync";
+
+// redux-persist
 
 const persistConfig = {
   key: "root",
@@ -17,25 +23,31 @@ const rootReducer = persistReducer(
   })
 );
 
-// const rootReducer = combineReducers({
-//   connection: connectionSlice.reducer,
-//   foo: fooReducer,
-// });
+// redux-state-sync
 
-export const store = configureStore({
-  //   reducer: {
-  //     connection: connectionSlice.reducer,
-  //     // foo: fooSlice.reducer,
-  //     foo: fooReducer,
-  //   },
+// https://github.com/aohua/redux-state-sync
+/*If you are using redux-persist, 
+you may need to blacklist some of the actions that is triggered by redux-persist. 
+e.g. persist/PERSIST, persist/REHYDRATE, etc.*/
+const stateSyncMiddleware = createStateSyncMiddleware({
+  blacklist: ["persist/PERSIST", "persist/REHYDRATE"],
+  whitelist: ["user"],
+});
+
+// createStore
+
+const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,
-    }).concat(),
+    }).concat(stateSyncMiddleware) as any,
 });
 
-// export const store = createStore(rootReducer);
+initMessageListener(store);
+
+export const persistor = persistStore(store);
+export default store;
 
 export type AppStore = typeof store;
 // export type RootState = ReturnType<AppStore["getState"]>;

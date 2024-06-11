@@ -1,10 +1,9 @@
 import { useEffect, useState } from "react";
 import refreshToken from "../../../utils/refreshToken";
 import { Socket, io } from "socket.io-client";
-import { useDispatch, useSelector } from "react-redux";
-import { connectionSlice } from "../../../redux/connectionSlice";
+import { useDispatch } from "react-redux";
 import { axiosInstance } from "../../../data/axiosInstance";
-import userSlice from "../../user/userSlice";
+import { resetUser } from "../../user/userSlice";
 
 const useConnect = () => {
   const [connection, setConnection] = useState(false);
@@ -46,7 +45,7 @@ const useConnect = () => {
         const socketConnection = connectSocket();
         setChatSocket(socketConnection);
       } catch (err) {
-        dispatch(userSlice.actions.resetUser());
+        dispatch(resetUser());
       }
     };
 

@@ -1,4 +1,4 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 // interface UserState {
@@ -47,7 +47,7 @@ const userSlice = createSlice({
         .post(url, {})
         .catch(() => {})
         .finally(() => {
-          window.location.href = action.payload.redirect;
+          window.location.href = action.payload;
         });
 
       return initialState;
@@ -56,3 +56,5 @@ const userSlice = createSlice({
 });
 
 export default userSlice;
+
+export const { setUser, resetUser, updateUser, logout } = userSlice.actions;

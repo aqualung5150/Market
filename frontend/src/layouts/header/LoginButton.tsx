@@ -6,17 +6,17 @@ import styles from "./Header.module.css";
 import { ConnectionContext } from "../../context/ConnectionContext";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import userSlice from "../../features/user/userSlice";
+import userSlice, { logout } from "../../features/user/userSlice";
 
 const LoginButton = () => {
   const [modalOpen, setModalOpen] = useState(false);
   // const { connection } = useContext(ConnectionContext);
-  const user = useSelector((state: RootState) => state.user);
+  const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
 
   return (
     <div className={styles.login}>
-      {user.id ? (
+      {userId ? (
         <div>
           <Button
             text="logout"
@@ -27,11 +27,7 @@ const LoginButton = () => {
               //     redirect: "/",
               //   })
               // );
-              dispatch(
-                userSlice.actions.logout({
-                  redirect: "/",
-                })
-              );
+              dispatch(logout("/"));
             }}
           />
         </div>
