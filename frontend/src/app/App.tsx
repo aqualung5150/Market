@@ -11,13 +11,9 @@ import useConnect from "../features/auth/hooks/useConnect";
 const App = () => {
   useAxiosInterceptor(axiosInstance);
   useConnect();
-  // const { connection, setConnection, chatSocket } = useConnect();
 
   return (
     <BrowserRouter>
-      {/* <ConnectionContext.Provider
-        value={{ connection, setConnection, chatSocket }}
-      > */}
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<Home />} />
@@ -26,7 +22,6 @@ const App = () => {
         </Route>
         <Route path="/callback" element={<Callback />} />
       </Routes>
-      {/* </ConnectionContext.Provider> */}
     </BrowserRouter>
   );
 };
