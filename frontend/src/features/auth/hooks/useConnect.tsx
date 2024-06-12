@@ -5,19 +5,19 @@ import { RootState } from "../../../app/store";
 import chatSocket from "../../socket/chatSocket";
 
 const useConnect = () => {
-  const userId = useSelector((state: RootState) => state.user.id);
+  const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
-    if (!userId) {
-      console.log("no userId");
+    if (!user.id) {
+      console.log("no user id");
       return;
     }
 
     const initialConnect = async () => {
       try {
         await axiosInstance.post("auth/check");
-        console.log("연결시도: " + userId);
-        chatSocket.connectSocket({ nickname: "맥북살까" });
+        console.log("연결시도: " + user.id);
+        chatSocket.connectSocket({ nickname: user.nickname });
       } catch (err) {
         // dispatch(resetUser());
       }
@@ -28,7 +28,7 @@ const useConnect = () => {
     return () => {
       chatSocket.disconnectSocket();
     };
-  }, [userId]);
+  }, [user.id]);
 };
 
 export default useConnect;
