@@ -1,10 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../../data/axiosInstance";
 import { RootState } from "../../../app/store";
 import chatSocket from "../../socket/chatSocket";
+import { Socket, io } from "socket.io-client";
 
 const useConnect = () => {
+  const [socket, setSocket] = useState<Socket | null>(null);
   const user = useSelector((state: RootState) => state.user);
 
   useEffect(() => {
@@ -17,7 +19,15 @@ const useConnect = () => {
       try {
         await axiosInstance.post("auth/check");
         console.log("연결시도: " + user.id);
-        chatSocket.connectSocket({ nickname: user.nickname });
+
+        setSocket(
+          io(`${process.env.REACT_APP_BASE_URL}/chat`, {
+            query: { nickname: user.nickname },
+            transports: ["websocket"],
+          })
+        );
+
+        // chatSocket.connectSocket({ nickname: user.nickname });
       } catch (err) {
         // dispatch(resetUser());
       }
@@ -29,6 +39,8 @@ const useConnect = () => {
       chatSocket.disconnectSocket();
     };
   }, [user.id]);
+
+  return { socket };
 };
 
 export default useConnect;

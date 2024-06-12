@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Button from "../components/Button";
 import { ConnectionContext } from "../context/ConnectionContext";
 import Modal from "../components/Modal";
@@ -6,17 +6,57 @@ import Login from "../features/auth/components/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { updateUser } from "../features/user/userSlice";
+import chatSocket from "../features/socket/chatSocket";
+import { Socket } from "socket.io-client";
+import { SocketContext } from "../context/SocketContext";
+import { SocketContextProps } from "../@types/context";
 
 const Foo = () => {
   const [modalOpen, setModalOpen] = useState(false);
+  // const [socket, setSocket] = useState<Socket | null>(chatSocket.getSocket());
   // const { connection } = useContext(ConnectionContext);
 
   const user = useSelector((state: RootState) => state.user);
+  const socket = useContext(SocketContext).socket;
+  // const socket = chatSocket.getSocket();
   const dispatch = useDispatch();
+
+  // socket?.on("hello", (payload: string) => {
+  //   console.log(payload);
+  // });
+
+  // useEffect(() => {
+  //   // socket?.on("hello", (payload: string) => {
+  //   //   console.log(payload);
+  //   // });
+  // }, [socket]);
+
+  useEffect(() => {
+    // if (chatSocket.getSocket()) {
+    //   setSocket(chatSocket.getSocket());
+    //   console.log("set socket");
+    // }
+
+    if (!socket) {
+      console.log("useEFFECT");
+      return;
+    }
+
+    socket.on("hello", (payload) => {
+      console.log("on: " + payload);
+    });
+  }, [socket]);
 
   return (
     <div>
       <h2>{user.name}</h2>
+      <Button
+        text="socket.emit(it's me)"
+        onClick={() => {
+          console.log("connected: ", socket?.connected);
+          socket?.emit("hello", "it's me");
+        }}
+      />
       <Button
         text="승준"
         onClick={() => {

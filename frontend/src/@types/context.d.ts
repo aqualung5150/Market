@@ -6,3 +6,7 @@ interface ConnectionContextProps {
   setConnection: Dispatch<SetStateAction<boolean>>;
   chatSocket: Socket | undefined;
 }
+
+interface SocketContextProps {
+  socket: Socket | null;
+}

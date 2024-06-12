@@ -5,9 +5,13 @@ const chatSocket = (() => {
   return {
     getSocket: () => socket,
     connectSocket: (query: SocketQuery) => {
-      io(`${process.env.REACT_APP_BASE_URL}/chat`, {
+      socket = io(`${process.env.REACT_APP_BASE_URL}/chat`, {
         query: query,
         transports: ["websocket"],
+      });
+
+      socket.on("hello", (payload) => {
+        console.log(payload);
       });
     },
     disconnectSocket: () => {

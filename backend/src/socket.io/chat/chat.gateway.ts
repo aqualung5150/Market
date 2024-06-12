@@ -1,6 +1,7 @@
 import { Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
+  MessageBody,
   OnGatewayConnection,
   OnGatewayDisconnect,
   OnGatewayInit,
@@ -29,5 +30,11 @@ export class ChatGateway
   }
   handleDisconnect(@ConnectedSocket() client: ChatSocket) {
     this.logger.debug(`disconnected : ${client.nickname}, ${client.id}`);
+  }
+
+  @SubscribeMessage('hello')
+  handleEvent(client: ChatSocket, data: string) {
+    this.logger.debug('hello!');
+    client.emit('hello', 'client: ' + data + '/server: yes you.');
   }
 }

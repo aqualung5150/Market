@@ -7,21 +7,24 @@ import Foo from "../pages/Foo";
 import useAxiosInterceptor from "../hooks/useAxiosInterceptor";
 import { axiosInstance } from "../data/axiosInstance";
 import useConnect from "../features/auth/hooks/useConnect";
+import { SocketContext } from "../context/SocketContext";
 
 const App = () => {
   useAxiosInterceptor(axiosInstance);
-  useConnect();
+  const socket = useConnect();
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
-          <Route path="/dummy" element={<Dummy />} />
-          <Route path="/foo" element={<Foo />} />
-        </Route>
-        <Route path="/callback" element={<Callback />} />
-      </Routes>
+      <SocketContext.Provider value={socket}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Home />} />
+            <Route path="/dummy" element={<Dummy />} />
+            <Route path="/foo" element={<Foo />} />
+          </Route>
+          <Route path="/callback" element={<Callback />} />
+        </Routes>
+      </SocketContext.Provider>
     </BrowserRouter>
   );
 };
