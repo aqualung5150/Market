@@ -4,6 +4,9 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+// prisma 가이드 - https://velog.io/@dnkim419/Prisma-schema.prisma-%ED%8C%8C%EC%9D%BC%EC%97%90%EC%84%9C-model-%EC%9E%91%EC%84%B1%ED%95%98%EA%B8%B0
+// 채팅 내역 db 예시 - https://medium.com/@mutationevent/mysql-schema-for-a-chat-application-7e0067dd04fd
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -16,14 +19,27 @@ datasource db {
 model User {
   id           Int            @id @default(autoincrement())
   name         String?
-  nickname     String?        @db.VarChar(12)
+  nickname     String        @db.VarChar(12)
   email        String?        @unique
   image        String         @default("default.png")
   createdAt    DateTime       @default(now())
-  lastLogin    DateTime       @updatedAt
-  refreshToken String?
-  tokenExp     Int?
-  otpSecret    String?
-  isOtpVerified Boolean       @default(false)
-  is2faEnabled Boolean        @default(false)
+  conversations Conversation[]
+}
+
+model Conversation {
+  id  Int @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  messages Message[]
+  user  User @relation(fields: [userId], references: [id])
+  userId  Int
+}
+
+model Message {
+  id Int @id @default(autoincrement())
+  userId Int // @relation이 필요할까... 프론트에서 받아서 누가 보낸건지 구분할때만 쓸건디
+  body String
+  read Boolean @default(false)
+  createdAt DateTime @default(now())
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+  conversationId Int
 }
