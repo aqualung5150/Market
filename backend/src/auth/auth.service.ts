@@ -54,10 +54,10 @@ export class AuthService {
     );
   }
 
-  async hashJwtToken(token: string) {
-    const signatue = token.split('.')[2];
-    const saltOrRounds = 10;
-    const hashedToken = await bcrypt.hash(signatue, saltOrRounds);
-    return hashedToken;
-  }
+  // async hashJwtToken(token: string) {
+  //   const signatue = token.split('.')[2];
+  //   const saltOrRounds = 10;
+  //   const hashedToken = await bcrypt.hash(signatue, saltOrRounds);
+  //   return hashedToken;
+  // }
 }

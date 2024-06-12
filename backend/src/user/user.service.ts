@@ -16,7 +16,7 @@ export class UserService {
       create: {
         name: data.name,
         email: data.email,
-        nickname: 'Crawler',
+        nickname: data.nickname,
       },
       select: {
         id: true,
@@ -63,7 +63,8 @@ export class UserService {
         nickname: true,
         email: true,
         image: true,
-        lastLogin: true,
+        createdAt: true,
+        // lastLogin: true,
       },
     });
   }

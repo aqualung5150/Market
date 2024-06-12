@@ -31,6 +31,7 @@ export class AuthController {
     const user = await this.userService.createUser({
       name: userData.name,
       email: userData.email,
+      nickname: 'Crawler',
     });
 
     const accessToken = await this.authService.jwtAccessToken({
@@ -43,12 +44,12 @@ export class AuthController {
       email: user.email,
     });
 
-    const hashedRefreshToken =
-      await this.authService.hashJwtToken(refreshToken);
+    // const hashedRefreshToken =
+    //   await this.authService.hashJwtToken(refreshToken);
 
-    this.userService.updateUserById(user.id, {
-      refreshToken: hashedRefreshToken,
-    });
+    // this.userService.updateUserById(user.id, {
+    //   refreshToken: hashedRefreshToken,
+    // });
 
     // res.setHeader('Authorization', 'Bearer ' + [accessToken, refreshToken]);
     res.cookie('access_token', accessToken, {

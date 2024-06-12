@@ -31,19 +31,26 @@ export class JwtRefreshStrategy extends PassportStrategy(
       throw new UnauthorizedException('no such user in database');
     }
 
-    if (!user.refreshToken) {
-      throw new UnauthorizedException('no refresh token on user');
-    }
+    // if (!user.refreshToken) {
+    //   throw new UnauthorizedException('no refresh token on user');
+    // }
 
-    const signature = refreshToken.split('.')[2];
+    // const signature = refreshToken.split('.')[2];
 
-    if (await bcrypt.compare(signature, user.refreshToken)) {
-      return {
-        id: payload.id,
-        email: payload.email,
-        iat: payload.iat,
-        exp: payload.exp,
-      };
-    }
+    // if (await bcrypt.compare(signature, user.refreshToken)) {
+    //   return {
+    //     id: payload.id,
+    //     email: payload.email,
+    //     iat: payload.iat,
+    //     exp: payload.exp,
+    //   };
+    // }
+
+    return {
+      id: payload.id,
+      email: payload.email,
+      iat: payload.iat,
+      exp: payload.exp,
+    };
   }
 }
