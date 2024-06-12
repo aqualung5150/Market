@@ -23,15 +23,11 @@ export class ChatGateway
 
   private readonly logger = new Logger(ChatGateway.name);
 
-  // todo
-  afterInit() {
-    this.logger.debug('Server Start');
-  }
+  afterInit() {}
   handleConnection(@ConnectedSocket() client: ChatSocket) {
-    this.logger.debug(`Client Connected : ${client.nickname}, ${client.id}`);
+    this.logger.debug(`connected : ${client.nickname}, ${client.id}`);
   }
   handleDisconnect(@ConnectedSocket() client: ChatSocket) {
-    this.logger.debug(`Client Disconnected : ${client.nickname}, ${client.id}`);
+    this.logger.debug(`disconnected : ${client.nickname}, ${client.id}`);
   }
-  ////////////////////////////////////////////////
 }

@@ -1,8 +1,7 @@
 import { INestApplicationContext, Logger } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { IoAdapter } from '@nestjs/platform-socket.io';
-import cookieParser from 'cookie-parser';
-import { Namespace, Server, ServerOptions } from 'socket.io';
+import { Server, ServerOptions } from 'socket.io';
 import { ChatSocket } from 'src/@types/socket';
 // import { ChatSocket } from './chat/types';
 // import { GameSocket } from 'src/socket.io/game/types';
@@ -32,8 +31,8 @@ const createJwtMiddleware =
 
     if (!cookief) return;
     const cookies = cookief.split('; ').reduce((prev, current) => {
-      const [name, ...value] = current.split('=');
-      prev[name] = value.join('=');
+      const [name, value] = current.split('=');
+      prev[name] = value;
       return prev;
     }, {}) as ReqCookies;
 
