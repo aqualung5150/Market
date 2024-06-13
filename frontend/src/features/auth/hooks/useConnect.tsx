@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { axiosInstance } from "../../../data/axiosInstance";
 import { RootState } from "../../../app/store";
-import chatSocket from "../../socket/chatSocket";
+import chatSocket from "../../chat/chatSocket";
 import { Socket, io } from "socket.io-client";
 
 const useConnect = () => {

@@ -5,6 +5,8 @@ import { axiosInstance } from "../data/axiosInstance";
 import { UserData } from "../@types/user";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
+import useChatSocket from "../features/chat/hooks/useChatSocket";
+import Button from "../components/Button";
 
 const Dummy = () => {
   const [data, setData] = useState<UserData>();
@@ -22,6 +24,9 @@ const Dummy = () => {
       })
       .catch((err) => console.log("리프레시토큰 만료 - " + err.message));
   }, []);
+
+  const chatSocket = useChatSocket();
+
   return (
     <div>
       {userId ? (
@@ -29,6 +34,13 @@ const Dummy = () => {
       ) : (
         <Modal children={<Login />} open={true} />
       )}
+
+      <Button
+        text="emit"
+        onClick={() => {
+          chatSocket?.emit("hello", "it's me");
+        }}
+      />
     </div>
   );
 };

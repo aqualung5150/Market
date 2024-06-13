@@ -89,7 +89,7 @@ export class AuthController {
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
   async refresh(@Req() req: Request, @Res() res: Response) {
-    // const user = await this.userService.findUserById(req.user.id);
+    const user = await this.userService.findUserById(req.user.id);
 
     const accessToken = await this.authService.jwtAccessToken({
       id: req.user.id,
@@ -104,11 +104,10 @@ export class AuthController {
     const decode = this.jwtService.decode<JwtPayload>(accessToken);
 
     return res.send({
-      message: 'new access token is generated',
-      // id: user.id,
-      // email: user.email,
-      // name: user.name,
-      // nickname: user.nickname,
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      nickname: user.nickname,
       iat: decode.iat,
       exp: decode.exp,
     });

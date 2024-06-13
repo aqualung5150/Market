@@ -8,7 +8,7 @@ import isTokenExpired from "../utils/isTokenExpired";
 import refreshToken from "../utils/refreshToken";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { logout, updateUser } from "../features/user/userSlice";
+import { logout, setUser } from "../features/user/userSlice";
 
 const useAxiosInterceptor = (instance: AxiosInstance) => {
   const dispatch = useDispatch();
@@ -25,11 +25,11 @@ const useAxiosInterceptor = (instance: AxiosInstance) => {
       if (isTokenExpired()) {
         try {
           const res = await refreshToken();
-          console.log(res.data.message);
-          dispatch(updateUser(res.data));
-          return error.config && instance(error.config);
+          console.log("new token generated");
+          dispatch(setUser(res.data));
+          return error.config && axios(error.config);
         } catch (err) {
-          alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+          console.log("refresh token expired");
           dispatch(logout(window.location.href));
         }
       }
