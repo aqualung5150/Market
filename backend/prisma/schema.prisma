@@ -18,28 +18,35 @@ datasource db {
 
 model User {
   id           Int            @id @default(autoincrement())
-  name         String?
+  name         String
   nickname     String        @db.VarChar(12)
-  email        String?        @unique
+  email        String        @unique
   image        String         @default("default.png")
   createdAt    DateTime       @default(now())
-  conversations Conversation[]
+  channelParticipants ChannelParticipants[]
 }
 
-model Conversation {
+model Channel {
   id  Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   messages Message[]
-  user  User @relation(fields: [userId], references: [id])
-  userId  Int
+  channelParticipants ChannelParticipants[]
 }
 
 model Message {
   id Int @id @default(autoincrement())
-  userId Int // @relation이 필요할까... 프론트에서 받아서 누가 보낸건지 구분할때만 쓸건디
+  senderId Int // @relation이 필요할까... 프론트에서 받아서 누가 보낸건지 구분할때만 쓸건디
   body String
   read Boolean @default(false)
   createdAt DateTime @default(now())
-  conversation Conversation @relation(fields: [conversationId], references: [id])
-  conversationId Int
+  channel Channel @relation(fields: [channelId], references: [id])
+  channelId Int
+}
+
+model ChannelParticipants {
+  userId Int
+  channelId Int
+  @@id([userId, channelId])
+  user User @relation(fields: [userId], references: [id])
+  channel Channel @relation(fields: [channelId], references: [id])
 }
