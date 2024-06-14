@@ -7,9 +7,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import InputField from "./InputField";
 import { ChannelInfo, MessageInfo } from "../../../@types/chat";
-
-//개꿀팁 - 컴포넌트 props 넘겨줄때 스프레드연산자 되는듯
-// https://velog.io/@ayaan92/JSX-Spread-Operator
+import Message from "./Message";
 
 const Chat = () => {
   const [selectedChannelId, setSelectedChannelId] = useState(0);
@@ -25,53 +23,39 @@ const Chat = () => {
       transports: ["websocket"],
     });
 
-    //listen
+    // on
+    // 채널 리스트
     connection.on("getChannelsRes", (payload) => {
-      setChannels(payload);
-      /* Channel {
-            id: Conversation,id
-            users: User.nickname[],
-            lastMessage: Message (where conversationId 조건 첫번째createdAt)
-        }
-
-        channels: Channel[]
-      */
+      setChannels(payload.channels);
     });
 
-    // connection.on("getChannelRes", (payload) => {
-    //   console.log("getChannelsRes");
-    // });
-
+    // 채널 (내가 포함된 새로운 채널이 개설되고 상대로부터 메세지가 왔을때)
+    connection.on("newChannelRes", (payload) => {
+      setChannels((prev) => prev.concat(payload.channel));
+    });
+    // 채널의 메세지 리스트
     connection.on("getMessagesRes", (payload) => {
-      console.log("getMessagesRes");
+      setMessages(payload.messages);
     });
 
-    connection.on("newChannel", (payload) => {
-      setChannels((prev) => prev.concat(payload));
+    connection.on("receiveMessage", (payload) => {
+      setMessages((prev) => prev.concat(payload.message));
     });
 
+    ////////////////////////////////////////////////
     // emit
+    // 채널리스트
     connection.emit("getChannelsReq");
 
     setSocket(connection);
   }, []);
 
-  //   const socket = useChatSocket();
+  useEffect(() => {
+    if (selectedChannelId <= 0) return;
 
-  // 스프레드 연산자 되네
-  const lastMessage: MessageInfo = {
-    id: 42,
-    sender: "승준",
-    body: "this is last message",
-    read: false,
-    createdAt: 20240613,
-  };
-
-  const channelProps = {
-    id: 1,
-    users: ["first", "second", "last"],
-    lastMessage: lastMessage,
-  };
+    // 선택한 채널의 메세지를 불러옴
+    socket?.emit("getMessagesReq", selectedChannelId);
+  }, [selectedChannelId]);
 
   return (
     <SocketContext.Provider value={{ chatSocket: socket }}>
@@ -85,23 +69,23 @@ const Chat = () => {
               />
             ))}
           </ul>
-          <ul>
-            <Channel
-              {...channelProps}
-              setSelectedChannelId={setSelectedChannelId}
-            />
-            <Channel
-              id={2}
-              users={["첫째", "둘째", "셋째"]}
-              lastMessage={lastMessage}
-              setSelectedChannelId={setSelectedChannelId}
-            />
-          </ul>
         </div>
         <div className="body">
           {selectedChannelId ? (
             <div>
               <h1>Selected Channel is {selectedChannelId}</h1>
+              <ul>
+                {messages.map((message: MessageInfo) => (
+                  <Message
+                    userId={user.id}
+                    id={message.id}
+                    sender={message.sender}
+                    body={message.body}
+                    read={message.read}
+                    createdAt={message.createdAt}
+                  />
+                ))}
+              </ul>
               <InputField socket={socket} channelId={selectedChannelId} />
             </div>
           ) : (

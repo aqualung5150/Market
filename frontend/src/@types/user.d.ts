@@ -7,7 +7,7 @@ interface JwtPayload {
   exp: number;
 }
 
-interface UserData extends JwtPayload {
+interface User extends JwtPayload {
   name: string;
   nickname: string;
 }
