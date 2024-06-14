@@ -3,7 +3,7 @@ import Button from "../../../components/Button";
 import { InputFieldProps } from "../../../@types/chat";
 import Input from "../../../components/Input";
 
-const InputField = ({ socket, channelId }: InputFieldProps) => {
+const InputField = ({ socket, channelId, toUserId }: InputFieldProps) => {
   const [value, setValue] = useState<string>("");
 
   const sendMessage = useCallback(
@@ -14,6 +14,16 @@ const InputField = ({ socket, channelId }: InputFieldProps) => {
         channelId: channelId,
       });
       setValue("");
+    },
+    [socket]
+  );
+
+  const newChannel = useCallback(
+    (message: string, toUserId: number) => {
+      socket?.emit("newChannelReq", {
+        body: message,
+        toUserId: toUserId,
+      });
     },
     [socket]
   );

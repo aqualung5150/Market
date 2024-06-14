@@ -33,6 +33,7 @@ interface ChannelsProps {
 interface InputFieldProps {
   socket: Socket | null;
   channelId: number;
+  toUserId?: number;
   //   setMessages: React.Dispatch<SetStateAction<Message[]>>;
 }
 

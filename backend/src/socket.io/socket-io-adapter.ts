@@ -40,7 +40,7 @@ const createJwtMiddleware =
     if (!token) {
       return;
     }
-    const nickname = socket.handshake.query.nickname as string;
+    // const nickname = socket.handshake.query.nickname as string;
 
     try {
       if (!token) {
@@ -51,8 +51,8 @@ const createJwtMiddleware =
       });
       socket.userId = payload.id;
       // socket.data.id = payload.id;
-      socket.email = payload.email;
-      socket.nickname = nickname;
+      // socket.email = payload.email;
+      // socket.nickname = nickname;
       next();
     } catch {
       logger.debug('FORBIDDEN');

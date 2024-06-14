@@ -24,14 +24,14 @@ model User {
   image        String         @default("default.png")
   createdAt    DateTime       @default(now())
   messages Message[]
-  channelParticipants ChannelParticipants[]
+  channels ChannelsOnUsers[]
 }
 
 model Channel {
   id  Int @id @default(autoincrement())
   createdAt DateTime @default(now())
   messages Message[]
-  channelParticipants ChannelParticipants[]
+  users ChannelsOnUsers[]
 }
 
 model Message {
@@ -45,10 +45,11 @@ model Message {
   senderId Int
 }
 
-model ChannelParticipants {
+model ChannelsOnUsers {
   userId Int
   channelId Int
-  @@id([userId, channelId])
   user User @relation(fields: [userId], references: [id])
   channel Channel @relation(fields: [channelId], references: [id])
+
+  @@id([userId, channelId])
 }
