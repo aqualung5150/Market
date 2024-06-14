@@ -23,6 +23,7 @@ model User {
   email        String        @unique
   image        String         @default("default.png")
   createdAt    DateTime       @default(now())
+  messages Message[]
   channelParticipants ChannelParticipants[]
 }
 
@@ -35,12 +36,13 @@ model Channel {
 
 model Message {
   id Int @id @default(autoincrement())
-  senderId Int // @relation이 필요할까... 프론트에서 받아서 누가 보낸건지 구분할때만 쓸건디
   body String
   read Boolean @default(false)
   createdAt DateTime @default(now())
   channel Channel @relation(fields: [channelId], references: [id])
   channelId Int
+  sender User @relation(fields: [senderId], references: [id])
+  senderId Int
 }
 
 model ChannelParticipants {
