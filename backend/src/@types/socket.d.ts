@@ -1,7 +1,7 @@
 import { Socket } from 'socket.io';
 
 interface ChatSocket extends Socket {
-  userId: string;
+  userId: number;
   // name: string;
   // email: string;
   // nickname: string;
