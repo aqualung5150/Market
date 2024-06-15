@@ -94,5 +94,8 @@ export class ChatGateway
     // channel.users.map((user) => {
     //   user.user.id .......?
     // })
+    ////////////////
+    /*
+     */
   }
 }

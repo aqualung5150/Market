@@ -77,10 +77,22 @@ export class ChatService {
 
   async getChannelsByUserId(userId) {
     const channels = await this.prisma.channel.findMany({
-      include: {
+      select: {
+        id: true,
+
+        messages: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          select: {
+            body: true,
+            createdAt: true,
+            read: true,
+          },
+          take: 1,
+        },
         users: {
           select: {
-            // user: true,
             user: {
               select: {
                 id: true,
@@ -97,6 +109,11 @@ export class ChatService {
           },
         },
       },
+    });
+
+    // sort by lasted message
+    channels.sort(function (a, b) {
+      if (a.messages[0].createdAt > b.messages[0].createdAt) return -1;
     });
 
     return channels;
@@ -152,6 +169,9 @@ export class ChatService {
       },
       where: {
         channelId: channelId,
+      },
+      orderBy: {
+        createdAt: 'desc',
       },
     });
 
