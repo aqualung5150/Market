@@ -6,14 +6,16 @@ import { Socket, io } from "socket.io-client";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import InputField from "./InputField";
-import { ChannelInfo, MessageInfo } from "../../../@types/chat";
+import { SocketChannelData, SocketMessageData } from "../../../@types/chat";
 import Message from "./Message";
+import Channels from "./Channels";
+import ChatRoom from "./ChatRoom";
 
 const Chat = () => {
   const [selectedChannelId, setSelectedChannelId] = useState(0);
   const [socket, setSocket] = useState<Socket | null>(null);
-  const [channels, setChannels] = useState<ChannelInfo[]>([]);
-  const [messages, setMessages] = useState<MessageInfo[]>([]);
+  // const [channels, setChannels] = useState<SocketChannelData[]>([]);
+  // const [messages, setMessages] = useState<SocketMessageData[]>([]);
 
   const user = useSelector((state: RootState) => state.user);
 
@@ -25,27 +27,33 @@ const Chat = () => {
 
     // on
     // 채널 리스트
-    connection.on("getChannelsRes", (payload) => {
-      setChannels(payload.channels);
-    });
+    // connection.on("getChannelsRes", (payload) => {
+    //   console.log("here", payload.channels);
+    //   setChannels(payload.channels);
+    // });
 
     // 채널 (내가 포함된 새로운 채널이 개설되고 상대로부터 메세지가 왔을때)
-    connection.on("newChannelRes", (payload) => {
-      setChannels((prev) => prev.concat(payload.channel));
-    });
+    // connection.on("newChannelRes", (payload) => {
+    //   setChannels((prev) => prev.concat(payload.channel));
+    // });
     // 채널의 메세지 리스트
-    connection.on("getMessagesRes", (payload) => {
-      setMessages(payload.messages);
-    });
+    // connection.on("getMessagesRes", ({ messages }) => {
+    //   setMessages(messages);
+    // });
 
-    connection.on("receiveMessage", (payload) => {
-      setMessages((prev) => prev.concat(payload.message));
-    });
+    // connection.on("sendMessageRes", ({ message }) => {
+    //   console.log(message.id);
+    //   setMessages((prev) => prev.concat(message));
+    // });
+
+    // connection.on("receiveMessage", (payload) => {
+    //   setMessages((prev) => prev.concat(payload.message));
+    // });
 
     ////////////////////////////////////////////////
     // emit
     // 채널리스트
-    connection.emit("getChannelsReq");
+    // connection.emit("getChannelsReq", { userId: user.id });
 
     setSocket(connection);
   }, []);
@@ -54,39 +62,43 @@ const Chat = () => {
     if (selectedChannelId <= 0) return;
 
     // 선택한 채널의 메세지를 불러옴
-    socket?.emit("getMessagesReq", selectedChannelId);
+    socket?.emit("getMessagesReq", { channelId: selectedChannelId });
   }, [selectedChannelId]);
 
   return (
     <SocketContext.Provider value={{ chatSocket: socket }}>
       <div className="container">
         <div className="channels">
-          <ul>
+          <Channels
+            socket={socket}
+            userId={user.id}
+            // channels={channels}
+            setSelectedChannelId={setSelectedChannelId}
+          />
+          {/* <ul>
             {channels.map((channel) => (
               <Channel
                 {...channel}
                 setSelectedChannelId={setSelectedChannelId}
               />
             ))}
-          </ul>
+          </ul> */}
         </div>
         <div className="body">
           {selectedChannelId ? (
             <div>
               <h1>Selected Channel is {selectedChannelId}</h1>
-              <ul>
-                {messages.map((message: MessageInfo) => (
-                  <Message
-                    userId={user.id}
-                    id={message.id}
-                    sender={message.sender}
-                    body={message.body}
-                    read={message.read}
-                    createdAt={message.createdAt}
-                  />
+              <ChatRoom
+                socket={socket}
+                userId={user.id}
+                selectedChannelId={selectedChannelId}
+              />
+              {/* <ul>
+                {messages.map((message: SocketMessageData) => (
+                  <Message key={message.id} {...message} userId={user.id} />
                 ))}
               </ul>
-              <InputField socket={socket} channelId={selectedChannelId} />
+              <InputField socket={socket} channelId={selectedChannelId} /> */}
             </div>
           ) : (
             <h1>No Channel Selected</h1>
