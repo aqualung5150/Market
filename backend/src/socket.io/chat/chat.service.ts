@@ -114,7 +114,7 @@ export class ChatService {
 
     // sort by lasted message
     channels.sort(function (a, b) {
-      if (a.messages[0].createdAt > b.messages[0].createdAt) return -1;
+      if (a.messages[0]?.createdAt > b.messages[0]?.createdAt) return -1;
     });
 
     return channels;
@@ -174,7 +174,7 @@ export class ChatService {
   async getMessagesByChannelId(channelId) {
     const messages = await this.prisma.message.findMany({
       select: {
-        // id: true,
+        id: true,
         body: true,
         read: true,
         createdAt: true,

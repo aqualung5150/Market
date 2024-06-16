@@ -60,16 +60,16 @@ export class ChatGateway
 
       const data: SocketChannelData = {
         id: channel.id,
-        lastMessage: channel.messages[0].body,
-        lastMessageDate: channel.messages[0].createdAt.toString(),
-        read: channel.messages[0].read,
+        lastMessage: channel.messages[0]?.body,
+        lastMessageDate: channel.messages[0]?.createdAt?.toString(),
+        read: channel.messages[0]?.read,
         users: users,
       };
 
       payload.push(data);
     });
 
-    client.emit('getChannelsRes', payload);
+    client.emit('getChannelsRes', { channels: payload });
   }
 
   @SubscribeMessage('getMessagesReq')
@@ -88,6 +88,7 @@ export class ChatGateway
     const users = await this.chatService.getUsersByChannelId(channelId);
 
     const message: SocketMessageData = {
+      id: newMessage.id,
       body: newMessage.body,
       read: newMessage.read,
       createdAt: newMessage.createdAt.toString(),
