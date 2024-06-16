@@ -9,7 +9,12 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Namespace } from 'socket.io';
-import { ChatSocket } from 'src/@types/socket';
+import {
+  ChatSocket,
+  SocketChannelData,
+  SocketMessageData,
+  SocketUserData,
+} from 'src/@types/socket';
 import { ChatService } from './chat.service';
 
 @UsePipes(
@@ -45,7 +50,26 @@ export class ChatGateway
   @SubscribeMessage('getChannelsReq')
   async handleGetChannelsReq(client: ChatSocket) {
     const channels = await this.chatService.getChannelsByUserId(client.userId);
-    client.emit('getChannelsRes', { channels: channels });
+
+    const payload: SocketChannelData[] = [];
+    channels.map((channel) => {
+      const users: SocketUserData[] = [];
+      channel.users.map((user) => {
+        users.push(user.user);
+      });
+
+      const data: SocketChannelData = {
+        id: channel.id,
+        lastMessage: channel.messages[0].body,
+        lastMessageDate: channel.messages[0].createdAt.toString(),
+        read: channel.messages[0].read,
+        users: users,
+      };
+
+      payload.push(data);
+    });
+
+    client.emit('getChannelsRes', payload);
   }
 
   @SubscribeMessage('getMessagesReq')
@@ -56,12 +80,24 @@ export class ChatGateway
 
   @SubscribeMessage('sendMessageReq')
   async handleSendMessageReq(client: ChatSocket, { body, channelId }) {
-    const message = await this.chatService.createMessage(
+    const newMessage = await this.chatService.createMessage(
       body,
       client.userId,
       channelId,
     );
     const users = await this.chatService.getUsersByChannelId(channelId);
+
+    const message: SocketMessageData = {
+      body: newMessage.body,
+      read: newMessage.read,
+      createdAt: newMessage.createdAt.toString(),
+      channelId: newMessage.channelId,
+      sender: {
+        id: newMessage.sender.id,
+        nickname: newMessage.sender.nickname,
+      },
+    };
+
     users.map((user) => {
       this.io
         .to(user.id.toString())

@@ -18,7 +18,7 @@ interface SocketUserData {
 }
 
 interface SocketMessageData {
-  id: number;
+  // id: number;
   body: string;
   read: boolean;
   createdAt: string;

@@ -85,6 +85,7 @@ export class ChatService {
             createdAt: 'desc',
           },
           select: {
+            // id: true,
             body: true,
             createdAt: true,
             read: true,
@@ -121,7 +122,18 @@ export class ChatService {
 
   async getChannelByChannelId(channelId) {
     const channel = await this.prisma.channel.findUnique({
-      include: {
+      select: {
+        id: true,
+        messages: {
+          orderBy: {
+            createdAt: 'desc',
+          },
+          select: {
+            body: true,
+            createdAt: true,
+            read: true,
+          },
+        },
         users: {
           select: {
             user: {
@@ -143,12 +155,9 @@ export class ChatService {
 
   async getUsersByChannelId(channelId) {
     const users = await this.prisma.user.findMany({
-      include: {
-        channels: {
-          include: {
-            channel: true,
-          },
-        },
+      select: {
+        id: true,
+        nickname: true,
       },
       where: {
         channels: {
@@ -164,14 +173,24 @@ export class ChatService {
 
   async getMessagesByChannelId(channelId) {
     const messages = await this.prisma.message.findMany({
-      include: {
-        sender: true,
+      select: {
+        // id: true,
+        body: true,
+        read: true,
+        createdAt: true,
+        channelId: true,
+        sender: {
+          select: {
+            id: true,
+            nickname: true,
+          },
+        },
       },
       where: {
         channelId: channelId,
       },
       orderBy: {
-        createdAt: 'desc',
+        createdAt: 'asc',
       },
     });
 
