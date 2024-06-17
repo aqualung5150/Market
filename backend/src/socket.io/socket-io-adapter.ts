@@ -27,31 +27,32 @@ export class SocketIOAdapter extends IoAdapter {
 
 const createJwtMiddleware =
   (jwtService: JwtService, logger: Logger) => (socket: ChatSocket, next) => {
-    // const cookief: string = socket.request.headers.cookie;
+    const cookief: string = socket.request.headers.cookie;
 
-    // if (!cookief) return;
-    // const cookies = cookief.split('; ').reduce((prev, current) => {
-    //   const [name, value] = current.split('=');
-    //   prev[name] = value;
-    //   return prev;
-    // }, {}) as ReqCookies;
+    if (!cookief) return;
+    const cookies = cookief.split('; ').reduce((prev, current) => {
+      const [name, value] = current.split('=');
+      prev[name] = value;
+      return prev;
+    }, {}) as ReqCookies;
 
-    // const token = cookies.access_token;
-    // if (!token) {
-    //   return;
-    // }
+    const token = cookies.access_token;
+    if (!token) {
+      return;
+    }
 
     try {
-      // if (!token) {
-      //   throw new Error();
-      // }
-      // const payload = jwtService.verify(token, {
-      //   secret: process.env.JWT_ACCESS_TOKEN_SECRET,
-      // });
-      // socket.userId = payload.id;
+      if (!token) {
+        throw new Error();
+      }
+      const payload = jwtService.verify(token, {
+        secret: process.env.JWT_ACCESS_TOKEN_SECRET,
+      });
+      socket.userId = payload.id;
 
-      const id = socket.handshake.query.id as string;
-      socket.userId = parseInt(id);
+      //test
+      // const id = socket.handshake.query.id as string;
+      // socket.userId = parseInt(id);
       next();
     } catch {
       logger.debug('FORBIDDEN');

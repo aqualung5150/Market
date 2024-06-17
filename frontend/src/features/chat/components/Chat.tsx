@@ -10,8 +10,9 @@ import { SocketChannelData, SocketMessageData } from "../../../@types/chat";
 import Message from "./Message";
 import Channels from "./Channels";
 import ChatRoom from "./ChatRoom";
+import EmptyRoom from "./EmptyRoom";
 
-const Chat = () => {
+const Chat = ({ initToUserId = 0 }: any) => {
   const [selectedChannelId, setSelectedChannelId] = useState(0);
   const [socket, setSocket] = useState<Socket | null>(null);
   // const [channels, setChannels] = useState<SocketChannelData[]>([]);
@@ -55,15 +56,20 @@ const Chat = () => {
     // 채널리스트
     // connection.emit("getChannelsReq", { userId: user.id });
 
+    if (initToUserId) {
+      connection.emit("createChannelReq", { toUserId: initToUserId });
+    }
+
+    connection.on("createChannelRes", ({ channelId }) => {
+      setSelectedChannelId(channelId);
+    });
+
     setSocket(connection);
+
+    return () => {
+      connection.off("createChannelRes");
+    };
   }, []);
-
-  useEffect(() => {
-    if (selectedChannelId <= 0) return;
-
-    // 선택한 채널의 메세지를 불러옴
-    socket?.emit("getMessagesReq", { channelId: selectedChannelId });
-  }, [selectedChannelId]);
 
   return (
     <SocketContext.Provider value={{ chatSocket: socket }}>
@@ -75,14 +81,6 @@ const Chat = () => {
             // channels={channels}
             setSelectedChannelId={setSelectedChannelId}
           />
-          {/* <ul>
-            {channels.map((channel) => (
-              <Channel
-                {...channel}
-                setSelectedChannelId={setSelectedChannelId}
-              />
-            ))}
-          </ul> */}
         </div>
         <div className="body">
           {selectedChannelId ? (
@@ -93,15 +91,9 @@ const Chat = () => {
                 userId={user.id}
                 selectedChannelId={selectedChannelId}
               />
-              {/* <ul>
-                {messages.map((message: SocketMessageData) => (
-                  <Message key={message.id} {...message} userId={user.id} />
-                ))}
-              </ul>
-              <InputField socket={socket} channelId={selectedChannelId} /> */}
             </div>
           ) : (
-            <h1>No Channel Selected</h1>
+            <EmptyRoom socket={socket} />
           )}
         </div>
       </div>

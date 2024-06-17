@@ -20,7 +20,7 @@ const useOauthCallback = () => {
       .then((res) => {
         console.log("useOauthCallback");
         dispatch(setUser(res.data));
-        navigate(-1);
+        navigate("/");
       })
       .catch((err) => {
         navigate(-1);
