@@ -69,6 +69,12 @@ export class ChatGateway
       payload.push(data);
     });
 
+    payload.sort((a, b) => {
+      if (a.lastMessageDate < b.lastMessageDate) return 1;
+      else if (a.lastMessageDate > b.lastMessageDate) return -1;
+      else return 0;
+    });
+
     client.emit('getChannelsRes', { channels: payload });
   }
 
@@ -108,6 +114,7 @@ export class ChatGateway
 
   @SubscribeMessage('createChannelReq')
   async handleNewChannelReq(client: ChatSocket, { toUserId }) {
+    this.logger.debug('createChannelReq');
     /*
     const channel = await createChannel();
 
@@ -169,8 +176,8 @@ export class ChatGateway
   }
 
   @SubscribeMessage('deleteChannelReq')
-  async handleDeleteChannelReq(client: ChatSocket) {
+  async handleDeleteChannelReq(client: ChatSocket, { channelId }) {
     // todo
-    this.logger.debug('deleteChannelReq');
+    this.logger.debug('deleteChannelReq ' + channelId);
   }
 }

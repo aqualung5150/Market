@@ -9,7 +9,7 @@ import { updateUser } from "../features/user/userSlice";
 import chatSocket from "../features/chat/chatSocket";
 import { Socket } from "socket.io-client";
 import { SocketContext } from "../context/SocketContext";
-import { SocketContextProps } from "../@types/context";
+import { SocketContextProps } from "../@types/context.d";
 import useChatSocket from "../features/chat/hooks/useChatSocket";
 import useAuthCheck from "../features/auth/hooks/useAuthCheck";
 

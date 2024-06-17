@@ -8,5 +8,5 @@ interface ConnectionContextProps {
 }
 
 interface SocketContextProps {
-  chatSocket: Socket | null;
+  socket: Socket | null;
 }

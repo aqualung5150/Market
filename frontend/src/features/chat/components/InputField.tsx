@@ -1,35 +1,21 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import Button from "../../../components/Button";
-import { InputFieldProps } from "../../../@types/chat";
 import Input from "../../../components/Input";
+import { SocketContext } from "../../../context/SocketContext";
+import { InputFieldProps } from "../../../@types/chat";
 
-const InputField = ({
-  socket,
-  channelId,
-  setCreated,
-  toUserId,
-  type,
-}: InputFieldProps) => {
+const InputField = ({ channelId }: InputFieldProps) => {
   const [value, setValue] = useState<string>("");
+  const socket = useContext(SocketContext).socket;
 
   const sendMessage = useCallback(
     (message: string, channelId: number) => {
       console.log("sendMessageReq", message);
       socket?.emit("sendMessageReq", {
-        body: message, // useCallback에서 value가 적절히 들어가는가
+        body: message,
         channelId: channelId,
       });
       setValue("");
-    },
-    [socket]
-  );
-
-  const createChannel = useCallback(
-    (message: string, toUserId: number) => {
-      socket?.emit("createChannelReq", {
-        body: message,
-        toUserId: toUserId,
-      });
     },
     [socket]
   );
@@ -44,23 +30,13 @@ const InputField = ({
             setValue(e.target.value);
           }}
           onEnter={() => {
-            if (type === "send" && channelId) {
-              sendMessage(value, channelId);
-            } else if (type === "create" && toUserId && setCreated) {
-              setCreated(true);
-              createChannel(value, toUserId);
-            }
+            sendMessage(value, channelId);
           }}
         />
         <Button
           text="전송"
           onClick={() => {
-            if (type === "send" && channelId) {
-              sendMessage(value, channelId);
-            } else if (type === "create" && toUserId && setCreated) {
-              setCreated(true);
-              createChannel(value, toUserId);
-            }
+            sendMessage(value, channelId);
           }}
         />
       </div>

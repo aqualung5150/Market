@@ -1,4 +1,3 @@
-import React from "react";
 import { ChannelProps } from "../../../@types/chat";
 
 const Channel = ({

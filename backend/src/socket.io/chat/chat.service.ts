@@ -113,9 +113,11 @@ export class ChatService {
     });
 
     // sort by lasted message
-    channels.sort(function (a, b) {
-      if (a.messages[0]?.createdAt > b.messages[0]?.createdAt) return -1;
-    });
+    // channels.sort((a, b) => {
+    //   if (a.messages[0]?.createdAt < b.messages[0]?.createdAt) return 1;
+    //   else if (a.messages[0]?.createdAt > b.messages[0]?.createdAt) return -1;
+    //   else return 0;
+    // });
 
     return channels;
   }

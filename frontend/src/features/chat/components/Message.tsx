@@ -1,4 +1,5 @@
-import { MessageProps, SocketMessageData } from "../../../@types/chat";
+import { useEffect } from "react";
+import { MessageProps } from "../../../@types/chat";
 
 const Message = ({
   id,
@@ -9,6 +10,9 @@ const Message = ({
   sender,
   userId,
 }: MessageProps) => {
+  useEffect(() => {
+    console.log("message created");
+  }, []);
   return (
     <li>
       <h2>{body}</h2>

@@ -20,17 +20,12 @@ const useConnect = () => {
         await axiosInstance.post("auth/check");
         console.log("연결시도: " + user.id);
 
-        setSocket(
-          io(`${process.env.REACT_APP_BASE_URL}/chat`, {
-            query: { nickname: user.nickname },
-            transports: ["websocket"],
-          })
-        );
-
-        // chatSocket.connectSocket({ nickname: user.nickname });
-      } catch (err) {
-        // dispatch(resetUser());
-      }
+        const connection = io(`${process.env.REACT_APP_BASE_URL}/chat`, {
+          query: { nickname: user.nickname },
+          transports: ["websocket"],
+        });
+        setSocket(connection);
+      } catch (err) {}
     };
 
     initialConnect();
