@@ -61,7 +61,7 @@ export class ChatGateway
       const data: SocketChannelData = {
         id: channel.id,
         lastMessage: channel.messages[0]?.body,
-        lastMessageDate: channel.messages[0]?.createdAt?.toString(),
+        lastMessageDate: channel.messages[0]?.createdAt,
         read: channel.messages[0]?.read,
         users: users,
       };
@@ -97,7 +97,7 @@ export class ChatGateway
       id: newMessage.id,
       body: newMessage.body,
       read: newMessage.read,
-      createdAt: newMessage.createdAt.toString(),
+      createdAt: newMessage.createdAt,
       channelId: newMessage.channelId,
       sender: {
         id: newMessage.sender.id,
@@ -127,7 +127,7 @@ export class ChatGateway
     const data: SocketChannelData = {
       id: channel.id,
       lastMessage: channel.messages[0]?.body,
-      lastMessageDate: channel.messages[0]?.createdAt?.toString(),
+      lastMessageDate: channel.messages[0]?.createdAt,
       read: channel.messages[0]?.read,
       users: users,
     };

@@ -18,7 +18,7 @@ interface SocketMessageData {
   id: number;
   body: string;
   read: boolean;
-  createdAt: string;
+  createdAt: Date;
   channelId: number;
   sender: SocketUserData;
 }
@@ -26,7 +26,7 @@ interface SocketMessageData {
 interface SocketChannelData {
   id: number;
   lastMessage: string;
-  lastMessageDate: string;
+  lastMessageDate: Date;
   read: boolean;
   users: SocketUserData[];
 }
