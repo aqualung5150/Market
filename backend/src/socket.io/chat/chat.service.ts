@@ -198,4 +198,24 @@ export class ChatService {
 
     return messages;
   }
+
+  async deleteChannelByChannelId(channelId) {
+    await this.prisma.channelsOnUsers.deleteMany({
+      where: {
+        channelId: channelId,
+      },
+    });
+
+    await this.prisma.channel.delete({
+      where: {
+        id: channelId,
+      },
+    });
+
+    await this.prisma.message.deleteMany({
+      where: {
+        channelId: channelId,
+      },
+    });
+  }
 }

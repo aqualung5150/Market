@@ -10,7 +10,7 @@ import chatSocket from "../features/chat/chatSocket";
 import { Socket } from "socket.io-client";
 import { SocketContext } from "../context/SocketContext";
 import { SocketContextProps } from "../@types/context.d";
-import useChatSocket from "../features/chat/hooks/useChatSocket";
+// import useChatSocket from "../features/chat/hooks/useChatSocket";
 import useAuthCheck from "../features/auth/hooks/useAuthCheck";
 
 const Foo = () => {
@@ -25,7 +25,7 @@ const Foo = () => {
   // const socket = chatSocket.getSocket();
   const dispatch = useDispatch();
 
-  const chatSocket = useChatSocket();
+  // const chatSocket = useChatSocket();
 
   // socket?.on("hello", (payload: string) => {
   //   console.log(payload);
@@ -58,13 +58,13 @@ const Foo = () => {
       {user.id && <h1>login!</h1>}
       <h2>{user.name}</h2>
       <Button text="test" />
-      <Button
+      {/* <Button
         text="socket.emit(it's me)"
         onClick={() => {
           console.log("connected: ", chatSocket?.connected);
           chatSocket?.emit("hello", "it's me");
         }}
-      />
+      /> */}
       <Button
         text="승준"
         onClick={() => {

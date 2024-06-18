@@ -4,7 +4,7 @@ import Modal from "../components/Modal";
 import { axiosInstance } from "../data/axiosInstance";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
-import useChatSocket from "../features/chat/hooks/useChatSocket";
+// import useChatSocket from "../features/chat/hooks/useChatSocket";
 import Button from "../components/Button";
 import { User } from "../@types/user";
 
@@ -25,7 +25,7 @@ const Dummy = () => {
       .catch((err) => console.log("리프레시토큰 만료 - " + err.message));
   }, []);
 
-  const chatSocket = useChatSocket();
+  // const chatSocket = useChatSocket();
 
   return (
     <div>
@@ -35,12 +35,12 @@ const Dummy = () => {
         <Modal children={<Login />} open={true} />
       )}
 
-      <Button
+      {/* <Button
         text="emit"
         onClick={() => {
           chatSocket?.emit("hello", "it's me");
         }}
-      />
+      /> */}
     </div>
   );
 };
