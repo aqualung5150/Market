@@ -1,7 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { connect } from 'http2';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class ChatService {
@@ -112,13 +110,6 @@ export class ChatService {
       },
     });
 
-    // sort by lasted message
-    // channels.sort((a, b) => {
-    //   if (a.messages[0]?.createdAt < b.messages[0]?.createdAt) return 1;
-    //   else if (a.messages[0]?.createdAt > b.messages[0]?.createdAt) return -1;
-    //   else return 0;
-    // });
-
     return channels;
   }
 
@@ -200,21 +191,9 @@ export class ChatService {
   }
 
   async deleteChannelByChannelId(channelId) {
-    await this.prisma.channelsOnUsers.deleteMany({
-      where: {
-        channelId: channelId,
-      },
-    });
-
     await this.prisma.channel.delete({
       where: {
         id: channelId,
-      },
-    });
-
-    await this.prisma.message.deleteMany({
-      where: {
-        channelId: channelId,
       },
     });
   }

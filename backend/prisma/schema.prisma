@@ -39,7 +39,7 @@ model Message {
   body String
   read Boolean @default(false)
   createdAt DateTime @default(now())
-  channel Channel @relation(fields: [channelId], references: [id])
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
   channelId Int
   sender User @relation(fields: [senderId], references: [id])
   senderId Int
@@ -49,7 +49,7 @@ model ChannelsOnUsers {
   userId Int
   channelId Int
   user User @relation(fields: [userId], references: [id])
-  channel Channel @relation(fields: [channelId], references: [id])
+  channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
 
   @@id([userId, channelId])
 }
