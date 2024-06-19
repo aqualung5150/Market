@@ -24,7 +24,7 @@ const Message = ({
     <div className="flex mb-2">
       <div className="rounded py-2 px-3 bg-stone-50 max-w-full">
         <p className="text-sm font-bold">{sender.nickname}</p>
-        <p className="text-sm mt-1">{body}</p>
+        <p className="break-words text-sm mt-1">{body}</p>
         <p className="text-right text-gray-500 text-xs ml-1">{time}</p>
       </div>
     </div>
@@ -32,7 +32,7 @@ const Message = ({
     <div className="flex justify-end mb-2">
       <div className="rounded py-2 px-3 bg-amber-100">
         <p className="text-sm font-bold">{sender.nickname}</p>
-        <p className="text-sm mt-1">{body}</p>
+        <p className="break-words text-sm mt-1">{body}</p>
         <p className="text-right text-gray-500 text-xs ml-1">{time}</p>
       </div>
     </div>
