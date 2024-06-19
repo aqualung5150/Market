@@ -32,6 +32,7 @@ interface SocketChannelData {
 }
 
 interface ChannelProps extends SocketChannelData {
+  selectedChannelId: number;
   setSelectedChannelId: React.Dispatch<SetStateAction<number>>;
 }
 

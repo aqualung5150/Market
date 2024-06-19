@@ -21,21 +21,15 @@ const InputField = ({ channelId }: InputFieldProps) => {
   );
 
   return (
-    <div className="container">
-      <div>
+    <div className="bg-gray-50 px-4 py-4 flex items-center">
+      <div className="flex-1 mx-4">
         <Input
           value={value}
-          placeholder="메세지를 입력하세요"
+          placeholder="메세지를 입력하세요."
           onChange={(e) => {
             setValue(e.target.value);
           }}
           onEnter={() => {
-            sendMessage(value, channelId);
-          }}
-        />
-        <Button
-          text="전송"
-          onClick={() => {
             sendMessage(value, channelId);
           }}
         />

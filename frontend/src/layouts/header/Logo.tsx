@@ -4,7 +4,8 @@ import styles from "./Header.module.css";
 
 const Logo = () => {
   return (
-    <div className={styles.logo}>
+    // <div className={styles.logo}>
+    <div className="flex justify-center items-center">
       <Link to="/">
         <img src={homeButton} />
       </Link>

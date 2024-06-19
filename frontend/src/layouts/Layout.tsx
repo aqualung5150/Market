@@ -5,9 +5,11 @@ import styles from "./Layout.module.css";
 
 const Layout = ({ children }: LayoutProps) => {
   return (
-    <div className={styles.layout}>
+    <div className="flex flex-col w-full h-screen">
       <Header />
-      <div className={styles.main}>{children || <Outlet />}</div>
+      <div className="flex flex-row flex-1 justify-between bg-white">
+        {children || <Outlet />}
+      </div>
       <Footer />
     </div>
   );

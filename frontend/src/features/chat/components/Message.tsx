@@ -20,13 +20,26 @@ const Message = ({
   }).format(timestamp);
   if (date) time = `${date} ${time}`;
 
-  return (
-    <li>
-      <h2>{body}</h2>
-      {userId === sender.id ? <h3>me</h3> : <h3>{sender.nickname}</h3>}
-      <h3>{time}</h3>
-    </li>
+  return userId === sender.id ? (
+    <div className="flex mb-2">
+      <div className="rounded py-2 px-3 bg-stone-50 max-w-full">
+        <div className="flex">
+          <p className="text-sm font-semibold">{sender.nickname}</p>
+          <p className="text-xs ml-1">{time}</p>
+        </div>
+        <p className="text-sm mt-1">{body}</p>
+      </div>
+    </div>
+  ) : (
+    <div className="flex justify-end mb-2">
+      <div className="rounded py-2 px-3 bg-amber-100">
+        <div className="flex">
+          <p className="text-sm font-semibold">{sender.nickname}</p>
+          <p className="text-xs ml-1">{time}</p>
+        </div>
+        <p className="text-sm mt-1">{body}</p>
+      </div>
+    </div>
   );
 };
-
 export default Message;

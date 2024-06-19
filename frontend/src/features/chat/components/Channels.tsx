@@ -1,7 +1,9 @@
 import { ChannelsProps } from "../../../@types/chat";
+import styles from "./Channels.module.css";
 
 const Channels = ({ children }: ChannelsProps) => {
-  return <ul className="channels">{children}</ul>;
+  // <div className={styles.container}>
+  return <div>{children}</div>;
 };
 
 export default Channels;

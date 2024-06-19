@@ -8,6 +8,7 @@ const Input = ({ value, placeholder, onChange, onEnter }: InputProps) => {
   };
   return (
     <input
+      className="w-full border rounded px-2 py-2"
       value={value}
       placeholder={placeholder}
       onChange={onChange}

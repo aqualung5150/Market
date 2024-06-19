@@ -15,7 +15,8 @@ const LoginButton = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className={styles.login}>
+    // <div className={styles.login}>
+    <div className="flex justify-center items-center">
       {userId ? (
         <div>
           <Button
