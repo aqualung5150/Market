@@ -10,9 +10,9 @@ const ChatRoom = ({ children, selectedChannelId }: ChatRoomProps) => {
       </div>
       {/* Body */}
       <div className="flex-1 bg-stone-200">
-        <div className="py-2 px-3">{children}</div>
-        <InputField channelId={selectedChannelId} />
+        <div className="py-2 px-3 ">{children}</div>
       </div>
+      <InputField channelId={selectedChannelId} />
     </div>
   );
 };
