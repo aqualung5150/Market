@@ -80,20 +80,37 @@ const useChat = (initToUserId: number) => {
       if (message.channelId === selectedChannelId) {
         console.log("addNewMessage");
         isEmpty = false;
+        if (message.sender.id !== user.id) {
+          socket.emit("readMessageReq", { channelId: selectedChannelId });
+        }
         setMessagesData((prev) => prev.concat(message));
+      }
+    };
+
+    const readMessage = (channelId: number) => {
+      if (channelId === selectedChannelId) {
+        setMessagesData((prev) => {
+          prev.map((message: SocketMessageData) => {
+            if (message.sender.id === user.id) message.read = true;
+          });
+          return [...prev];
+        });
       }
     };
 
     // Emit
     socket.emit("getMessagesReq", { channelId: selectedChannelId });
+    socket.emit("readMessageReq", { channelId: selectedChannelId });
 
     // Listen
     socket.on("getMessagesRes", setMessages);
     socket.on("sendMessageRes", addNewMessage);
+    socket.on("readMessageRes", readMessage);
 
     return () => {
       socket.off("getMessagesRes", setMessages);
       socket.off("sendMessageRes", addNewMessage);
+      socket.off("readMessageRes", readMessage);
 
       // Delete Empty Channel
       if (selectedChannelId && isEmpty)
@@ -102,6 +119,7 @@ const useChat = (initToUserId: number) => {
   }, [socket, selectedChannelId]);
 
   return {
+    socket,
     user,
     selectedChannelId,
     setSelectedChannelId,

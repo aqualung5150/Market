@@ -13,6 +13,7 @@ import myImg from "../../../assets/default_thumbnail.png";
 
 const Chat = ({ initToUserId = 0 }: ChatProps) => {
   const {
+    socket,
     user,
     selectedChannelId,
     setSelectedChannelId,
@@ -33,14 +34,37 @@ const Chat = ({ initToUserId = 0 }: ChatProps) => {
           <div className="flex">menu</div>
         </div>
         <div className="bg-grey-lighter flex-1 overflow-auto">
-          {channelsData?.map((channelData: SocketChannelData) => (
-            <Channel
-              key={channelData.id}
-              {...channelData}
-              selectedChannelId={selectedChannelId}
-              setSelectedChannelId={setSelectedChannelId}
-            />
-          ))}
+          {channelsData?.map((channelData: SocketChannelData) => {
+            if (
+              selectedChannelId === channelData.id &&
+              user.id !== channelData.senderId
+            )
+              channelData.read = true;
+            return (
+              <div
+                key={channelData.id}
+                className={`border-b border-grey-lighter bg-white px-3 flex items-center cursor-pointer ${
+                  selectedChannelId === channelData.id
+                    ? "bg-gray-200"
+                    : "hover:bg-gray-100"
+                }`}
+                onClick={() => {
+                  setSelectedChannelId(channelData.id);
+                  // socket?.emit("readMessageReq", {
+                  //   channelId: channelData.id,
+                  // });
+                }}
+              >
+                <Channel
+                  // key={channelData.id}
+                  {...channelData}
+                  userId={user.id}
+                  // selectedChannelId={selectedChannelId}
+                  // setSelectedChannelId={setSelectedChannelId}
+                />
+              </div>
+            );
+          })}
         </div>
       </div>
       {selectedChannelId ? (

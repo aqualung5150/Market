@@ -33,8 +33,9 @@ interface SocketChannelData {
 }
 
 interface ChannelProps extends SocketChannelData {
-  selectedChannelId: number;
-  setSelectedChannelId: React.Dispatch<SetStateAction<number>>;
+  userId: number | null;
+  // selectedChannelId: number;
+  // setSelectedChannelId: React.Dispatch<SetStateAction<number>>;
 }
 
 interface MessageProps extends SocketMessageData {

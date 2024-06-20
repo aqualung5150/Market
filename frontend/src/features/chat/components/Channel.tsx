@@ -1,34 +1,43 @@
-import { ChannelProps } from "../../../@types/chat";
+import { ChannelProps, SocketChannelData } from "../../../@types/chat";
 import timeAgo from "../../../utils/timeAgo";
 import styles from "./Channel.module.css";
 import profileImg from "../../../assets/ym41716351689954-640-0.jpg";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 const Channel = ({
   id,
   lastMessage,
   lastMessageDate,
   read,
+  senderId,
   users,
-  selectedChannelId,
-  setSelectedChannelId,
-}: ChannelProps) => {
-  console.log(lastMessage);
+  userId,
+}: // selectedChannelId,
+// setSelectedChannelId,
+ChannelProps) => {
+  // const [noti, setNoti] = useState(!read);
+
   if (!lastMessage) return null;
+
   const timestamp = new Date(lastMessageDate);
   const time = timeAgo(timestamp);
 
-  // todo - read와 senderId에 따른 알림
-
   return (
-    <div
-      className={`border-b border-grey-lighter bg-white px-3 flex items-center cursor-pointer ${
-        selectedChannelId === id ? "bg-gray-200" : "hover:bg-gray-100"
-      }`}
-      onClick={() => {
-        setSelectedChannelId(id);
-      }}
-    >
+    // <div
+    //   className={`border-b border-grey-lighter bg-white px-3 flex items-center cursor-pointer ${
+    //     selectedChannelId === id ? "bg-gray-200" : "hover:bg-gray-100"
+    //   }`}
+    //   onClick={() => {
+    //     setSelectedChannelId(id);
+    //     setNoti(false);
+    //   }}
+    // >
+    <>
       <div>
+        {senderId !== userId && !read && (
+          <p className="absolute left-[50px] bg-red-600 w-[13px] h-[13px] rounded-full" />
+        )}
         <img
           className="h-12 w-12 min-w-12 rounded-full object-cover"
           src={profileImg}
@@ -45,7 +54,8 @@ const Channel = ({
           <span>{lastMessage}</span>
         </div>
       </div>
-    </div>
+    </>
+    // </div>
   );
 };
 

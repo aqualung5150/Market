@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { MessageProps } from "../../../@types/chat";
 import timeAgo from "../../../utils/timeAgo";
 import dateAgo from "../../../utils/dateAgo";
@@ -22,6 +22,9 @@ const Message = ({
 
   return userId === sender.id ? (
     <div className="flex justify-end mb-2">
+      <p className="text-right text-gray-500 text-xs mr-1">
+        {read ? "읽음" : "안읽음"}
+      </p>
       <div className="rounded py-2 px-3 bg-amber-100 max-w-full">
         <p className="text-sm font-bold">{sender.nickname}</p>
         <p className="break-words text-sm mt-1">{body}</p>
@@ -38,4 +41,5 @@ const Message = ({
     </div>
   );
 };
-export default Message;
+// export default Message;
+export default React.memo(Message);
