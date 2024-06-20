@@ -63,6 +63,7 @@ export class ChatGateway
         lastMessage: channel.messages[0]?.body,
         lastMessageDate: channel.messages[0]?.createdAt,
         read: channel.messages[0]?.read,
+        senderId: channel.messages[0]?.sender.id,
         users: users,
       };
 
@@ -93,42 +94,25 @@ export class ChatGateway
     );
     const users = await this.chatService.getUsersByChannelId(channelId);
 
-    const message: SocketMessageData = {
-      id: newMessage.id,
-      body: newMessage.body,
-      read: newMessage.read,
-      createdAt: newMessage.createdAt,
-      channelId: newMessage.channelId,
-      sender: {
-        id: newMessage.sender.id,
-        nickname: newMessage.sender.nickname,
-      },
-    };
-
     users.map((user) => {
-      this.io.to(user.id.toString()).emit('sendMessageRes', message);
+      this.io.to(user.id.toString()).emit('sendMessageRes', newMessage);
     });
   }
 
   @SubscribeMessage('createChannelReq')
   async handleNewChannelReq(client: ChatSocket, { toUserId }) {
-    const newChannel = await this.chatService.createChannel(
+    const channel = await this.chatService.createChannel(
       client.userId,
       toUserId,
     );
-
-    const channel = await this.chatService.getChannelByChannelId(newChannel.id);
 
     const users: SocketUserData[] = [];
     channel.users.map((user) => {
       users.push(user.user);
     });
 
-    const data: SocketChannelData = {
+    const data = {
       id: channel.id,
-      lastMessage: channel.messages[0]?.body,
-      lastMessageDate: channel.messages[0]?.createdAt,
-      read: channel.messages[0]?.read,
       users: users,
     };
 
@@ -140,6 +124,7 @@ export class ChatGateway
 
   @SubscribeMessage('deleteChannelReq')
   async handleDeleteChannelReq(client: ChatSocket, { channelId }) {
+    this.logger.debug('deleteChannelReq ' + channelId);
     const messages = await this.chatService.getMessagesByChannelId(channelId);
     if (messages.length > 0) return;
     await this.chatService.deleteChannelByChannelId(channelId);

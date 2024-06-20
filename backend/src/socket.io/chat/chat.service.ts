@@ -47,7 +47,12 @@ export class ChatService {
 
   async createMessage(body: string, senderId, channelId) {
     const message = await this.prisma.message.create({
-      include: {
+      select: {
+        id: true,
+        body: true,
+        read: true,
+        createdAt: true,
+        channelId: true,
         sender: {
           select: {
             id: true,
@@ -83,10 +88,15 @@ export class ChatService {
             createdAt: 'desc',
           },
           select: {
-            // id: true,
+            id: true,
             body: true,
             createdAt: true,
             read: true,
+            sender: {
+              select: {
+                id: true,
+              },
+            },
           },
           take: 1,
         },
@@ -122,10 +132,17 @@ export class ChatService {
             createdAt: 'desc',
           },
           select: {
+            id: true,
             body: true,
             createdAt: true,
             read: true,
+            sender: {
+              select: {
+                id: true,
+              },
+            },
           },
+          take: 1,
         },
         users: {
           select: {

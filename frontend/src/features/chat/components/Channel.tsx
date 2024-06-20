@@ -12,8 +12,12 @@ const Channel = ({
   selectedChannelId,
   setSelectedChannelId,
 }: ChannelProps) => {
+  console.log(lastMessage);
+  if (!lastMessage) return null;
   const timestamp = new Date(lastMessageDate);
   const time = timeAgo(timestamp);
+
+  // todo - read와 senderId에 따른 알림
 
   return (
     <div

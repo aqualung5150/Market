@@ -28,6 +28,7 @@ interface SocketChannelData {
   lastMessage: string;
   lastMessageDate: Date;
   read: boolean;
+  senderId: number;
   users: SocketUserData[];
 }
 
