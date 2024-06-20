@@ -77,11 +77,11 @@ const useChat = (initToUserId: number) => {
     };
 
     const addNewMessage = (message: SocketMessageData) => {
-      console.log("addNewMessage");
-      isEmpty = false;
-
-      if (message.channelId === selectedChannelId)
+      if (message.channelId === selectedChannelId) {
+        console.log("addNewMessage");
+        isEmpty = false;
         setMessagesData((prev) => prev.concat(message));
+      }
     };
 
     // Emit
