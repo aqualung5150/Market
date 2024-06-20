@@ -214,4 +214,18 @@ export class ChatService {
       },
     });
   }
+
+  async readMessages(userId, channelId) {
+    await this.prisma.message.updateMany({
+      where: {
+        channelId: channelId,
+        NOT: {
+          senderId: userId,
+        },
+      },
+      data: {
+        read: true,
+      },
+    });
+  }
 }

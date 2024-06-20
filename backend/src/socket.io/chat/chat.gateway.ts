@@ -48,7 +48,7 @@ export class ChatGateway
   }
 
   @SubscribeMessage('getChannelsReq')
-  async handleGetChannelsReq(client: ChatSocket) {
+  async handleGetChannels(client: ChatSocket) {
     const channels = await this.chatService.getChannelsByUserId(client.userId);
 
     const payload: SocketChannelData[] = [];
@@ -80,13 +80,13 @@ export class ChatGateway
   }
 
   @SubscribeMessage('getMessagesReq')
-  async handleGetMessagesReq(client: ChatSocket, { channelId }) {
+  async handleGetMessages(client: ChatSocket, { channelId }) {
     const messages = await this.chatService.getMessagesByChannelId(channelId);
     client.emit('getMessagesRes', messages);
   }
 
   @SubscribeMessage('sendMessageReq')
-  async handleSendMessageReq(client: ChatSocket, { body, channelId }) {
+  async handleSendMessage(client: ChatSocket, { body, channelId }) {
     const newMessage = await this.chatService.createMessage(
       body,
       client.userId,
@@ -100,7 +100,7 @@ export class ChatGateway
   }
 
   @SubscribeMessage('createChannelReq')
-  async handleNewChannelReq(client: ChatSocket, { toUserId }) {
+  async handleNewChannel(client: ChatSocket, { toUserId }) {
     const channel = await this.chatService.createChannel(
       client.userId,
       toUserId,
@@ -123,10 +123,16 @@ export class ChatGateway
   }
 
   @SubscribeMessage('deleteChannelReq')
-  async handleDeleteChannelReq(client: ChatSocket, { channelId }) {
+  async handleDeleteChannel(client: ChatSocket, { channelId }) {
     this.logger.debug('deleteChannelReq ' + channelId);
     const messages = await this.chatService.getMessagesByChannelId(channelId);
     if (messages.length > 0) return;
     await this.chatService.deleteChannelByChannelId(channelId);
+  }
+
+  @SubscribeMessage('readMessageReq')
+  async handleReadMessage(client: ChatSocket, { channelId }) {
+    this.logger.debug('readMessageReq');
+    await this.chatService.readMessages(client.userId, channelId);
   }
 }
