@@ -15,6 +15,7 @@ const Channels = ({
       <div className="flex-1 overflow-auto">
         {channelsData?.map((channelData: SocketChannelData) => (
           <div
+            key={channelData.id}
             className={`border-b border-grey-lighter bg-white px-3 flex items-center cursor-pointer ${
               selectedChannelId === channelData.id
                 ? "bg-gray-200"
@@ -25,7 +26,7 @@ const Channels = ({
               channelData.read = true;
             }}
           >
-            <Channel key={channelData.id} {...channelData} userId={userId} />
+            <Channel {...channelData} userId={userId} />
           </div>
         ))}
       </div>
