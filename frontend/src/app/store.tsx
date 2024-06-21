@@ -6,6 +6,7 @@ import {
   createStateSyncMiddleware,
   initMessageListener,
 } from "redux-state-sync";
+import chatSlice from "../features/chat/chatSlice";
 
 // redux-persist
 
@@ -20,6 +21,7 @@ const rootReducer = persistReducer(
   persistConfig,
   combineReducers({
     user: userSlice.reducer,
+    chat: chatSlice.reducer,
   })
 );
 

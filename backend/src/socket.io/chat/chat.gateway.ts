@@ -99,36 +99,36 @@ export class ChatGateway
     });
   }
 
-  @SubscribeMessage('createChannelReq')
-  async handleNewChannel(client: ChatSocket, { toUserId }) {
-    const channel = await this.chatService.createChannel(
-      client.userId,
-      toUserId,
-    );
+  // @SubscribeMessage('createChannelReq')
+  // async handleNewChannel(client: ChatSocket, { toUserId }) {
+  //   const channel = await this.chatService.createChannel(
+  //     client.userId,
+  //     toUserId,
+  //   );
 
-    const users: SocketUserData[] = [];
-    channel.users.map((user) => {
-      users.push(user.user);
-    });
+  //   const users: SocketUserData[] = [];
+  //   channel.users.map((user) => {
+  //     users.push(user.user);
+  //   });
 
-    const data = {
-      id: channel.id,
-      users: users,
-    };
+  //   const data = {
+  //     id: channel.id,
+  //     users: users,
+  //   };
 
-    this.io.to(client.userId.toString()).emit('getChannelRes', data);
-    this.io.to(toUserId.toString()).emit('getChannelRes', data);
+  //   this.io.to(client.userId.toString()).emit('getChannelRes', data);
+  //   this.io.to(toUserId.toString()).emit('getChannelRes', data);
 
-    client.emit('createChannelRes', channel.id);
-  }
+  //   client.emit('createChannelRes', channel.id);
+  // }
 
-  @SubscribeMessage('deleteChannelReq')
-  async handleDeleteChannel(client: ChatSocket, { channelId }) {
-    this.logger.debug('deleteChannelReq ' + channelId);
-    const messages = await this.chatService.getMessagesByChannelId(channelId);
-    if (messages.length > 0) return;
-    await this.chatService.deleteChannelByChannelId(channelId);
-  }
+  // @SubscribeMessage('deleteChannelReq')
+  // async handleDeleteChannel(client: ChatSocket, { channelId }) {
+  //   this.logger.debug('deleteChannelReq ' + channelId);
+  //   const messages = await this.chatService.getMessagesByChannelId(channelId);
+  //   if (messages.length > 0) return;
+  //   await this.chatService.deleteChannelByChannelId(channelId);
+  // }
 
   @SubscribeMessage('readMessageReq')
   async handleReadMessage(client: ChatSocket, { channelId }) {
@@ -138,5 +138,36 @@ export class ChatGateway
     const users = await this.chatService.getUsersByChannelId(channelId);
     const toUser = users.find((user) => user.id !== client.userId);
     this.io.to(toUser.id.toString()).emit('readMessageRes', channelId);
+  }
+
+  @SubscribeMessage('createChannelReq')
+  async handleCreateChannel(client: ChatSocket, { body, toUserId }) {
+    const channel = await this.chatService.createChannel(
+      client.userId,
+      toUserId,
+    );
+    const message = await this.chatService.createMessage(
+      body,
+      client.userId,
+      channel.id,
+    );
+
+    const users: SocketUserData[] = [];
+    channel.users.map((user) => {
+      users.push(user.user);
+    });
+
+    const data: SocketChannelData = {
+      id: channel.id,
+      lastMessage: message.body,
+      lastMessageDate: message.createdAt,
+      read: message.read,
+      senderId: message.sender.id,
+      users: users,
+    };
+
+    this.io.to(client.userId.toString()).emit('getChannelRes', data);
+    this.io.to(toUserId.toString()).emit('getChannelRes', data);
+    client.emit('createChannelRes', channel.id);
   }
 }

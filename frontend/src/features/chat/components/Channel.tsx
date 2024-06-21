@@ -1,9 +1,7 @@
-import { ChannelProps, SocketChannelData } from "../../../@types/chat";
+import { ChannelProps } from "../../../@types/chat";
 import timeAgo from "../../../utils/timeAgo";
-import styles from "./Channel.module.css";
 import profileImg from "../../../assets/ym41716351689954-640-0.jpg";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React from "react";
 
 const Channel = ({
   id,
@@ -13,30 +11,26 @@ const Channel = ({
   senderId,
   users,
   userId,
-}: // selectedChannelId,
-// setSelectedChannelId,
-ChannelProps) => {
-  // const [noti, setNoti] = useState(!read);
-
-  if (!lastMessage) return null;
+}: ChannelProps) => {
+  console.log(
+    "CHANNEL: " +
+      id +
+      " SENDER: " +
+      senderId +
+      " USER: " +
+      userId +
+      " READ: " +
+      read
+  );
 
   const timestamp = new Date(lastMessageDate);
   const time = timeAgo(timestamp);
 
   return (
-    // <div
-    //   className={`border-b border-grey-lighter bg-white px-3 flex items-center cursor-pointer ${
-    //     selectedChannelId === id ? "bg-gray-200" : "hover:bg-gray-100"
-    //   }`}
-    //   onClick={() => {
-    //     setSelectedChannelId(id);
-    //     setNoti(false);
-    //   }}
-    // >
     <>
-      <div>
+      <div className="relative">
         {senderId !== userId && !read && (
-          <p className="absolute left-[50px] bg-red-600 w-[13px] h-[13px] rounded-full" />
+          <p className="absolute left-[35px] bg-rose-600 w-[13px] h-[13px] rounded-full" />
         )}
         <img
           className="h-12 w-12 min-w-12 rounded-full object-cover"
@@ -55,9 +49,7 @@ ChannelProps) => {
         </div>
       </div>
     </>
-    // </div>
   );
 };
 
-export default Channel;
-// export default React.memo(Channel);
+export default React.memo(Channel);

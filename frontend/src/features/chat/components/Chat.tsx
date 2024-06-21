@@ -1,81 +1,57 @@
-import Channel from "./Channel";
-import {
-  ChatProps,
-  SocketChannelData,
-  SocketMessageData,
-} from "../../../@types/chat";
-import Message from "./Message";
-import Channels from "./Channels";
+import { ChatProps } from "../../../@types/chat";
 import ChatRoom from "./ChatRoom";
 import useChat from "../hooks/useChat";
-import styles from "./Chat.module.css";
-import myImg from "../../../assets/default_thumbnail.png";
+import ChatHeader from "./ChatHeader";
+import ChatBody from "./ChatBody";
+import NewChat from "./NewChat";
+import Channels from "./Channels";
+import { useDispatch } from "react-redux";
+import { setOpenChat } from "../chatSlice";
 
 const Chat = ({ initToUserId = 0 }: ChatProps) => {
-  const {
-    socket,
-    user,
-    selectedChannelId,
-    setSelectedChannelId,
-    channelsData,
-    messagesData,
-  } = useChat(initToUserId);
+  const { socket, user, selectedChannelId, setSelectedChannelId } = useChat();
+  const dispatch = useDispatch();
 
   return (
-    <div className="flex border border-grey rounded shadow-lg h-full">
-      <div className="w-1/3 max-w-[420px] border flex flex-col select-none">
-        <div className="py-2 px-3 bg-grey-lighter flex flex-row justify-between items-center border">
-          <div>
-            <img
-              className="min-w-10 w-10 h-10 rounded-full object-cover"
-              src={myImg}
+    <div
+      className="fixed left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center"
+      onClick={() => {
+        dispatch(setOpenChat(false));
+      }}
+    >
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+        }}
+        className="bg-white h-3/4  w-3/4  flex flex-col border border-grey rounded shadow-lg "
+      >
+        <ChatHeader />
+        <ChatBody>
+          <Channels
+            socket={socket}
+            userId={user.id}
+            selectedChannelId={selectedChannelId}
+            setSelectedChannelId={setSelectedChannelId}
+          />
+          {selectedChannelId ? (
+            <ChatRoom
+              socket={socket}
+              userId={user.id}
+              selectedChannelId={selectedChannelId}
             />
-          </div>
-          <div className="flex">menu</div>
-        </div>
-        <div className="bg-grey-lighter flex-1 overflow-auto">
-          {channelsData?.map((channelData: SocketChannelData) => {
-            if (
-              selectedChannelId === channelData.id &&
-              user.id !== channelData.senderId
-            )
-              channelData.read = true;
-            return (
-              <div
-                key={channelData.id}
-                className={`border-b border-grey-lighter bg-white px-3 flex items-center cursor-pointer ${
-                  selectedChannelId === channelData.id
-                    ? "bg-gray-200"
-                    : "hover:bg-gray-100"
-                }`}
-                onClick={() => {
-                  setSelectedChannelId(channelData.id);
-                  // socket?.emit("readMessageReq", {
-                  //   channelId: channelData.id,
-                  // });
-                }}
-              >
-                <Channel
-                  // key={channelData.id}
-                  {...channelData}
-                  userId={user.id}
-                  // selectedChannelId={selectedChannelId}
-                  // setSelectedChannelId={setSelectedChannelId}
-                />
-              </div>
-            );
-          })}
-        </div>
+          ) : (
+            <>
+              {initToUserId ? (
+                <NewChat socket={socket} toUserId={initToUserId} />
+              ) : (
+                <div className="w-2/3 flex justify-center items-center">
+                  no room
+                </div>
+              )}
+            </>
+          )}
+        </ChatBody>
       </div>
-      {selectedChannelId ? (
-        <ChatRoom selectedChannelId={selectedChannelId}>
-          {messagesData?.map((messageData: SocketMessageData) => (
-            <Message key={messageData.id} {...messageData} userId={user.id} />
-          ))}
-        </ChatRoom>
-      ) : (
-        <div className="w-2/3 flex justify-center items-center">no room</div>
-      )}
     </div>
   );
 };

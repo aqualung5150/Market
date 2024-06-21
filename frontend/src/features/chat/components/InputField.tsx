@@ -1,5 +1,4 @@
 import { useCallback, useContext, useState } from "react";
-import Button from "../../../components/Button";
 import Input from "../../../components/Input";
 import { SocketContext } from "../../../context/SocketContext";
 import { InputFieldProps } from "../../../@types/chat";
