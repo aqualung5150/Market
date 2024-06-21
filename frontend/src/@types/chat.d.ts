@@ -68,4 +68,8 @@ interface useChannelsProps {
   selectedChannelId: number;
 }
 
+interface ChatHeaderProps {
+  nickname: string;
+}
+
 interface useChatRoomProps extends useChannelsProps {}
