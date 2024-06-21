@@ -141,11 +141,8 @@ export class ChatGateway
   }
 
   @SubscribeMessage('createChannelReq')
-  async handleCreateChannel(client: ChatSocket, { body, toUserId }) {
-    const channel = await this.chatService.createChannel(
-      client.userId,
-      toUserId,
-    );
+  async handleCreateChannel(client: ChatSocket, { body, sendTo }) {
+    const channel = await this.chatService.createChannel(client.userId, sendTo);
     const message = await this.chatService.createMessage(
       body,
       client.userId,
@@ -167,7 +164,7 @@ export class ChatGateway
     };
 
     this.io.to(client.userId.toString()).emit('getChannelRes', data);
-    this.io.to(toUserId.toString()).emit('getChannelRes', data);
+    this.io.to(sendTo.toString()).emit('getChannelRes', data);
     client.emit('createChannelRes', channel.id);
   }
 }

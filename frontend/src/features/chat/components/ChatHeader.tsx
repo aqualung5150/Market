@@ -6,7 +6,7 @@ import { setOpenChat } from "../chatSlice";
 const ChatHeader = () => {
   const dispatch = useDispatch();
   return (
-    <div className="py-2 px-3 bg-gray-100 flex flex-row justify-between items-center border">
+    <div className="py-2 px-3 bg-gray-200 flex flex-row justify-between items-center border">
       <div>
         <img
           className="min-w-10 w-10 h-10 rounded-full object-cover"

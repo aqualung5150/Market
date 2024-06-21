@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Header from "./header/Header";
 import Footer from "./Footer";
 import styles from "./Layout.module.css";
+import ChatIcon from "../features/chat/components/ChatIcon";
 
 const Layout = ({ children }: LayoutProps) => {
   return (
@@ -11,6 +12,7 @@ const Layout = ({ children }: LayoutProps) => {
         {children || <Outlet />}
       </div>
       <Footer />
+      <ChatIcon />
     </div>
   );
 };

@@ -1,20 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-// interface Message {
-//   body: string;
-// }
-
-// interface Channel {
-//   messages: Message[];
-// }
-
-// interface ChatSliceState {
-//   channels: Channel[];
-// }
-
 const initialState = {
-  // channels: [],
   open: false,
+  sendTo: 0,
+  noti: false,
 };
 
 const chatSlice = createSlice({
@@ -24,9 +13,15 @@ const chatSlice = createSlice({
     setOpenChat: (state, action) => {
       state.open = action.payload;
     },
+    setSendTo: (state, action) => {
+      state.sendTo = action.payload;
+    },
+    setNoti: (state, action) => {
+      state.noti = action.payload;
+    },
   },
 });
 
 export default chatSlice;
 
-export const { setOpenChat } = chatSlice.actions;
+export const { setOpenChat, setSendTo, setNoti } = chatSlice.actions;

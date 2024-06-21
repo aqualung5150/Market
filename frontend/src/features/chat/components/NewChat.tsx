@@ -2,11 +2,11 @@ import { useState } from "react";
 import Input from "../../../components/Input";
 import { NewChatProps } from "../../../@types/chat";
 
-const NewChat = ({ socket, toUserId }: NewChatProps) => {
+const NewChat = ({ socket, sendTo }: NewChatProps) => {
   const [value, setValue] = useState<string>("");
 
   const createChannel = (message: string, to: number) => {
-    socket?.emit("createChannelReq", { body: message, toUserId: to });
+    socket?.emit("createChannelReq", { body: message, sendTo: to });
   };
 
   return (
@@ -18,7 +18,7 @@ const NewChat = ({ socket, toUserId }: NewChatProps) => {
           setValue(e.target.value);
         }}
         onEnter={() => {
-          createChannel(value, toUserId);
+          createChannel(value, sendTo);
         }}
       />
     </div>

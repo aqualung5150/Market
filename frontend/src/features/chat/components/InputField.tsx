@@ -20,7 +20,7 @@ const InputField = ({ channelId }: InputFieldProps) => {
   );
 
   return (
-    <div className="bg-gray-50 px-4 py-4 flex items-center">
+    <div className="bg-gray-100 px-4 py-4 flex items-center">
       <div className="flex-1 mx-4">
         <Input
           value={value}

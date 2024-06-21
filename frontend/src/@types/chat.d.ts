@@ -59,7 +59,7 @@ interface ChatBodyProps {
 
 interface NewChatProps {
   socket: Socket | null;
-  toUserId: number;
+  sendTo: number;
 }
 
 interface useChannelsProps {
