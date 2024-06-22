@@ -1,6 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import * as fs from 'fs';
 
 @Injectable()
 export class UserService {
@@ -45,13 +46,48 @@ export class UserService {
     });
   }
 
-  async updateUserById(id: number, data: Prisma.UserUpdateInput) {
-    await this.prisma.user.update({
-      where: { id: id },
-      data: {
-        ...data,
-      },
-    });
+  async updateUserById(
+    id: number,
+    data: Prisma.UserUpdateInput,
+    file?: Express.Multer.File,
+  ) {
+    let prevImagePath: string;
+    if (file) {
+      prevImagePath = await this.prisma.user
+        .findUnique({
+          where: {
+            id: id,
+          },
+          select: {
+            image: true,
+          },
+        })
+        .then((res) => res.image);
+    }
+
+    return await this.prisma.user
+      .update({
+        where: { id: id },
+        data: {
+          ...data,
+          id: undefined,
+          email: undefined,
+          createdAt: undefined,
+          image: file ? file.filename : undefined,
+        },
+        select: {
+          image: true,
+        },
+      })
+      .then(() => {
+        if (prevImagePath && prevImagePath != 'default.png') {
+          try {
+            fs.unlinkSync(`./uploads/profileimages/${prevImagePath}`);
+          } catch (err) {
+            console.error(err);
+          }
+        }
+      });
   }
 
   async getUserById(id: number): Promise<UserData> {
