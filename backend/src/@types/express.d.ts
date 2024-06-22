@@ -4,5 +4,6 @@ declare namespace Express {
       id: number;
       email: string;
     };
+    fileValidationError: string;
   }
 }

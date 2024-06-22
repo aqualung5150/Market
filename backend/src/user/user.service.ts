@@ -25,18 +25,8 @@ export class UserService {
         email: true,
         nickname: true,
         image: true,
-        // is2faEnabled: true,
       },
     });
-
-    // const returnData = {
-    //   id: res.id,
-    //   name: res.name,
-    //   email: res.email,
-    //   nickname: res.nickname,
-    // };
-
-    // return returnData;
   }
 
   async findUserById(userId: number) {
@@ -101,7 +91,6 @@ export class UserService {
         email: true,
         image: true,
         createdAt: true,
-        // lastLogin: true,
       },
     });
   }

@@ -1,11 +1,15 @@
 import {
+  BadRequestException,
   Body,
   Controller,
+  FileTypeValidator,
   Get,
   HttpException,
   HttpStatus,
   Logger,
+  MaxFileSizeValidator,
   Param,
+  ParseFilePipe,
   ParseIntPipe,
   Post,
   Req,
@@ -18,21 +22,34 @@ import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { UserService } from './user.service';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { diskStorage } from 'multer';
-import { extname, join } from 'path';
+// import { diskStorage } from 'multer';
+import * as multer from 'multer';
+import * as path from 'path';
 import { Prisma } from '@prisma/client';
 import { v4 } from 'uuid';
 import { createReadStream } from 'fs';
 
 export const profilImageStorage = {
-  storage: diskStorage({
+  storage: multer.diskStorage({
     destination: './uploads/profileimages',
     filename: (req, file, cb) => {
-      const filename: string = v4();
-      const extension: string = extname(file.originalname);
+      const origin = path.parse(file.originalname);
+      const filename: string = origin.name.replace(/\s/g, '') + v4();
+      const extension: string = origin.ext;
       cb(null, `${filename}${extension}`);
     },
   }),
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+  fileFilter: (req, file, cb) => {
+    if (file.mimetype.match(/image\/(png|jpeg|gif)/)) {
+      cb(null, true);
+    } else {
+      req.fileValidationError = `unsupported mime type: ${file.mimetype}`;
+      cb(null, false);
+    }
+  },
 };
 
 @Controller('users')
@@ -44,15 +61,8 @@ export class UserController {
   @Get('me')
   async getMe(@Req() req: Request) {
     return await this.userService.getUserById(req.user.id);
-    // return {
-    //   id: data.id,
-    //   name: data.name,
-    //   email: data.email,
-    //   nickname: data.nickname,
-    // };
   }
 
-  // @UseGuards(JwtGuard)
   @Get(':id')
   getOneUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.getUserById(id);
@@ -64,17 +74,23 @@ export class UserController {
   async updateUser(
     @Req() req: Request,
     @Param('id', ParseIntPipe) id: number,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile()
+    file: Express.Multer.File,
     @Body() data: Prisma.UserUpdateInput,
   ) {
     if (req.user.id !== id)
       throw new HttpException('unauthorized', HttpStatus.BAD_REQUEST);
+    if (req.fileValidationError) {
+      throw new BadRequestException(req.fileValidationError);
+    }
     await this.userService.updateUserById(req.user.id, data, file);
   }
 
   @Get('profileImage/:imagename')
   getProfileImage(@Param('imagename') imagename, @Res() res) {
-    const file = createReadStream(join('./uploads/profileimages/' + imagename));
+    const file = createReadStream(
+      path.join('./uploads/profileimages/' + imagename),
+    );
     file.pipe(res);
   }
 }
