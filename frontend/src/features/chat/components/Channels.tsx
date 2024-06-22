@@ -18,7 +18,7 @@ const Channels = ({
             key={channelData.id}
             className={
               "border-b bg-white px-3 flex items-center cursor-pointer " +
-              (selectedChannelId == channelData.id
+              (selectedChannelId === channelData.id
                 ? " bg-gray-300"
                 : " hover:bg-gray-100")
             }

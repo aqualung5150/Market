@@ -28,7 +28,7 @@ const Chat = () => {
         }}
         className="bg-white h-3/4  w-3/4  flex flex-col border border-grey rounded shadow-xl"
       >
-        <ChatHeader nickname={user.nickname} />
+        <ChatHeader />
         <ChatBody>
           <Channels
             socket={socket}

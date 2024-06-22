@@ -15,6 +15,7 @@ interface InputFieldProps {
 interface SocketUserData {
   id: number;
   nickname: string;
+  image: string;
 }
 
 interface SocketMessageData {
@@ -66,10 +67,6 @@ interface useChannelsProps {
   socket: Socket | null;
   userId: number | null;
   selectedChannelId: number;
-}
-
-interface ChatHeaderProps {
-  nickname: string;
 }
 
 interface useChatRoomProps extends useChannelsProps {}

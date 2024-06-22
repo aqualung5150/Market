@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Post,
   Req,
+  Res,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -18,9 +19,10 @@ import { UserService } from './user.service';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
-import { extname } from 'path';
+import { extname, join } from 'path';
 import { Prisma } from '@prisma/client';
 import { v4 } from 'uuid';
+import { createReadStream } from 'fs';
 
 export const profilImageStorage = {
   storage: diskStorage({
@@ -41,13 +43,13 @@ export class UserController {
   @UseGuards(JwtGuard)
   @Get('me')
   async getMe(@Req() req: Request) {
-    const data = await this.userService.getUserById(req.user.id);
-    return {
-      id: data.id,
-      name: data.name,
-      email: data.email,
-      nickname: data.nickname,
-    };
+    return await this.userService.getUserById(req.user.id);
+    // return {
+    //   id: data.id,
+    //   name: data.name,
+    //   email: data.email,
+    //   nickname: data.nickname,
+    // };
   }
 
   // @UseGuards(JwtGuard)
@@ -68,5 +70,11 @@ export class UserController {
     if (req.user.id !== id)
       throw new HttpException('unauthorized', HttpStatus.BAD_REQUEST);
     await this.userService.updateUserById(req.user.id, data, file);
+  }
+
+  @Get('profileImage/:imagename')
+  getProfileImage(@Param('imagename') imagename, @Res() res) {
+    const file = createReadStream(join('./uploads/profileimages/' + imagename));
+    file.pipe(res);
   }
 }

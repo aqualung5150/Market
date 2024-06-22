@@ -1,6 +1,5 @@
-import { ChannelProps } from "../../../@types/chat";
+import { ChannelProps, SocketUserData } from "../../../@types/chat";
 import timeAgo from "../../../utils/timeAgo";
-import profileImg from "../../../assets/ym41716351689954-640-0.jpg";
 import React from "react";
 
 const Channel = ({
@@ -12,17 +11,13 @@ const Channel = ({
   users,
   userId,
 }: ChannelProps) => {
-  console.log(
-    "CHANNEL: " +
-      id +
-      " SENDER: " +
-      senderId +
-      " USER: " +
-      userId +
-      " READ: " +
-      read
-  );
-
+  let me: SocketUserData;
+  for (const user of users) {
+    if (user.id === userId) {
+      me = user;
+      break;
+    }
+  }
   const timestamp = new Date(lastMessageDate);
   const time = timeAgo(timestamp);
 
@@ -34,7 +29,9 @@ const Channel = ({
         )}
         <img
           className="h-12 w-12 min-w-12 rounded-full object-cover"
-          src={profileImg}
+          src={`${process.env.REACT_APP_API_URL}/users/profileImage/${
+            userId !== users[0].id ? users[0].image : users[1].image
+          }`}
         />
       </div>
       <div className="ml-4 flex-1 py-4 truncate">

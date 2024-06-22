@@ -9,7 +9,7 @@ export class UserService {
   constructor(private readonly prisma: PrismaService) {}
 
   async createUser(data: Prisma.UserCreateInput) {
-    const res = await this.prisma.user.upsert({
+    return await this.prisma.user.upsert({
       where: {
         email: data.email,
       },
@@ -24,18 +24,19 @@ export class UserService {
         name: true,
         email: true,
         nickname: true,
+        image: true,
         // is2faEnabled: true,
       },
     });
 
-    const returnData = {
-      id: res.id,
-      name: res.name,
-      email: res.email,
-      nickname: res.nickname,
-    };
+    // const returnData = {
+    //   id: res.id,
+    //   name: res.name,
+    //   email: res.email,
+    //   nickname: res.nickname,
+    // };
 
-    return returnData;
+    // return returnData;
   }
 
   async findUserById(userId: number) {

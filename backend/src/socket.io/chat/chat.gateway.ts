@@ -132,7 +132,6 @@ export class ChatGateway
 
   @SubscribeMessage('readMessageReq')
   async handleReadMessage(client: ChatSocket, { channelId }) {
-    this.logger.debug('readMessageReq');
     this.chatService.readMessages(client.userId, channelId);
 
     const users = await this.chatService.getUsersByChannelId(channelId);

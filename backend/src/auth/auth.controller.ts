@@ -68,6 +68,7 @@ export class AuthController {
       email: user.email,
       name: user.name,
       nickname: user.nickname,
+      image: user.image,
       iat: decode.iat,
       exp: decode.exp,
     });
@@ -108,6 +109,7 @@ export class AuthController {
       email: user.email,
       name: user.name,
       nickname: user.nickname,
+      image: user.image,
       iat: decode.iat,
       exp: decode.exp,
     });

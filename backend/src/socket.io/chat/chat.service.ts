@@ -15,6 +15,7 @@ export class ChatService {
               select: {
                 id: true,
                 nickname: true,
+                image: true,
               },
             },
           },
@@ -57,6 +58,7 @@ export class ChatService {
           select: {
             id: true,
             nickname: true,
+            image: true,
           },
         },
       },
@@ -106,6 +108,7 @@ export class ChatService {
               select: {
                 id: true,
                 nickname: true,
+                image: true,
               },
             },
           },
@@ -150,6 +153,7 @@ export class ChatService {
               select: {
                 id: true,
                 nickname: true,
+                image: true,
               },
             },
           },
@@ -168,6 +172,7 @@ export class ChatService {
       select: {
         id: true,
         nickname: true,
+        image: true,
       },
       where: {
         channels: {
@@ -193,6 +198,7 @@ export class ChatService {
           select: {
             id: true,
             nickname: true,
+            image: true,
           },
         },
       },

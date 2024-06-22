@@ -7,6 +7,7 @@ interface ChatSocket extends Socket {
 interface SocketUserData {
   id: number;
   nickname: string;
+  image: string;
 }
 
 interface SocketMessageData {

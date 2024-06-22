@@ -15,6 +15,7 @@ const initialState = {
   email: "",
   name: "",
   nickname: "",
+  image: "",
   iat: null,
   exp: null,
 };
@@ -29,6 +30,7 @@ const userSlice = createSlice({
       state.email = action.payload.email;
       state.name = action.payload.name;
       state.nickname = action.payload.nickname;
+      state.image = action.payload.image;
       state.iat = action.payload.iat;
       state.exp = action.payload.exp;
     },
