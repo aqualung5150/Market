@@ -9,6 +9,10 @@ import { axiosInstance } from "../data/axiosInstance";
 import useConnect from "../features/auth/hooks/useConnect";
 import { SocketContext } from "../context/SocketContext";
 import useAuthCheck from "../features/auth/hooks/useAuthCheck";
+import Bar from "../pages/Bar";
+import Users from "../pages/Users";
+import Oh from "../pages/Oh";
+import Profile from "../features/user/components/Profile";
 // import chatSocket from "../features/chat/chatSocket";
 
 const App = () => {
@@ -21,11 +25,16 @@ const App = () => {
       <SocketContext.Provider value={socket}>
         <Routes>
           <Route element={<Layout />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/dummy" element={<Dummy />} />
-            <Route path="/foo" element={<Foo />} />
+            <Route path="" element={<Home />} />
+            <Route path="dummy" element={<Dummy />} />
+            <Route path="foo" element={<Foo />} />
+            <Route path="users/:id" element={<Users />}>
+              <Route path="" element={<Profile />} />
+              <Route path="bar" element={<Bar />} />
+              <Route path="oh" element={<Oh />} />
+            </Route>
           </Route>
-          <Route path="/callback" element={<Callback />} />
+          <Route path="callback" element={<Callback />} />
         </Routes>
       </SocketContext.Provider>
     </BrowserRouter>

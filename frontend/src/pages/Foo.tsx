@@ -6,7 +6,7 @@ import Login from "../features/auth/components/Login";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { updateUser } from "../features/user/userSlice";
-import chatSocket from "../features/chat/chatSocket";
+// import chatSocket from "../features/chat/chatSocket";
 import { Socket } from "socket.io-client";
 import { SocketContext } from "../context/SocketContext";
 import { SocketContextProps } from "../@types/context.d";

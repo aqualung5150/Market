@@ -1,3 +1,4 @@
+import React from "react";
 import { Socket } from "socket.io-client";
 
 interface JwtPayload {
@@ -7,10 +8,10 @@ interface JwtPayload {
   exp: number;
 }
 
-interface User extends JwtPayload {
-  name: string;
-  nickname: string;
-}
+// interface User extends JwtPayload {
+//   name: string;
+//   nickname: string;
+// }
 
 interface ConnectionState {
   // id?: number;
@@ -20,4 +21,13 @@ interface ConnectionState {
   // iat?: number;
   // exp?: number;
   // socket: Socket | null;
+}
+
+interface User {
+  id: true;
+  name: true;
+  nickname: true;
+  email: true;
+  image: true;
+  createdAt: true;
 }
