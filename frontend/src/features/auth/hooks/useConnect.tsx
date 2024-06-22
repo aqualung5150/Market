@@ -2,10 +2,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { axiosInstance } from "../../../data/axiosInstance";
 import { RootState } from "../../../app/store";
-import chatSocket from "../../chat/chatSocket";
 import { Socket, io } from "socket.io-client";
 import { setNoti } from "../../chat/chatSlice";
-import { SocketMessageData } from "../../../@types/chat";
+import { SocketChannelData, SocketMessageData } from "../../../@types/chat";
 
 const useConnect = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -36,18 +35,25 @@ const useConnect = () => {
     initialConnect();
 
     return () => {
-      chatSocket.disconnectSocket();
+      // chatSocket.disconnectSocket();
+      socket?.disconnect();
     };
   }, [user.id]);
 
   useEffect(() => {
-    const eventNoti = (message: SocketMessageData) => {
-      console.log(chat.open);
+    const messageNoti = (message: SocketMessageData) => {
       if (message.sender.id !== user.id && !chat.open) dispatch(setNoti(true));
     };
-    socket?.on("sendMessageRes", eventNoti);
+
+    const channelNoti = (channel: SocketChannelData) => {
+      if (channel.senderId !== user.id && !chat.open) dispatch(setNoti(true));
+    };
+
+    socket?.on("sendMessageRes", messageNoti);
+    socket?.on("getChannelRes", channelNoti);
     return () => {
-      socket?.off("sendMessageRes", eventNoti);
+      socket?.off("sendMessageRes", messageNoti);
+      socket?.on("getChannelRes", channelNoti);
     };
   }, [socket, chat.open]);
 
