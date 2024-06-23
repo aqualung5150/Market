@@ -17,7 +17,7 @@ const Dummy = () => {
     if (!userId) return;
     // fetching some data...
     axiosInstance
-      .get("/user/me")
+      .get("/users/me")
       .then((res) => {
         setData(res.data);
         // setConnection(true);

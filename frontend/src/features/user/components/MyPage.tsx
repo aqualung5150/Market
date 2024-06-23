@@ -12,7 +12,7 @@ const MyPage = () => {
       <h3 className="text-xl font-bold py-2">내 정보</h3>
       <ul>
         <li className="py-1">
-          <Link to="bar">정보 수정</Link>
+          <Link to="edit">정보 수정</Link>
         </li>
       </ul>
     </div>

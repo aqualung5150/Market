@@ -25,7 +25,7 @@ const Channel = ({
     <>
       <div className="relative">
         {senderId !== userId && !read && (
-          <p className="absolute left-[35px] bg-rose-600 w-[13px] h-[13px] rounded-full" />
+          <p className="absolute left-[35px] bg-rose-600 w-[15px] h-[15px] rounded-full border-2 border-white  border-opacity-100" />
         )}
         <img
           className="h-12 w-12 min-w-12 rounded-full object-cover"

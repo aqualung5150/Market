@@ -13,6 +13,7 @@ import Bar from "../pages/Bar";
 import Users from "../pages/Users";
 import Oh from "../pages/Oh";
 import Profile from "../features/user/components/Profile";
+import EditProfile from "../features/user/components/EditProfile";
 // import chatSocket from "../features/chat/chatSocket";
 
 const App = () => {
@@ -30,8 +31,7 @@ const App = () => {
             <Route path="foo" element={<Foo />} />
             <Route path="users/:id" element={<Users />}>
               <Route path="" element={<Profile />} />
-              <Route path="bar" element={<Bar />} />
-              <Route path="oh" element={<Oh />} />
+              <Route path="edit" element={<EditProfile />} />
             </Route>
           </Route>
           <Route path="callback" element={<Callback />} />

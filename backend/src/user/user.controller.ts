@@ -2,18 +2,16 @@ import {
   BadRequestException,
   Body,
   Controller,
-  FileTypeValidator,
   Get,
   HttpException,
   HttpStatus,
   Logger,
-  MaxFileSizeValidator,
   Param,
-  ParseFilePipe,
   ParseIntPipe,
+  Patch,
   Post,
   Req,
-  Res,
+  StreamableFile,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -22,7 +20,6 @@ import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { UserService } from './user.service';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-// import { diskStorage } from 'multer';
 import * as multer from 'multer';
 import * as path from 'path';
 import { Prisma } from '@prisma/client';
@@ -64,33 +61,47 @@ export class UserController {
   }
 
   @Get(':id')
-  getOneUser(@Param('id', ParseIntPipe) id: number) {
-    return this.userService.getUserById(id);
+  async getOneUser(@Param('id', ParseIntPipe) id: number) {
+    return await this.userService.getUserById(id);
+  }
+
+  @UseGuards(JwtGuard)
+  @Patch(':id')
+  updateUser(
+    @Req() req: Request,
+    @Param('id', ParseIntPipe) id: number,
+    @Body() data: Prisma.UserUpdateInput,
+  ) {
+    if (req.user.id !== id)
+      throw new HttpException('unauthorized', HttpStatus.BAD_REQUEST);
+    this.userService.updateUserById(req.user.id, data);
   }
 
   @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('image', profilImageStorage))
   @Post(':id')
-  async updateUser(
+  async uploadFile(
     @Req() req: Request,
     @Param('id', ParseIntPipe) id: number,
     @UploadedFile()
     file: Express.Multer.File,
-    @Body() data: Prisma.UserUpdateInput,
   ) {
     if (req.user.id !== id)
       throw new HttpException('unauthorized', HttpStatus.BAD_REQUEST);
     if (req.fileValidationError) {
       throw new BadRequestException(req.fileValidationError);
     }
-    await this.userService.updateUserById(req.user.id, data, file);
+
+    await this.userService.updateUserImage(req.user.id, file.filename);
+    return { image: file.filename };
   }
 
   @Get('profileImage/:imagename')
-  getProfileImage(@Param('imagename') imagename, @Res() res) {
+  getProfileImage(@Param('imagename') imagename): StreamableFile {
     const file = createReadStream(
       path.join('./uploads/profileimages/' + imagename),
     );
-    file.pipe(res);
+
+    return new StreamableFile(file);
   }
 }

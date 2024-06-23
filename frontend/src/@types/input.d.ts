@@ -1,6 +1,7 @@
 interface InputProps {
   value: string;
-  placeholder: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  onEnter: () => void;
+  placeholder?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onEnter?: () => void;
+  disabled?: boolean;
 }

@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import myImg from "../../../assets/default_thumbnail.png";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { axiosInstance } from "../../../data/axiosInstance";
@@ -17,7 +16,7 @@ const Profile = () => {
   useEffect(() => {
     const getUserData = async () => {
       try {
-        const res = await axiosInstance.get(`user/${paramId}`);
+        const res = await axiosInstance.get(`users/${paramId}`);
         setProfileData(res.data);
       } catch (err) {
         alert("유저 정보를 불러오지 못했습니다");
@@ -32,7 +31,10 @@ const Profile = () => {
     <div className="flex flex-col flex-1 items-center">
       <div className="flex m-10 w-2/3 min-h-[300px] border rounded-md">
         <div className="w-1/5 p-5">
-          <img className="rounded-full" src={myImg} />
+          <img
+            className=" w-16 h-16 min-w-16 rounded-full object-cover"
+            src={`${process.env.REACT_APP_API_URL}/users/profileImage/${profileData.image}`}
+          />
         </div>
         <div className="p-5 flex-1">{profileData.nickname}</div>
         <div>{paramId}</div>

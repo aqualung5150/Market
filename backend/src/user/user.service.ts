@@ -37,48 +37,46 @@ export class UserService {
     });
   }
 
-  async updateUserById(
-    id: number,
-    data: Prisma.UserUpdateInput,
-    file?: Express.Multer.File,
-  ) {
-    let prevImagePath: string;
-    if (file) {
-      prevImagePath = await this.prisma.user
-        .findUnique({
-          where: {
-            id: id,
-          },
-          select: {
-            image: true,
-          },
-        })
-        .then((res) => res.image);
-    }
+  async updateUserImage(id: number, filename: string) {
+    const data = await this.prisma.user.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        image: true,
+      },
+    });
 
-    return await this.prisma.user
+    const prevImage = data.image;
+
+    await this.prisma.user
       .update({
         where: { id: id },
         data: {
-          ...data,
-          id: undefined,
-          email: undefined,
-          createdAt: undefined,
-          image: file ? file.filename : undefined,
-        },
-        select: {
-          image: true,
+          image: filename,
         },
       })
       .then(() => {
-        if (prevImagePath && prevImagePath != 'default.png') {
+        if (prevImage && prevImage !== 'default.png') {
           try {
-            fs.unlinkSync(`./uploads/profileimages/${prevImagePath}`);
+            fs.unlinkSync(`./uploads/profileimages/${prevImage}`);
           } catch (err) {
             console.error(err);
           }
         }
       });
+  }
+
+  async updateUserById(id: number, data: Prisma.UserUpdateInput) {
+    await this.prisma.user.update({
+      where: { id: id },
+      data: {
+        ...data,
+        id: undefined,
+        email: undefined,
+        createdAt: undefined,
+      },
+    });
   }
 
   async getUserById(id: number): Promise<UserData> {
