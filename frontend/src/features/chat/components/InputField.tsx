@@ -9,7 +9,6 @@ const InputField = ({ channelId }: InputFieldProps) => {
 
   const sendMessage = useCallback(
     (message: string, channelId: number) => {
-      console.log("sendMessageReq", message);
       socket?.emit("sendMessageReq", {
         body: message,
         channelId: channelId,

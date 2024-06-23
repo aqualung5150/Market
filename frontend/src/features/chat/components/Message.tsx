@@ -19,8 +19,6 @@ const Message = ({
   }).format(timestamp);
   if (date) time = `${date} ${time}`;
 
-  console.log("Message: " + id + " re-render");
-
   return userId === sender.id ? (
     <div className="flex justify-end mb-2">
       <div className="flex flex-col justify-end">

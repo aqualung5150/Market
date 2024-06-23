@@ -1,15 +1,16 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   SocketChannelData,
   SocketMessageData,
-  useChannelsProps,
+  UseChannelsProps,
 } from "../../../@types/chat";
+import { SocketContext } from "../../../context/SocketContext";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../app/store";
 
-const useChannels = ({
-  socket,
-  userId,
-  selectedChannelId,
-}: useChannelsProps) => {
+const useChannels = ({ selectedChannelId }: UseChannelsProps) => {
+  const socket = useContext(SocketContext).socket;
+  const userId = useSelector((state: RootState) => state.user.id);
   const [channelsData, setChannelsData] = useState<SocketChannelData[]>([]);
 
   useEffect(() => {
@@ -68,7 +69,7 @@ const useChannels = ({
     };
   }, [socket, selectedChannelId]);
 
-  return { channelsData };
+  return { userId, channelsData };
 };
 
 export default useChannels;

@@ -8,7 +8,6 @@ import { RootState } from "../app/store";
 import { setOpenChat, setSendTo } from "../features/chat/chatSlice";
 
 const Home = () => {
-  const openChat = useSelector((state: RootState) => state.chat.open);
   const dispatch = useDispatch();
   return (
     <div className="flex w-full h-full flex-col">
@@ -21,7 +20,6 @@ const Home = () => {
           }}
         />
       </div>
-      {openChat && <Chat />}
     </div>
   );
 };

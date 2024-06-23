@@ -2,8 +2,6 @@ import { Socket } from "socket.io-client";
 import { User } from "./user";
 
 interface ChannelsProps {
-  socket: Socket | null;
-  userId: number | null;
   selectedChannelId: number;
   setSelectedChannelId: React.Dispatch<SetStateAction<number>>;
 }
@@ -45,8 +43,6 @@ interface MessageProps extends SocketMessageData {
 }
 
 interface ChatRoomProps {
-  socket: Socket | null;
-  userId: number | null;
   selectedChannelId: number;
 }
 
@@ -58,15 +54,5 @@ interface ChatBodyProps {
   children: React.ReactNode;
 }
 
-interface NewChatProps {
-  socket: Socket | null;
-  sendTo: number;
-}
-
-interface useChannelsProps {
-  socket: Socket | null;
-  userId: number | null;
-  selectedChannelId: number;
-}
-
-interface useChatRoomProps extends useChannelsProps {}
+interface UseChatRoomProps extends ChatRoomProps {}
+interface UseChannelsProps extends ChatRoomProps {}

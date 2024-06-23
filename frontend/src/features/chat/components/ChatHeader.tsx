@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setOpenChat } from "../chatSlice";
+import { setOpenChat, setSendTo } from "../chatSlice";
 import { RootState } from "../../../app/store";
 
 const ChatHeader = () => {
@@ -20,6 +20,7 @@ const ChatHeader = () => {
       <div
         onClick={() => {
           dispatch(setOpenChat(false));
+          dispatch(setSendTo(0));
         }}
         className="text-xl select-none"
       >

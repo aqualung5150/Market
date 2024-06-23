@@ -3,8 +3,8 @@ import InputField from "./InputField";
 import Message from "./Message";
 import useChatRoom from "../hooks/useChatRoom";
 
-const ChatRoom = ({ socket, userId, selectedChannelId }: ChatRoomProps) => {
-  const { messagesData } = useChatRoom({ socket, userId, selectedChannelId });
+const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
+  const { userId, messagesData } = useChatRoom({ selectedChannelId });
 
   return (
     <div className="w-2/3 flex-1 flex flex-col">

@@ -1,11 +1,12 @@
-import { useEffect, useState } from "react";
-import { SocketMessageData, useChatRoomProps } from "../../../@types/chat";
+import { useContext, useEffect, useState } from "react";
+import { SocketMessageData, UseChatRoomProps } from "../../../@types/chat";
+import { SocketContext } from "../../../context/SocketContext";
+import { RootState } from "../../../app/store";
+import { useSelector } from "react-redux";
 
-const useChatRoom = ({
-  socket,
-  userId,
-  selectedChannelId,
-}: useChatRoomProps) => {
+const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
+  const socket = useContext(SocketContext).socket;
+  const userId = useSelector((state: RootState) => state.user.id);
   const [messagesData, setMessagesData] = useState<SocketMessageData[]>([]);
 
   useEffect(() => {
@@ -46,7 +47,7 @@ const useChatRoom = ({
     };
   }, [socket, selectedChannelId]);
 
-  return { messagesData };
+  return { userId, messagesData };
 };
 
 export default useChatRoom;
