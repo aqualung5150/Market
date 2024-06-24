@@ -1,9 +1,0 @@
-.home {
-  display: flex;
-  height: 100%;
-  flex-direction: column;
-}
-
-.bar {
-  display: flex;
-}
