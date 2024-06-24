@@ -24,12 +24,8 @@ const InputField = ({ channelId }: InputFieldProps) => {
         <Input
           value={value}
           placeholder="메세지를 입력하세요."
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          onEnter={() => {
-            sendMessage(value, channelId);
-          }}
+          onChange={(e) => setValue(e.target.value)}
+          onEnter={() => sendMessage(value, channelId)}
         />
       </div>
     </div>

@@ -1,10 +1,5 @@
-import { useState } from "react";
-import Chat from "../features/chat/components/Chat";
 import Button from "../components/Button";
-import Input from "../components/Input";
-import styles from "./Home.module.css";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../app/store";
+import { useDispatch } from "react-redux";
 import { setOpenChat, setSendTo } from "../features/chat/chatSlice";
 
 const Home = () => {

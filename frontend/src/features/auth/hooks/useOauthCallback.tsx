@@ -20,7 +20,11 @@ const useOauthCallback = () => {
       .then((res) => {
         console.log("useOauthCallback");
         dispatch(setUser(res.data));
-        navigate("/");
+        const redirect = sessionStorage.getItem("redirect");
+        if (redirect) {
+          sessionStorage.removeItem("redirect");
+          navigate(redirect);
+        } else navigate("/");
       })
       .catch((err) => {
         navigate(-1);

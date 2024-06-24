@@ -7,6 +7,7 @@ import {
   initMessageListener,
 } from "redux-state-sync";
 import chatSlice from "../features/chat/chatSlice";
+import loginSlice from "../features/auth/loginSlice";
 
 // redux-persist
 
@@ -22,6 +23,7 @@ const rootReducer = persistReducer(
   combineReducers({
     user: userSlice.reducer,
     chat: chatSlice.reducer,
+    login: loginSlice.reducer,
   })
 );
 

@@ -1,16 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Input from "../../../components/Input";
 import Button from "../../../components/Button";
 import { axiosInstance } from "../../../data/axiosInstance";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
 import { updateUser } from "../userSlice";
+import useFormInput from "../../../hooks/useFormInput";
 
 const EditProfile = () => {
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
-  const [nicknameValue, setNicknameValue] = useState(user.nickname);
-  const [nameValue, setNameValue] = useState(user.name);
+  const name = useFormInput(user.name);
+  const nickname = useFormInput(user.nickname);
   const [disabled, setDisabled] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>(
     `${process.env.REACT_APP_API_URL}/users/profileImage/${user.image}`
@@ -22,13 +23,13 @@ const EditProfile = () => {
     e.preventDefault();
     try {
       await axiosInstance.patch(`users/${user.id}`, {
-        nickname: nicknameValue,
-        name: nameValue,
+        nickname: nickname.value,
+        name: name.value,
       });
       dispatch(
         updateUser({
-          nickname: nicknameValue,
-          name: nameValue,
+          nickname: nickname.value,
+          name: name.value,
         })
       );
       alert("프로필 저장 완료");
@@ -86,32 +87,23 @@ const EditProfile = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col flex-1 items-center">
-      프로필이미지:
+      <label htmlFor="image">프로필이미지</label>
       <img
         className="w-[200px] h-[200px] object-cover rounded-full"
         src={imageUrl}
       />
       <input
         type="file"
+        id="image"
         onChange={handleFileChange}
         accept={"image/png, image/gif, image/jpeg"}
       />
-      닉네임:
-      <Input
-        value={nicknameValue}
-        onChange={(e) => {
-          setNicknameValue(e.target.value);
-        }}
-      />
-      이름:
-      <Input
-        value={nameValue}
-        onChange={(e) => {
-          setNameValue(e.target.value);
-        }}
-      />
-      이메일:
-      <Input value={user.email} disabled={true} />
+      <label htmlFor="nickname">닉네임</label>
+      <Input id="nickname" type="text" {...nickname} />
+      <label htmlFor="name">이름</label>
+      <Input id="name" type="text" {...name} />
+      <label htmlFor="email">이메일</label>
+      <Input id="email" type="text" value={user.email} disabled={true} />
       <Button text="저장하기" type="submit" disabled={disabled} />
     </form>
   );

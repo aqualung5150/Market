@@ -19,12 +19,8 @@ const EmptyRoom = () => {
         <Input
           value={value}
           placeholder="메세지를 입력하세요."
-          onChange={(e) => {
-            setValue(e.target.value);
-          }}
-          onEnter={() => {
-            createChannel(value, sendTo);
-          }}
+          onChange={(e) => setValue(e.target.value)}
+          onEnter={() => createChannel(value, sendTo)}
         />
       ) : (
         <div>no room</div>

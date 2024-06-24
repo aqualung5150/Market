@@ -1,33 +1,36 @@
 import { useNavigate } from "react-router-dom";
-import styles from "./Modal.module.css";
 
 const Modal = ({ open, onClose, children }: ModalProps) => {
   const navigate = useNavigate();
   if (!open) return null;
   return (
-    <div onClick={onClose} className={styles.overlay}>
+    <div
+      onClick={onClose}
+      className="fixed left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center"
+    >
       <div
         onClick={(e) => {
           e.stopPropagation();
         }}
-        className={styles.container}
+        className="flex flex-col bg-white h-[500px] w-[400px] border border-grey rounded shadow-xl"
       >
-        {onClose ? (
-          <p onClick={onClose} className={styles.closeBtn}>
-            X
-          </p>
-        ) : (
-          <div>
-            <p onClick={() => navigate("/")} className={styles.homeBtn}>
-              Home
-            </p>
-            <p onClick={() => navigate(-1)} className={styles.closeBtn}>
-              Back
-            </p>
-          </div>
-        )}
+        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
+          {onClose ? (
+            <>
+              <div></div>
+              <p className="" onClick={onClose}>
+                X
+              </p>
+            </>
+          ) : (
+            <>
+              <p onClick={() => navigate("/")}>Home</p>
+              <p onClick={() => navigate(-1)}>Back</p>
+            </>
+          )}
+        </div>
 
-        <div className={styles.content}>{children}</div>
+        <div className="h-full w-full">{children}</div>
       </div>
     </div>
   );

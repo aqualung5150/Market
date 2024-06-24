@@ -1,14 +1,15 @@
 import { Outlet } from "react-router-dom";
 import Header from "./header/Header";
 import Footer from "./Footer";
-import styles from "./Layout.module.css";
 import ChatIcon from "../features/chat/components/ChatIcon";
 import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import Chat from "../features/chat/components/Chat";
+import LoginModal from "../features/auth/components/LoginModal";
 
 const Layout = ({ children }: LayoutProps) => {
   const openChat = useSelector((state: RootState) => state.chat.open);
+  const openLogin = useSelector((state: RootState) => state.login.openLogin);
   return (
     <div className="flex flex-col w-full h-screen">
       <Header />
@@ -18,6 +19,7 @@ const Layout = ({ children }: LayoutProps) => {
       <Footer />
       <ChatIcon />
       {openChat && <Chat />}
+      {openLogin && <LoginModal />}
     </div>
   );
 };

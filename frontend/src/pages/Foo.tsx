@@ -67,9 +67,7 @@ const Foo = () => {
       /> */}
       <Button
         text="승준"
-        onClick={() => {
-          dispatch(updateUser({ name: "최승준" }));
-        }}
+        onClick={() => dispatch(updateUser({ name: "최승준" }))}
       />
       <h1>Foo, the second test</h1>
       <Modal

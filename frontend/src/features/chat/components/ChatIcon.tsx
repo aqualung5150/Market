@@ -3,18 +3,25 @@ import icon from "../../../assets/free-icon-message-8316231.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setNoti, setOpenChat, setSendTo } from "../chatSlice";
 import { RootState } from "../../../app/store";
+import { setOpenLogin } from "../../auth/loginSlice";
 
 const ChatIcon = () => {
+  const userId = useSelector((state: RootState) => state.user.id);
   const openChat = useSelector((state: RootState) => state.chat.open);
   const noti = useSelector((state: RootState) => state.chat.noti);
   const dispatch = useDispatch();
 
+  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (!userId) dispatch(setOpenLogin(true));
+    else {
+      dispatch(setOpenChat(!openChat));
+      dispatch(setNoti(false));
+    }
+  };
+
   return (
     <div
-      onClick={() => {
-        dispatch(setOpenChat(!openChat));
-        dispatch(setNoti(false));
-      }}
+      onClick={handleClick}
       className=" rounded-full bg-blue-300 fixed bottom-16 right-16 hover:bg-blue-400 cursor-pointer"
     >
       <img className="h-[70px] p-3" src={icon} />

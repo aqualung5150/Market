@@ -20,9 +20,7 @@ const Chat = () => {
       }}
     >
       <div
-        onClick={(e) => {
-          e.stopPropagation();
-        }}
+        onClick={(e) => e.stopPropagation()}
         className="bg-white h-3/4  w-3/4  flex flex-col border border-grey rounded shadow-xl"
       >
         <ChatHeader />

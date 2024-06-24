@@ -1,45 +1,29 @@
-import Button from "../../components/Button";
-import { useContext, useEffect, useState } from "react";
-import Modal from "../../components/Modal";
-import Login from "../../features/auth/components/Login";
-import styles from "./Header.module.css";
-import { ConnectionContext } from "../../context/ConnectionContext";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
-import userSlice, { logout } from "../../features/user/userSlice";
+import { useLocation } from "react-router-dom";
+import { setOpenLogin } from "../../features/auth/loginSlice";
+import Dropdown from "./Dropdown";
 
 const LoginButton = () => {
-  const [modalOpen, setModalOpen] = useState(false);
-  // const { connection } = useContext(ConnectionContext);
+  const { pathname } = useLocation();
   const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();
 
+  const handleLogin = (e: React.MouseEvent<HTMLDivElement>) => {
+    sessionStorage.setItem("redirect", pathname);
+    dispatch(setOpenLogin(true));
+  };
+
   return (
-    // <div className={styles.login}>
-    <div className="flex justify-center items-center">
+    <div className="flex justify-center items-center cursor-pointer select-none">
       {userId ? (
-        <div>
-          <Button
-            text="logout"
-            onClick={() => {
-              // dispatch(userSlice.actions.resetUser());
-              // dispatch(
-              //   authSlice.actions.logout({
-              //     redirect: "/",
-              //   })
-              // );
-              dispatch(logout("/"));
-            }}
-          />
-        </div>
+        <Dropdown />
       ) : (
-        <div>
-          <Button text="login" onClick={() => setModalOpen(true)}></Button>
-          <Modal
-            children={<Login />}
-            open={modalOpen}
-            onClose={() => setModalOpen(false)}
-          />
+        <div
+          className="border rounded font-bold flex flex-col justify-center items-center w-[100px] h-full truncate"
+          onClick={handleLogin}
+        >
+          로그인
         </div>
       )}
     </div>

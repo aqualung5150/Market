@@ -1,4 +1,6 @@
 const Input = ({
+  id,
+  type,
   value,
   placeholder,
   onChange,
@@ -15,6 +17,7 @@ const Input = ({
   return (
     <input
       className="w-full border rounded px-2 py-2"
+      id={id}
       value={value}
       placeholder={placeholder}
       onChange={onChange}
