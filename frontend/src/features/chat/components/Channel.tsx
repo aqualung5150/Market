@@ -11,6 +11,8 @@ const Channel = ({
   users,
   userId,
 }: ChannelProps) => {
+  console.log("render!", id);
+
   let me: SocketUserData;
   for (const user of users) {
     if (user.id === userId) {
@@ -38,7 +40,6 @@ const Channel = ({
         <div className="flex items-bottom justify-between">
           <div className="font-medium truncate">
             {userId !== users[0].id ? users[0].nickname : users[1].nickname}
-            {/* {users[0].nickname + ", " + users[1].nickname} */}
           </div>
           <span className="text-xs text-grey-darkest">{time}</span>
         </div>
