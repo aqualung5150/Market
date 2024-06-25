@@ -55,4 +55,4 @@ interface ChatBodyProps {
 }
 
 interface UseChatRoomProps extends ChatRoomProps {}
-interface UseChannelsProps extends ChatRoomProps {}
+interface UseChannelsProps extends ChannelsProps {}
