@@ -18,12 +18,13 @@ datasource db {
 
 model User {
   id           Int            @id @default(autoincrement())
-  name         String
+  name         String         @db.VarChar(20)
   nickname     String        @db.VarChar(12) //TODO @default('닉네임')
   email        String        @unique
   image        String         @default("default.png")
   createdAt    DateTime       @default(now())
   messages Message[]
+  products Product[]
   channels ChannelsOnUsers[]
 }
 
@@ -36,7 +37,7 @@ model Channel {
 
 model Message {
   id Int @id @default(autoincrement())
-  body String
+  body String @db.VarChar(1000)
   read Boolean @default(false)
   createdAt DateTime @default(now())
   channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
@@ -52,4 +53,22 @@ model ChannelsOnUsers {
   channel Channel @relation(fields: [channelId], references: [id], onDelete: Cascade)
 
   @@id([userId, channelId])
+}
+
+model Category {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(30)
+  products Product[]
+}
+
+model Product {
+  id Int @id @default(autoincrement())
+  title String @db.VarChar(30)
+  status Int @db.SmallInt // 0: 판매중, 1: 예약중, 2: 판매완료
+  description String @db.VarChar(1000)
+  price Int
+  user User @relation(fields: [userId], references: [id])
+  userId Int
+  category Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
 }
