@@ -12,7 +12,10 @@ const useSelectImages = () => {
       const urls: string[] = [];
       for (let i = 0; i < e.target.files.length; ++i) {
         const file = e.target.files[i];
-        if (files.length + newFiles.length >= 5) {
+        // 중복 제거
+        if (files.find((e) => e.name === file.name)) {
+          continue;
+        } else if (files.length + newFiles.length >= 5) {
           invalidFileLength = true;
           break;
         } else if (file.size > 5 * 1024 * 1024) {
@@ -24,6 +27,7 @@ const useSelectImages = () => {
       }
       setFiles((prev) => prev.concat(newFiles));
       setUrls((prev) => prev.concat(urls));
+      e.target.value = "";
       if (invalidFileLength) {
         alert("업로드 가능한 이미지는 최대 5장입니다.");
       }
@@ -33,7 +37,7 @@ const useSelectImages = () => {
     }
   };
 
-  return { files, urls, setFiles, handleFilesChange };
+  return { files, urls, setFiles, setUrls, handleFilesChange };
 };
 
 export default useSelectImages;
