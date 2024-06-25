@@ -5,13 +5,19 @@ import {
   UseChannelsProps,
 } from "../../../@types/chat";
 import { SocketContext } from "../../../context/SocketContext";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
+import { setSendTo } from "../chatSlice";
 
-const useChannels = ({ selectedChannelId }: UseChannelsProps) => {
+const useChannels = ({
+  selectedChannelId,
+  setSelectedChannelId,
+}: UseChannelsProps) => {
   const socket = useContext(SocketContext).socket;
   const userId = useSelector((state: RootState) => state.user.id);
   const [channelsData, setChannelsData] = useState<SocketChannelData[]>([]);
+  const sendTo = useSelector((state: RootState) => state.chat.sendTo);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (!socket) return;
@@ -47,8 +53,8 @@ const useChannels = ({ selectedChannelId }: UseChannelsProps) => {
           channel.lastMessage = message.body;
           channel.lastMessageDate = message.createdAt;
           channel.senderId = message.sender.id;
-          if (channel.senderId !== userId && selectedChannelId === channelId)
-            channel.read = true;
+
+          if (selectedChannelId === channelId) channel.read = true;
           else channel.read = message.read;
         }
         // Sort By lastMessageDate
@@ -68,6 +74,19 @@ const useChannels = ({ selectedChannelId }: UseChannelsProps) => {
       socket.off("sendMessageRes", setLatestChannel);
     };
   }, [socket, selectedChannelId]);
+
+  // Check if channel with 'sendTo' user is already exist
+  useEffect(() => {
+    if (!sendTo && channelsData.length < 1) return;
+    const sendToChannel = channelsData.find((channel) =>
+      channel.users.find((user) => user.id === sendTo)
+    );
+    console.log(sendToChannel);
+    if (sendToChannel) {
+      dispatch(setSendTo(0));
+      setSelectedChannelId(sendToChannel.id);
+    }
+  }, [channelsData]);
 
   return { userId, channelsData };
 };
