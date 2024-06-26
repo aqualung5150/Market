@@ -6,78 +6,129 @@ export class ChatService {
   private readonly logger = new Logger(ChatService.name);
   constructor(private readonly prisma: PrismaService) {}
 
-  async createChannel(userId, toUserId) {
-    const channel = await this.prisma.channel.create({
-      include: {
-        users: {
-          select: {
-            user: {
-              select: {
-                id: true,
-                nickname: true,
-                image: true,
+  async createChannel(userId, sendTo, body) {
+    return this.prisma.$transaction(async (tx) => {
+      // create channel
+      const channel = await tx.channel.create({
+        include: {
+          users: {
+            select: {
+              user: {
+                select: {
+                  id: true,
+                  nickname: true,
+                  image: true,
+                },
               },
             },
           },
         },
-      },
-      data: {
-        users: {
-          create: [
-            {
-              user: {
-                connect: {
-                  id: userId,
+        data: {
+          users: {
+            create: [
+              {
+                user: {
+                  connect: {
+                    id: userId,
+                  },
                 },
               },
-            },
-            {
-              user: {
-                connect: {
-                  id: toUserId,
+              {
+                user: {
+                  connect: {
+                    id: sendTo,
+                  },
                 },
               },
-            },
-          ],
+            ],
+          },
         },
-      },
-    });
+      });
+      // create message
+      const message = await tx.message.create({
+        select: {
+          id: true,
+          body: true,
+          read: true,
+          createdAt: true,
+          channelId: true,
+          sender: {
+            select: {
+              id: true,
+              nickname: true,
+              image: true,
+            },
+          },
+        },
+        data: {
+          body: body,
+          sender: {
+            connect: {
+              id: userId,
+            },
+          },
+          channel: {
+            connect: {
+              id: channel.id,
+            },
+          },
+        },
+      });
 
-    return channel;
+      return { channel, message };
+    });
   }
 
   async createMessage(body: string, senderId, channelId) {
-    const message = await this.prisma.message.create({
-      select: {
-        id: true,
-        body: true,
-        read: true,
-        createdAt: true,
-        channelId: true,
-        sender: {
-          select: {
-            id: true,
-            nickname: true,
-            image: true,
+    console.log(senderId);
+    return this.prisma.$transaction(async (tx) => {
+      // create message
+      const message = await tx.message.create({
+        select: {
+          id: true,
+          body: true,
+          read: true,
+          createdAt: true,
+          channelId: true,
+          sender: {
+            select: {
+              id: true,
+              nickname: true,
+              image: true,
+            },
           },
         },
-      },
-      data: {
-        body: body,
-        sender: {
-          connect: {
-            id: senderId,
+        data: {
+          body: body,
+          sender: {
+            connect: {
+              id: senderId,
+            },
+          },
+          channel: {
+            connect: {
+              id: channelId,
+            },
           },
         },
-        channel: {
-          connect: {
-            id: channelId,
+      });
+      // get users in channel
+      const users = await tx.user.findMany({
+        select: {
+          id: true,
+          nickname: true,
+          image: true,
+        },
+        where: {
+          channels: {
+            some: {
+              channelId: channelId,
+            },
           },
         },
-      },
+      });
+      return { message, users };
     });
-
-    return message;
   }
 
   async getChannelsByUserId(userId) {

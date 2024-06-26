@@ -87,48 +87,16 @@ export class ChatGateway
 
   @SubscribeMessage('sendMessageReq')
   async handleSendMessage(client: ChatSocket, { body, channelId }) {
-    const newMessage = await this.chatService.createMessage(
+    const { message, users } = await this.chatService.createMessage(
       body,
       client.userId,
       channelId,
     );
-    const users = await this.chatService.getUsersByChannelId(channelId);
 
     users.map((user) => {
-      this.io.to(user.id.toString()).emit('sendMessageRes', newMessage);
+      this.io.to(user.id.toString()).emit('sendMessageRes', message);
     });
   }
-
-  // @SubscribeMessage('createChannelReq')
-  // async handleNewChannel(client: ChatSocket, { toUserId }) {
-  //   const channel = await this.chatService.createChannel(
-  //     client.userId,
-  //     toUserId,
-  //   );
-
-  //   const users: SocketUserData[] = [];
-  //   channel.users.map((user) => {
-  //     users.push(user.user);
-  //   });
-
-  //   const data = {
-  //     id: channel.id,
-  //     users: users,
-  //   };
-
-  //   this.io.to(client.userId.toString()).emit('getChannelRes', data);
-  //   this.io.to(toUserId.toString()).emit('getChannelRes', data);
-
-  //   client.emit('createChannelRes', channel.id);
-  // }
-
-  // @SubscribeMessage('deleteChannelReq')
-  // async handleDeleteChannel(client: ChatSocket, { channelId }) {
-  //   this.logger.debug('deleteChannelReq ' + channelId);
-  //   const messages = await this.chatService.getMessagesByChannelId(channelId);
-  //   if (messages.length > 0) return;
-  //   await this.chatService.deleteChannelByChannelId(channelId);
-  // }
 
   @SubscribeMessage('readMessageReq')
   async handleReadMessage(client: ChatSocket, { channelId }) {
@@ -141,11 +109,10 @@ export class ChatGateway
 
   @SubscribeMessage('createChannelReq')
   async handleCreateChannel(client: ChatSocket, { body, sendTo }) {
-    const channel = await this.chatService.createChannel(client.userId, sendTo);
-    const message = await this.chatService.createMessage(
-      body,
+    const { channel, message } = await this.chatService.createChannel(
       client.userId,
-      channel.id,
+      sendTo,
+      body,
     );
 
     const users: SocketUserData[] = [];
