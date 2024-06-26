@@ -14,13 +14,7 @@ const EditProfile = () => {
   const name = useFormInput(user.name);
   const nickname = useFormInput(user.nickname);
   const [disabled, setDisabled] = useState(false);
-  // const [imageUrl, setImageUrl] = useState<string>(
-  //   `${process.env.REACT_APP_API_URL}/users/profileImage/${user.image}`
-  // );
-  // const [file, setFile] = useState<File | null>(null);
-
   const profileImage = useRef<HTMLInputElement>(null);
-
   const file = useSelectImage(
     `${process.env.REACT_APP_API_URL}/users/profileImage/${user.image}`
   );
@@ -29,67 +23,74 @@ const EditProfile = () => {
     setDisabled(true);
     e.preventDefault();
     try {
-      await axiosInstance.patch(`users/${user.id}`, {
-        nickname: nickname.value,
-        name: name.value,
-      });
-      dispatch(
-        updateUser({
+      const res = await axiosInstance.post(
+        `users/${user.id}`,
+        {
           nickname: nickname.value,
           name: name.value,
-        })
+          image: file.file ? file.file : undefined,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
       );
+      dispatch(updateUser(res.data));
+      file.setFile(null);
       alert("프로필 저장 완료");
     } catch (err) {
       alert(err);
+    } finally {
+      setDisabled(false);
     }
-
-    if (file.file) {
-      try {
-        console.log("here");
-        const res = await axiosInstance.post(
-          `users/${user.id}`,
-          { image: file.file ? file.file : undefined },
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
-          }
-        );
-
-        const image = res.data.image;
-        dispatch(
-          updateUser({
-            image: image,
-          })
-        );
-        file.setFile(null);
-        alert("이미지 저장 완료");
-      } catch (err) {
-        alert("이미지 업로드 실패");
-      }
-    }
-
-    setDisabled(false);
   };
 
-  // const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   if (e.target.files && e.target.files.length > 0) {
-  //     const file = e.target.files[0];
-  //     if (file) {
-  //       // size check
-  //       if (file.size > 5 * 1024 * 1024) {
-  //         alert("5MB 미만의 이미지만 업로드가 가능합니다.");
-  //         e.target.value = ""; // 선택된 파일 초기화
-  //         setFile(null);
-  //       } else {
-  //         setFile(file);
-  //         setImageUrl(URL.createObjectURL(file));
-  //       }
-  //     } else {
-  //       alert("파일 선택에 실패했습니다.");
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   setDisabled(true);
+  //   e.preventDefault();
+  //   try {
+  //     await axiosInstance.patch(`users/${user.id}`, {
+  //       nickname: nickname.value,
+  //       name: name.value,
+  //     });
+  //     dispatch(
+  //       updateUser({
+  //         nickname: nickname.value,
+  //         name: name.value,
+  //       })
+  //     );
+  //     alert("프로필 저장 완료");
+  //   } catch (err) {
+  //     alert(err);
+  //   }
+
+  //   if (file.file) {
+  //     try {
+  //       const res = await axiosInstance.post(
+  //         `users/${user.id}`,
+  //         { image: file.file ? file.file : undefined },
+  //         {
+  //           headers: {
+  //             "Content-Type": "multipart/form-data",
+  //           },
+  //         }
+  //       );
+
+  //       const image = res.data.image;
+  //       dispatch(
+  //         updateUser({
+  //           image: image,
+  //         })
+  //       );
+  //       file.setFile(null);
+  //       alert("이미지 저장 완료");
+  //     } catch (err) {
+  //       alert("이미지 업로드 실패");
   //     }
   //   }
+
+  //   setDisabled(false);
   // };
 
   return (

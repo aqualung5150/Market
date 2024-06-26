@@ -37,45 +37,60 @@ export class UserService {
     });
   }
 
-  async updateUserImage(id: number, filename: string) {
-    const data = await this.prisma.user.findUnique({
-      where: {
-        id: id,
-      },
-      select: {
-        image: true,
-      },
-    });
-
-    const prevImage = data.image;
-
-    await this.prisma.user
-      .update({
-        where: { id: id },
-        data: {
-          image: filename,
-        },
-      })
-      .then(() => {
-        if (prevImage && prevImage !== 'default.png') {
-          try {
-            fs.unlinkSync(`./uploads/profileimages/${prevImage}`);
-          } catch (err) {
-            console.error(err);
+  async updateUser(
+    id: number,
+    data: Prisma.UserUpdateInput,
+    filename?: string,
+  ) {
+    return await this.prisma.$transaction(async (tx) => {
+      // previous image path
+      let prevImage: string = undefined;
+      if (filename) {
+        const res = await tx.user.findUnique({
+          where: {
+            id: id,
+          },
+          select: {
+            image: true,
+          },
+        });
+        prevImage = res.image;
+      }
+      // update
+      await tx.user
+        .update({
+          where: { id: id },
+          data: {
+            ...data,
+            image: filename ? filename : undefined,
+            id: undefined,
+            email: undefined,
+            createdAt: undefined,
+          },
+        })
+        // remove previous image file
+        .then(() => {
+          if (prevImage && prevImage !== 'default.png') {
+            try {
+              fs.unlinkSync(`./uploads/profileimages/${prevImage}`);
+            } catch (err) {
+              console.error(err);
+            }
           }
-        }
+        });
+      // get updated data
+      const res = await tx.user.findUnique({
+        where: {
+          id: id,
+        },
+        select: {
+          name: true,
+          nickname: true,
+          image: true,
+        },
       });
-  }
 
-  async updateUserById(id: number, data: Prisma.UserUpdateInput) {
-    await this.prisma.user.update({
-      where: { id: id },
-      data: {
-        ...data,
-        id: undefined,
-        email: undefined,
-        createdAt: undefined,
-      },
+      return res;
     });
   }
 

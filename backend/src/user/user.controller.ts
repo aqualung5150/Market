@@ -66,18 +66,6 @@ export class UserController {
   }
 
   @UseGuards(JwtGuard)
-  @Patch(':id')
-  updateUser(
-    @Req() req: Request,
-    @Param('id', ParseIntPipe) id: number,
-    @Body() data: Prisma.UserUpdateInput,
-  ) {
-    if (req.user.id !== id)
-      throw new HttpException('unauthorized', HttpStatus.BAD_REQUEST);
-    this.userService.updateUserById(req.user.id, data);
-  }
-
-  @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('image', profilImageStorage))
   @Post(':id')
   async uploadFile(
@@ -85,15 +73,18 @@ export class UserController {
     @Param('id', ParseIntPipe) id: number,
     @UploadedFile()
     file: Express.Multer.File,
+    @Body() data: Prisma.UserUpdateInput,
   ) {
     if (req.user.id !== id)
       throw new HttpException('unauthorized', HttpStatus.BAD_REQUEST);
     if (req.fileValidationError) {
       throw new BadRequestException(req.fileValidationError);
     }
-
-    await this.userService.updateUserImage(req.user.id, file.filename);
-    return { image: file.filename };
+    return await this.userService.updateUser(
+      req.user.id,
+      data,
+      file ? file.filename : undefined,
+    );
   }
 
   @Get('profileImage/:imagename')
