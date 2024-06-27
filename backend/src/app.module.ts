@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { ChatModule } from './socket.io/chat/chat.module';
 import { PrismaService } from './prisma/prisma.service';
+import { ProductModule } from './product/product.module';
 
 @Module({
   imports: [
@@ -11,6 +12,7 @@ import { PrismaService } from './prisma/prisma.service';
     AuthModule,
     PrismaModule,
     ChatModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [],
