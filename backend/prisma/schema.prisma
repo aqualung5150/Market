@@ -67,8 +67,19 @@ model Product {
   status Int @db.SmallInt // 0: 판매중, 1: 예약중, 2: 판매완료
   description String @db.VarChar(1000)
   price Int
+  createdAt DateTime @default(now())
   user User @relation(fields: [userId], references: [id])
   userId Int
   category Category @relation(fields: [categoryId], references: [id])
   categoryId Int
+  images ProductImage[]
+}
+
+model ProductImage {
+  id Int @id @default(autoincrement())
+  url String
+  order Int @db.SmallInt
+  main Boolean
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId Int
 }
