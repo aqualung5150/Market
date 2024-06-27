@@ -8,6 +8,7 @@ const Product = () => {
   const paramId = useParams().id;
   const navigate = useNavigate();
   const { data, error, loading } = useAxios(`product/${paramId}`);
+  const [imageIndex, setImageIndex] = useState(0);
   const [screenView, setScreenView] = useState(false);
 
   if (error) {
@@ -20,12 +21,16 @@ const Product = () => {
       {loading && <Loading text="로딩중..." />}
       {data && (
         <div className="h-full w-full flex flex-col items-center">
-          <div className="min-w-[200px] w-[520px] min-h-[200px] h-[520px]">
-            <Carousel autoSlide={true} onClick={() => setScreenView(true)}>
+          <div className="min-w-[200px] w-[520px] min-h-[200px] h-[520px] rounded-lg shadow-xl">
+            <Carousel autoSlide={true}>
               {data?.images?.map((image: any, idx: number) => (
                 <img
+                  onClick={() => {
+                    setImageIndex(idx);
+                    setScreenView(true);
+                  }}
                   key={idx}
-                  className="aspect-square object-cover"
+                  className="aspect-square object-cover rounded-2xl"
                   src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`}
                 />
               ))}
@@ -36,18 +41,22 @@ const Product = () => {
           <div>{data.description}</div>
           {screenView && (
             <div
-              className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-80 flex justify-center items-center"
+              className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-85 flex justify-center items-center"
               onClick={() => setScreenView(false)}
             >
-              <div className="flex h-full overflow-auto">
+              <Carousel initialIndex={imageIndex}>
                 {data?.images?.map((image: any, idx: number) => (
-                  <img
+                  <div
                     key={idx}
-                    className="object-contain"
-                    src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`}
-                  />
+                    className="w-screen h-screen shrink-0 flex items-center"
+                  >
+                    <img
+                      className="object-contain w-full h-full"
+                      src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`}
+                    />
+                  </div>
                 ))}
-              </div>
+              </Carousel>
             </div>
           )}
         </div>
