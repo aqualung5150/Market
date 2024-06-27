@@ -2,9 +2,13 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Logger,
+  Param,
+  ParseIntPipe,
   Post,
   Req,
+  StreamableFile,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -17,6 +21,7 @@ import * as path from 'path';
 import { v4 } from 'uuid';
 import { Request } from 'express';
 import { ProductPayloadDto } from './dto/product.dto';
+import * as fs from 'fs';
 
 const storage = {
   storage: multer.diskStorage({
@@ -62,5 +67,19 @@ export class ProductController {
     }
 
     return await this.productService.createProduct(req.user.id, data, files);
+  }
+
+  @Get(':id')
+  async getProduct(@Param('id', ParseIntPipe) id: number) {
+    return await this.productService.getProduct(id);
+  }
+
+  @Get('productImage/:imageName')
+  getProductImage(@Param('imageName') imageName): StreamableFile {
+    const file = fs.createReadStream(
+      path.join('./uploads/productImages/' + imageName),
+    );
+
+    return new StreamableFile(file);
   }
 }

@@ -1,7 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
-import { Express } from 'express';
-import { connect } from 'http2';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -74,5 +71,25 @@ export class ProductService {
 
       return product.id;
     });
+  }
+
+  async getProduct(id: number) {
+    try {
+      const res = await this.prisma.product.findUniqueOrThrow({
+        where: {
+          id: id,
+        },
+        include: {
+          images: {
+            orderBy: {
+              order: 'asc',
+            },
+          },
+        },
+      });
+      return res;
+    } catch (err) {
+      throw new NotFoundException('no such product');
+    }
   }
 }
