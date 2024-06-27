@@ -20,78 +20,25 @@ const EditProfile = () => {
   );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    setDisabled(true);
     e.preventDefault();
+    setDisabled(true);
+
+    const formData = new FormData();
+    formData.append("nickname", nickname.value);
+    formData.append("name", name.value);
+    file.file && formData.append("image", file.file);
+
     try {
-      const res = await axiosInstance.post(
-        `users/${user.id}`,
-        {
-          nickname: nickname.value,
-          name: name.value,
-          image: file.file ? file.file : undefined,
-        },
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      const res = await axiosInstance.postForm(`users/${user.id}`, formData);
       dispatch(updateUser(res.data));
       file.setFile(null);
       alert("프로필 저장 완료");
-    } catch (err) {
-      alert(err);
+    } catch (err: any) {
+      alert(err.response.data.message);
     } finally {
       setDisabled(false);
     }
   };
-
-  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  //   setDisabled(true);
-  //   e.preventDefault();
-  //   try {
-  //     await axiosInstance.patch(`users/${user.id}`, {
-  //       nickname: nickname.value,
-  //       name: name.value,
-  //     });
-  //     dispatch(
-  //       updateUser({
-  //         nickname: nickname.value,
-  //         name: name.value,
-  //       })
-  //     );
-  //     alert("프로필 저장 완료");
-  //   } catch (err) {
-  //     alert(err);
-  //   }
-
-  //   if (file.file) {
-  //     try {
-  //       const res = await axiosInstance.post(
-  //         `users/${user.id}`,
-  //         { image: file.file ? file.file : undefined },
-  //         {
-  //           headers: {
-  //             "Content-Type": "multipart/form-data",
-  //           },
-  //         }
-  //       );
-
-  //       const image = res.data.image;
-  //       dispatch(
-  //         updateUser({
-  //           image: image,
-  //         })
-  //       );
-  //       file.setFile(null);
-  //       alert("이미지 저장 완료");
-  //     } catch (err) {
-  //       alert("이미지 업로드 실패");
-  //     }
-  //   }
-
-  //   setDisabled(false);
-  // };
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col flex-1 items-center">

@@ -8,7 +8,6 @@ import {
   Logger,
   Param,
   ParseIntPipe,
-  Patch,
   Post,
   Req,
   StreamableFile,
@@ -24,11 +23,11 @@ import * as multer from 'multer';
 import * as path from 'path';
 import { Prisma } from '@prisma/client';
 import { v4 } from 'uuid';
-import { createReadStream } from 'fs';
+import * as fs from 'fs';
 
-export const profilImageStorage = {
+const storage = {
   storage: multer.diskStorage({
-    destination: './uploads/profileimages',
+    destination: './uploads/profileImages',
     filename: (req, file, cb) => {
       const origin = path.parse(file.originalname);
       const filename: string = origin.name.replace(/\s/g, '') + v4();
@@ -66,7 +65,7 @@ export class UserController {
   }
 
   @UseGuards(JwtGuard)
-  @UseInterceptors(FileInterceptor('image', profilImageStorage))
+  @UseInterceptors(FileInterceptor('image', storage))
   @Post(':id')
   async uploadFile(
     @Req() req: Request,
@@ -80,17 +79,18 @@ export class UserController {
     if (req.fileValidationError) {
       throw new BadRequestException(req.fileValidationError);
     }
-    return await this.userService.updateUser(
-      req.user.id,
-      data,
-      file ? file.filename : undefined,
-    );
+
+    return await this.userService
+      .updateUser(req.user.id, data, file ? file.filename : undefined)
+      .catch(() => {
+        fs.unlinkSync(`./uploads/profileImages/${file.filename}`);
+      });
   }
 
   @Get('profileImage/:imagename')
   getProfileImage(@Param('imagename') imagename): StreamableFile {
-    const file = createReadStream(
-      path.join('./uploads/profileimages/' + imagename),
+    const file = fs.createReadStream(
+      path.join('./uploads/profileImages/' + imagename),
     );
 
     return new StreamableFile(file);
