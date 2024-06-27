@@ -16,7 +16,7 @@ const ImageSelector = ({
   };
 
   return (
-    <div className="flex">
+    <div className="flex select-none">
       <input
         type="file"
         className="hidden"
@@ -33,13 +33,12 @@ const ImageSelector = ({
         <span className="text-xs">{files.length} / 5</span>
       </div>
       {urls.map((image, idx) => (
-        <div className="relative ml-1">
+        <div key={idx} className="relative ml-1">
           {idx === 0 && (
             <div className="absolute top-0 left-0 min-w-24 w-24 h-24 rounded border-green-500 border-2 bg-transparent"></div>
           )}
           <img
             className="max-w-24 w-24 h-24 rounded object-cover"
-            key={idx}
             src={image}
           />
           <div
