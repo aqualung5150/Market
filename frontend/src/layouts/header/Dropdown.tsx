@@ -24,7 +24,7 @@ const Dropdown = () => {
         {userNickname}
       </div>
       {open && (
-        <div className="absolute border my-1 rounded bg-white w-[100px] top-full right-0">
+        <div className="absolute border my-1 rounded bg-white w-[100px] top-full right-0 shadow">
           <ul className="text-center ">
             <li
               onClick={() => {
