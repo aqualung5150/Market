@@ -2,13 +2,16 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   Logger,
   Param,
   ParseIntPipe,
   Post,
+  Query,
   Req,
   StreamableFile,
+  UnauthorizedException,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -51,9 +54,14 @@ export class ProductController {
   private readonly logger = new Logger(ProductController.name);
   constructor(private readonly productService: ProductService) {}
 
+  @Get()
+  async getProducts(@Query() query) {
+    return await this.productService.getProductMany(parseInt(query.category));
+  }
+
   @UseGuards(JwtGuard)
   @UseInterceptors(FilesInterceptor('image', 5, storage))
-  @Post('form')
+  @Post()
   async postProduct(
     @Req() req: Request,
     @UploadedFiles() files: Express.Multer.File[],
@@ -65,8 +73,13 @@ export class ProductController {
     if (files.length < 1) {
       throw new BadRequestException('at least one file is required');
     }
-
-    return await this.productService.createProduct(req.user.id, data, files);
+    try {
+      return await this.productService.createProduct(req.user.id, data, files);
+    } catch (err) {
+      // fail to post Product
+      for (const file of files)
+        fs.unlink(`uploads/productImages/${file.filename}`, () => {});
+    }
   }
 
   @Get(':id')
@@ -81,5 +94,18 @@ export class ProductController {
     );
 
     return new StreamableFile(file);
+  }
+
+  @UseGuards(JwtGuard)
+  @Delete(':id')
+  async deleteProduct(
+    @Req() req: Request,
+    @Param('id', ParseIntPipe) id: number,
+  ) {
+    const productUserId = (await this.productService.getProductUserId(id)).user
+      .id;
+    if (req.user.id !== productUserId) throw new UnauthorizedException();
+
+    return await this.productService.deleteProduct(id);
   }
 }

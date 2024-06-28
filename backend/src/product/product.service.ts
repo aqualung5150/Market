@@ -1,4 +1,5 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
+import { unlinkSync } from 'fs';
 import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
@@ -44,30 +45,6 @@ export class ProductService {
       await tx.productImage.createMany({
         data: imagesData,
       });
-      // get product data
-      //   const res = await tx.product.findUnique({
-      //     where: {
-      //       id: product.id,
-      //     },
-      //     select: {
-      //       id: true,
-      //       title: true,
-      //       status: true,
-      //       description: true,
-      //       price: true,
-      //       createdAt: true,
-      //       user: {
-      //         select: {
-      //           id: true,
-      //           nickname: true,
-      //         },
-      //       },
-      //       category: true,
-      //       images: true,
-      //     },
-      //   });
-
-      //   return res;
 
       return product.id;
     });
@@ -85,11 +62,83 @@ export class ProductService {
               order: 'asc',
             },
           },
+          user: {
+            select: {
+              id: true,
+              nickname: true,
+              image: true,
+            },
+          },
         },
       });
       return res;
     } catch (err) {
       throw new NotFoundException('no such product');
     }
+  }
+
+  async getProductMany(categoryId?) {
+    return await this.prisma.product.findMany({
+      where: {
+        categoryId: categoryId ? categoryId : undefined,
+      },
+      include: {
+        images: {
+          orderBy: {
+            order: 'asc',
+          },
+        },
+        user: {
+          select: {
+            id: true,
+            nickname: true,
+            image: true,
+          },
+        },
+      },
+    });
+  }
+
+  async getProductUserId(productId) {
+    return await this.prisma.product.findUnique({
+      where: {
+        id: productId,
+      },
+      select: {
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+  }
+
+  async deleteProduct(productId) {
+    return await this.prisma.$transaction(async (tx) => {
+      // get url of images
+      const images = await tx.product.findUnique({
+        where: {
+          id: productId,
+        },
+        select: {
+          images: {
+            select: {
+              url: true,
+            },
+          },
+        },
+      });
+      // delete Product
+      await tx.product.delete({
+        where: {
+          id: productId,
+        },
+      });
+      // delete image files
+      images.images.map((image) => {
+        unlinkSync(`./uploads/productImages/${image.url}`);
+      });
+    });
   }
 }
