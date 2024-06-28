@@ -24,10 +24,16 @@ interface ConnectionState {
 }
 
 interface User {
-  id: true;
-  name: true;
-  nickname: true;
-  email: true;
-  image: true;
-  createdAt: true;
+  id: number;
+  name: string;
+  nickname: string;
+  email: string;
+  image: string;
+  createdAt: Date;
+}
+
+interface PublicUser {
+  id: number;
+  nickname: string;
+  image: string;
 }

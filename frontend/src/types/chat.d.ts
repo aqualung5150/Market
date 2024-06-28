@@ -1,5 +1,5 @@
 import { Socket } from "socket.io-client";
-import { User } from "./user";
+import { PublicUser } from "./user";
 
 interface ChannelsProps {
   selectedChannelId: number;
@@ -10,19 +10,13 @@ interface InputFieldProps {
   channelId: number;
 }
 
-interface SocketUserData {
-  id: number;
-  nickname: string;
-  image: string;
-}
-
 interface SocketMessageData {
   id: number;
   body: string;
   read: boolean;
   createdAt: Date;
   channelId: number;
-  sender: SocketUserData;
+  sender: PublicUser;
 }
 
 interface SocketChannelData {
@@ -31,7 +25,7 @@ interface SocketChannelData {
   lastMessageDate: Date;
   read: boolean;
   senderId: number;
-  users: SocketUserData[];
+  users: PublicUser[];
 }
 
 interface ChannelProps extends SocketChannelData {
