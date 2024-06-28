@@ -4,6 +4,7 @@ import {
   Controller,
   Delete,
   Get,
+  HttpException,
   Logger,
   Param,
   ParseIntPipe,
@@ -12,6 +13,7 @@ import {
   Req,
   StreamableFile,
   UnauthorizedException,
+  UnsupportedMediaTypeException,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -68,7 +70,7 @@ export class ProductController {
     @Body() data: ProductPayloadDto,
   ) {
     if (req.fileValidationError) {
-      throw new BadRequestException(req.fileValidationError);
+      throw new UnsupportedMediaTypeException(req.fileValidationError);
     }
     if (files.length < 1) {
       throw new BadRequestException('at least one file is required');
@@ -79,6 +81,8 @@ export class ProductController {
       // fail to post Product
       for (const file of files)
         fs.unlink(`uploads/productImages/${file.filename}`, () => {});
+
+      throw new HttpException('failed to create', 409);
     }
   }
 
