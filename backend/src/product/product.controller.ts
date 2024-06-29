@@ -56,10 +56,14 @@ export class ProductController {
   private readonly logger = new Logger(ProductController.name);
   constructor(private readonly productService: ProductService) {}
 
-  @Get()
-  async getProducts(@Query() query) {
-    return await this.productService.getProductMany(parseInt(query.category));
-  }
+  // @Get()
+  // async getProducts(@Query() query) {
+  //   return await this.productService.getProductMany({
+  //     title: query.title,
+  //     categoryId: parseInt(query.category),
+  //     page: query.page,
+  //   });
+  // }
 
   @UseGuards(JwtGuard)
   @UseInterceptors(FilesInterceptor('image', 5, storage))

@@ -77,27 +77,29 @@ export class ProductService {
     }
   }
 
-  async getProductMany(categoryId?) {
-    return await this.prisma.product.findMany({
-      where: {
-        categoryId: categoryId ? categoryId : undefined,
-      },
-      include: {
-        images: {
-          orderBy: {
-            order: 'asc',
-          },
-        },
-        user: {
-          select: {
-            id: true,
-            nickname: true,
-            image: true,
-          },
-        },
-      },
-    });
-  }
+  // Move to search Controller
+  // async getProductMany({ title, categoryId, page = 1 }) {
+  //   return await this.prisma.product.findMany({
+  //     where: {
+  //       title: title ? title : undefined,
+  //       categoryId: categoryId ? categoryId : undefined,
+  //     },
+  //     include: {
+  //       images: {
+  //         orderBy: {
+  //           order: 'asc',
+  //         },
+  //       },
+  //       user: {
+  //         select: {
+  //           id: true,
+  //           nickname: true,
+  //           image: true,
+  //         },
+  //       },
+  //     },
+  //   });
+  // }
 
   async getProductUserId(productId) {
     return await this.prisma.product.findUnique({

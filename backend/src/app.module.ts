@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { ChatModule } from './socket.io/chat/chat.module';
 import { PrismaService } from './prisma/prisma.service';
 import { ProductModule } from './product/product.module';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { ProductModule } from './product/product.module';
     PrismaModule,
     ChatModule,
     ProductModule,
+    SearchModule,
   ],
   controllers: [],
   providers: [],
