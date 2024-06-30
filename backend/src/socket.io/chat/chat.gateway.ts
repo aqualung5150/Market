@@ -81,8 +81,15 @@ export class ChatGateway
 
   @SubscribeMessage('getMessagesReq')
   async handleGetMessages(client: ChatSocket, { channelId }) {
-    const messages = await this.chatService.getMessagesByChannelId(channelId);
+    const { messages, notMe } = await this.chatService.getReadMessages(
+      client.userId,
+      channelId,
+    );
+
     client.emit('getMessagesRes', messages);
+    this.io
+      .to(notMe.id.toString())
+      .emit('readMessagesRes', messages[messages.length - 1].createdAt);
   }
 
   @SubscribeMessage('sendMessageReq')
@@ -99,12 +106,9 @@ export class ChatGateway
   }
 
   @SubscribeMessage('readMessageReq')
-  async handleReadMessage(client: ChatSocket, { channelId }) {
-    this.chatService.readMessages(client.userId, channelId);
-
-    const users = await this.chatService.getUsersByChannelId(channelId);
-    const toUser = users.find((user) => user.id !== client.userId);
-    this.io.to(toUser.id.toString()).emit('readMessageRes', channelId);
+  async handleReadMessage(client: ChatSocket, { messageId, senderId }) {
+    await this.chatService.readMessage(messageId);
+    this.io.to(senderId.toString()).emit('readMessageRes', messageId);
   }
 
   @SubscribeMessage('createChannelReq')

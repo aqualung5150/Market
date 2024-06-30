@@ -80,7 +80,6 @@ export class ChatService {
   }
 
   async createMessage(body: string, senderId, channelId) {
-    console.log(senderId);
     return this.prisma.$transaction(async (tx) => {
       // create message
       const message = await tx.message.create({
@@ -237,33 +236,6 @@ export class ChatService {
     return users;
   }
 
-  async getMessagesByChannelId(channelId) {
-    const messages = await this.prisma.message.findMany({
-      select: {
-        id: true,
-        body: true,
-        read: true,
-        createdAt: true,
-        channelId: true,
-        sender: {
-          select: {
-            id: true,
-            nickname: true,
-            image: true,
-          },
-        },
-      },
-      where: {
-        channelId: channelId,
-      },
-      orderBy: {
-        createdAt: 'asc',
-      },
-    });
-
-    return messages;
-  }
-
   async deleteChannelByChannelId(channelId) {
     await this.prisma.channel.delete({
       where: {
@@ -272,17 +244,72 @@ export class ChatService {
     });
   }
 
-  async readMessages(userId, channelId) {
-    await this.prisma.message.updateMany({
+  async readMessage(messageId) {
+    await this.prisma.message.update({
       where: {
-        channelId: channelId,
-        NOT: {
-          senderId: userId,
-        },
+        id: messageId,
       },
       data: {
         read: true,
       },
+    });
+  }
+
+  async getReadMessages(userId, channelId) {
+    return await this.prisma.$transaction(async (tx) => {
+      const messages = await tx.message.findMany({
+        select: {
+          id: true,
+          body: true,
+          read: true,
+          createdAt: true,
+          channelId: true,
+          sender: {
+            select: {
+              id: true,
+              nickname: true,
+              image: true,
+            },
+          },
+        },
+        where: {
+          channelId: channelId,
+        },
+        orderBy: {
+          createdAt: 'asc',
+        },
+      });
+
+      messages.map(async (message) => {
+        if (message.sender.id !== userId)
+          await tx.message.update({
+            where: {
+              id: message.id,
+            },
+            data: {
+              read: true,
+            },
+          });
+      });
+
+      const users = await tx.user.findMany({
+        select: {
+          id: true,
+          nickname: true,
+          image: true,
+        },
+        where: {
+          channels: {
+            some: {
+              channelId: channelId,
+            },
+          },
+        },
+      });
+
+      const notMe = users.find((user) => user.id !== userId);
+
+      return { messages, notMe };
     });
   }
 }

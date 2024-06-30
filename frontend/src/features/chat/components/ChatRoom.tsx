@@ -1,4 +1,4 @@
-import { ChatRoomProps, SocketMessageData } from "../../../@types/chat";
+import { ChatRoomProps, SocketMessageData } from "../../../types/chat";
 import InputField from "./InputField";
 import Message from "./Message";
 import useChatRoom from "../hooks/useChatRoom";
