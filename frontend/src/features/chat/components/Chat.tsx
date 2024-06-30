@@ -30,7 +30,11 @@ const Chat = () => {
             setSelectedChannelId={setSelectedChannelId}
           />
           {selectedChannelId ? (
-            <ChatRoom selectedChannelId={selectedChannelId} />
+            // set key props to re-mount component
+            <ChatRoom
+              key={selectedChannelId}
+              selectedChannelId={selectedChannelId}
+            />
           ) : (
             <EmptyRoom />
           )}

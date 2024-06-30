@@ -255,7 +255,7 @@ export class ChatService {
     });
   }
 
-  async getReadMessages(userId, channelId) {
+  async getReadMessages(userId, channelId, cursor, pageSize) {
     return await this.prisma.$transaction(async (tx) => {
       const messages = await tx.message.findMany({
         select: {
@@ -272,11 +272,17 @@ export class ChatService {
             },
           },
         },
+        take: pageSize,
         where: {
           channelId: channelId,
+          id: cursor
+            ? {
+                lt: cursor,
+              }
+            : undefined,
         },
         orderBy: {
-          createdAt: 'asc',
+          createdAt: 'desc',
         },
       });
 

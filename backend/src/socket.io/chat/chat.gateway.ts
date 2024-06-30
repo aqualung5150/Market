@@ -80,16 +80,20 @@ export class ChatGateway
   }
 
   @SubscribeMessage('getMessagesReq')
-  async handleGetMessages(client: ChatSocket, { channelId }) {
+  async handleGetMessages(client: ChatSocket, { channelId, cursor }) {
+    const pageSize = 10;
     const { messages, notMe } = await this.chatService.getReadMessages(
       client.userId,
       channelId,
+      cursor,
+      pageSize,
     );
-
-    client.emit('getMessagesRes', messages);
+    const nextCursor =
+      messages.length < pageSize ? -1 : messages[messages.length - 1].id;
+    client.emit('getMessagesRes', { messages, nextCursor });
     this.io
       .to(notMe.id.toString())
-      .emit('readMessagesRes', messages[messages.length - 1].createdAt);
+      .emit('readMessagesRes', messages[0]?.createdAt);
   }
 
   @SubscribeMessage('sendMessageReq')

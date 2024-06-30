@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { SocketMessageData, UseChatRoomProps } from "../../../types/chat";
 import { SocketContext } from "../../../context/SocketContext";
 import { RootState } from "../../../app/store";
@@ -8,9 +8,10 @@ const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
   const socket = useContext(SocketContext).socket;
   const userId = useSelector((state: RootState) => state.user.id);
   const [messagesData, setMessagesData] = useState<SocketMessageData[]>([]);
+  const [cursor, setCursor] = useState(0);
 
   useEffect(() => {
-    if (!socket || !selectedChannelId) return;
+    if (!socket) return;
 
     // Event
     const addNewMessage = (message: SocketMessageData) => {
@@ -21,7 +22,11 @@ const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
             senderId: message.sender.id,
           });
         }
-        setMessagesData((prev) => prev.concat(message));
+        // add message front
+        setMessagesData((prev) => {
+          prev.unshift(message);
+          return [...prev];
+        });
       }
     };
 
@@ -44,27 +49,56 @@ const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
       });
     };
 
-    const concatMessages = (messages: SocketMessageData[]) => {
-      setMessagesData((prev) => prev.concat(messages));
-    };
-
     // Listen
-    socket.on("getMessagesRes", concatMessages);
     socket.on("sendMessageRes", addNewMessage);
     socket.on("readMessagesRes", readMessages);
     socket.on("readMessageRes", readMessage);
-    // Emit
-    socket.emit("getMessagesReq", { channelId: selectedChannelId });
 
     return () => {
-      socket.off("getMessagesRes", concatMessages);
       socket.off("sendMessageRes", addNewMessage);
       socket.off("readMessagesRes", readMessages);
       socket.off("readMessageRes", readMessage);
     };
-  }, [socket, selectedChannelId]);
+  }, [socket]);
 
-  return { userId, messagesData };
+  // Infinite Scroll
+  const loader = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!socket || cursor < 0) return; // last message loaded
+
+    const concatMessages = ({ messages, nextCursor }: any) => {
+      setMessagesData((prev) => prev.concat(messages));
+      setCursor(nextCursor); // set cursor as last message's id
+    };
+
+    socket.on("getMessagesRes", concatMessages);
+
+    const handleObserver = (entries: any) => {
+      const target = entries[0];
+      if (target.isIntersecting) {
+        socket?.emit("getMessagesReq", {
+          channelId: selectedChannelId,
+          cursor,
+        });
+      }
+    };
+
+    // const options = {
+    //   root: null,
+    //   rootMargin: "20px",
+    //   threshold: 0,
+    // };
+    const observer = new IntersectionObserver(handleObserver);
+    if (loader.current) observer.observe(loader.current);
+
+    return () => {
+      if (loader.current) observer.unobserve(loader.current);
+
+      socket.off("getMessagesRes", concatMessages);
+    };
+  }, [cursor]);
+
+  return { userId, messagesData, loader };
 };
 
 export default useChatRoom;
