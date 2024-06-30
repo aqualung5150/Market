@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { SocketMessageData, UseChatRoomProps } from "../../../@types/chat";
+import { SocketMessageData, UseChatRoomProps } from "../../../types/chat";
 import { SocketContext } from "../../../context/SocketContext";
 import { RootState } from "../../../app/store";
 import { useSelector } from "react-redux";
@@ -16,33 +16,50 @@ const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
     const addNewMessage = (message: SocketMessageData) => {
       if (message.channelId === selectedChannelId) {
         if (message.sender.id !== userId) {
-          socket.emit("readMessageReq", { channelId: selectedChannelId });
+          socket.emit("readMessageReq", {
+            messageId: message.id,
+            senderId: message.sender.id,
+          });
         }
         setMessagesData((prev) => prev.concat(message));
       }
     };
 
-    const readMessage = (channelId: number) => {
-      if (channelId === selectedChannelId) {
-        setMessagesData((prev) => {
-          prev.map((message: SocketMessageData) => {
-            if (message.sender.id === userId) message.read = true;
-          });
-          return [...prev];
-        });
-      }
+    const readMessage = (messageId: number) => {
+      setMessagesData((prev) => {
+        const target = prev.find((message) => message.id === messageId);
+        if (target) target.read = true;
+
+        return [...prev];
+      });
     };
+
+    const readMessages = (lastMessageAt: Date) => {
+      setMessagesData((prev) => {
+        prev.map((message: SocketMessageData) => {
+          if (message.createdAt <= lastMessageAt) message.read = true;
+        });
+
+        return [...prev];
+      });
+    };
+
+    const concatMessages = (messages: SocketMessageData[]) => {
+      setMessagesData((prev) => prev.concat(messages));
+    };
+
     // Listen
-    socket.on("getMessagesRes", setMessagesData);
+    socket.on("getMessagesRes", concatMessages);
     socket.on("sendMessageRes", addNewMessage);
+    socket.on("readMessagesRes", readMessages);
     socket.on("readMessageRes", readMessage);
     // Emit
     socket.emit("getMessagesReq", { channelId: selectedChannelId });
-    socket.emit("readMessageReq", { channelId: selectedChannelId });
 
     return () => {
-      socket.off("getMessagesRes", setMessagesData);
+      socket.off("getMessagesRes", concatMessages);
       socket.off("sendMessageRes", addNewMessage);
+      socket.off("readMessagesRes", readMessages);
       socket.off("readMessageRes", readMessage);
     };
   }, [socket, selectedChannelId]);
