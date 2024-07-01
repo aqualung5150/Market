@@ -8,7 +8,7 @@ const LoginModal = () => {
 
   return (
     <div
-      className="fixed left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center"
+      className="fixed z-10 left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center"
       onClick={() => {
         dispatch(setOpenLogin(false));
         sessionStorage.removeItem("redirect");
@@ -16,7 +16,7 @@ const LoginModal = () => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white h-[400px]  w-[500px]  flex flex-col justify-center items-center border border-grey rounded shadow-xl"
+        className="bg-white mx-2 h-[400px]  w-[500px]  flex flex-col justify-center items-center border border-grey rounded shadow-xl"
       >
         <div className="flex justify-center items-center text-2xl mt-10">
           로그인

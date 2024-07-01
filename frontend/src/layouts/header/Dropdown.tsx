@@ -18,24 +18,25 @@ const Dropdown = () => {
   return (
     <div ref={wrapper} className="relative h-full">
       <div
-        className="border rounded font-bold flex flex-col justify-center items-center w-[100px] h-full truncate"
+        className="rounded bg-sky-100 font-bold flex flex-col justify-center items-center w-[100px] h-10 truncate"
         onClick={() => setOpen(!open)}
       >
         {userNickname}
       </div>
       {open && (
         <div className="absolute border my-1 rounded bg-white w-[100px] top-full right-0 shadow">
-          <ul className="text-center ">
+          <ul className="flex flex-col justify-center h-[150px]">
             <li
+              className="flex flex-1 justify-center items-center border-b"
               onClick={() => {
                 setOpen(false);
                 navigate(`users/${userId}`);
               }}
-              className="border-b"
             >
               마이페이지
             </li>
             <li
+              className="flex flex-1 justify-center items-center"
               onClick={() => {
                 setOpen(false);
                 dispatch(logout("/"));

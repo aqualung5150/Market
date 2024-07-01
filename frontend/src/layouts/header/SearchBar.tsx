@@ -7,7 +7,7 @@ const SearchBar = () => {
   const [value, setValue] = useState<string>("");
 
   return (
-    <div className="flex justify-center items-center w-[400px] mr-3">
+    <div className="flex justify-start items-left w-full mr-3">
       <Input
         value={value}
         onChange={(e) => setValue(e.target.value)}

@@ -13,7 +13,7 @@ const Chat = () => {
 
   return (
     <div
-      className="fixed left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center"
+      className="fixed z-10 left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center"
       onClick={() => {
         dispatch(setOpenChat(false));
         dispatch(setSendTo(0));

@@ -20,7 +20,7 @@ const LoginButton = () => {
         <Dropdown />
       ) : (
         <div
-          className="border rounded font-bold flex flex-col justify-center items-center w-[100px] h-full truncate"
+          className="rounded bg-green-400 font-semibold flex flex-col justify-center items-center w-[100px] h-10"
           onClick={handleLogin}
         >
           로그인
