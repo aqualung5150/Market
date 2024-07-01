@@ -20,9 +20,7 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
         <span>{"카테고리 > "}</span>
         <span
           className="cursor-pointer"
-          onClick={() =>
-            navigate(`/product/search?category=${category?.id}&page=1`)
-          }
+          onClick={() => navigate(`/search?category=${category?.id}&page=1`)}
         >
           {category?.label}
         </span>

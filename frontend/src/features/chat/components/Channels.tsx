@@ -1,4 +1,4 @@
-import { ChannelsProps, SocketChannelData } from "../../../@types/chat";
+import { ChannelsProps, SocketChannelData } from "../../../types/chat";
 import Channel from "./Channel";
 import useChannels from "../hooks/useChannels";
 
@@ -20,7 +20,7 @@ const Channels = ({
             className={
               "border-b bg-white px-3 flex items-center cursor-pointer " +
               (selectedChannelId === channelData.id
-                ? " bg-gray-300"
+                ? " bg-gray-500"
                 : " hover:bg-gray-100")
             }
             onClick={() => {

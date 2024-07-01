@@ -6,7 +6,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../app/store";
 // import useChatSocket from "../features/chat/hooks/useChatSocket";
 import Button from "../components/Button";
-import { User } from "../@types/user";
+import { User } from "../types/user";
 
 const Dummy = () => {
   const [data, setData] = useState<User>();

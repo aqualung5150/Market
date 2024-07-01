@@ -7,7 +7,6 @@ import { axiosInstance } from "../../../../data/axiosInstance";
 import { useNavigate } from "react-router-dom";
 import categoryData from "../../data/category.json";
 import { CategoryData } from "../../../../types/product";
-import { AxiosError } from "axios";
 
 const ProductForm = () => {
   const [disabled, setDisabled] = useState(false);

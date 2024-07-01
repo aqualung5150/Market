@@ -3,7 +3,7 @@ import {
   SocketChannelData,
   SocketMessageData,
   UseChannelsProps,
-} from "../../../@types/chat";
+} from "../../../types/chat";
 import { SocketContext } from "../../../context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
@@ -81,7 +81,6 @@ const useChannels = ({
     const sendToChannel = channelsData.find((channel) =>
       channel.users.find((user) => user.id === sendTo)
     );
-    console.log(sendToChannel);
     if (sendToChannel) {
       dispatch(setSendTo(0));
       setSelectedChannelId(sendToChannel.id);

@@ -1,5 +1,6 @@
 import { useRef } from "react";
 import { ReactComponent as CameraIcon } from "../../../../assets/camera.svg";
+import { ImageSelectorProps } from "../../../../types/product";
 
 const ImageSelector = ({
   files,

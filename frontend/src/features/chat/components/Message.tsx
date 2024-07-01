@@ -1,5 +1,5 @@
 import React from "react";
-import { MessageProps } from "../../../@types/chat";
+import { MessageProps } from "../../../types/chat";
 import dateAgo from "../../../utils/dateAgo";
 
 const Message = ({

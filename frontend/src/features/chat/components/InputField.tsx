@@ -1,7 +1,7 @@
 import { useCallback, useContext, useState } from "react";
 import Input from "../../../components/Input";
 import { SocketContext } from "../../../context/SocketContext";
-import { InputFieldProps } from "../../../@types/chat";
+import { InputFieldProps } from "../../../types/chat";
 
 const InputField = ({ channelId }: InputFieldProps) => {
   const [value, setValue] = useState<string>("");

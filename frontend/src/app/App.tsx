@@ -8,13 +8,12 @@ import useAxiosInterceptor from "../hooks/useAxiosInterceptor";
 import { axiosInstance } from "../data/axiosInstance";
 import useConnect from "../features/auth/hooks/useConnect";
 import { SocketContext } from "../context/SocketContext";
-import useAuthCheck from "../features/auth/hooks/useAuthCheck";
-import Bar from "../pages/Bar";
 import Users from "../pages/Users";
-import Oh from "../pages/Oh";
 import Profile from "../features/user/components/Profile";
 import EditProfile from "../features/user/components/EditProfile";
-// import chatSocket from "../features/chat/chatSocket";
+import ProductForm from "../features/product/components/form/ProductForm";
+import Product from "../pages/Product";
+import Products from "../pages/Products";
 
 const App = () => {
   useAxiosInterceptor(axiosInstance);
@@ -32,6 +31,13 @@ const App = () => {
             <Route path="users/:id" element={<Users />}>
               <Route path="" element={<Profile />} />
               <Route path="edit" element={<EditProfile />} />
+            </Route>
+            <Route path="product">
+              <Route path={"form"} element={<ProductForm />} />
+              <Route path={":id"} element={<Product />} />
+            </Route>
+            <Route path={"search"} element={<Products />}>
+              <Route path={":title"} element={<Products />} />
             </Route>
           </Route>
           <Route path="callback" element={<Callback />} />

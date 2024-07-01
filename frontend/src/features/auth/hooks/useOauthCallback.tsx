@@ -8,7 +8,6 @@ const useOauthCallback = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const code = searchParams.get("code");
   const navigate = useNavigate();
-
   const dispatch = useDispatch();
 
   const url = `${process.env.REACT_APP_BASE_URL}/api/auth/google?code=${code}`;
@@ -30,7 +29,7 @@ const useOauthCallback = () => {
         navigate(-1);
         alert(err);
       });
-  }, []);
+  }, [dispatch, navigate]);
 };
 
 export default useOauthCallback;

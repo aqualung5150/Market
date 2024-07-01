@@ -8,6 +8,7 @@ import {
 } from "redux-state-sync";
 import chatSlice from "../features/chat/chatSlice";
 import loginSlice from "../features/auth/loginSlice";
+import menuSlice from "../layouts/menuSlice";
 
 // redux-persist
 
@@ -24,6 +25,7 @@ const rootReducer = persistReducer(
     user: userSlice.reducer,
     chat: chatSlice.reducer,
     login: loginSlice.reducer,
+    menu: menuSlice.reducer,
   })
 );
 

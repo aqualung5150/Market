@@ -14,13 +14,13 @@ const Profile = () => {
   const { data, error, loading } = useAxios(`users/${paramId}`);
 
   if (error) {
-    alert("유저 정보를 불러오지 못했습니다.");
+    alert("유저 정보를 불러올 수 없습니다.");
     navigate(-1);
   }
 
   return (
     <>
-      {loading && <Loading />}
+      {loading && <Loading text="로딩중..." />}
       {data && (
         <div className="flex flex-col flex-1 items-center">
           <div className="flex m-10 w-2/3 min-h-[300px] border rounded-md">

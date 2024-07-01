@@ -11,13 +11,11 @@ export class SearchController {
 
   @Get(':keyword')
   async getKeyword(@Param('keyword') keyword, @Query() query) {
-    console.log(keyword.length);
     const res = await this.searchService.getProducts({
       keyword,
       categoryId: parseInt(query.categoryId),
-      page: parseInt(query.page) - 1,
+      page: query.page ? parseInt(query.page) : undefined,
     });
-    console.log(res);
     return res;
   }
 }

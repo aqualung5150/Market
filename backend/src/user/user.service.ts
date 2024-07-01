@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as fs from 'fs';
@@ -95,16 +95,21 @@ export class UserService {
   }
 
   async getUserById(id: number): Promise<UserData> {
-    return await this.prisma.user.findUniqueOrThrow({
-      where: { id: id },
-      select: {
-        id: true,
-        name: true,
-        nickname: true,
-        email: true,
-        image: true,
-        createdAt: true,
-      },
-    });
+    try {
+      const res = await this.prisma.user.findUniqueOrThrow({
+        where: { id: id },
+        select: {
+          id: true,
+          name: true,
+          nickname: true,
+          email: true,
+          image: true,
+          createdAt: true,
+        },
+      });
+      return res;
+    } catch (err) {
+      throw new NotFoundException('no such user');
+    }
   }
 }

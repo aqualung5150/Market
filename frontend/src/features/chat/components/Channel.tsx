@@ -1,4 +1,5 @@
-import { ChannelProps, SocketUserData } from "../../../@types/chat";
+import { ChannelProps } from "../../../types/chat";
+import { PublicUser } from "../../../types/user";
 import timeAgo from "../../../utils/timeAgo";
 import React from "react";
 
@@ -11,9 +12,7 @@ const Channel = ({
   users,
   userId,
 }: ChannelProps) => {
-  console.log("render!", id);
-
-  let me: SocketUserData;
+  let me: PublicUser;
   for (const user of users) {
     if (user.id === userId) {
       me = user;

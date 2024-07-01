@@ -87,10 +87,10 @@ export class UserController {
       });
   }
 
-  @Get('profileImage/:imagename')
-  getProfileImage(@Param('imagename') imagename): StreamableFile {
+  @Get('profileImage/:imageName')
+  getProfileImage(@Param('imageName') imageName): StreamableFile {
     const file = fs.createReadStream(
-      path.join('./uploads/profileImages/' + imagename),
+      path.join('./uploads/profileImages/' + imageName),
     );
 
     return new StreamableFile(file);

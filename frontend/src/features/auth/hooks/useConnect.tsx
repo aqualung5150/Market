@@ -4,7 +4,7 @@ import { axiosInstance } from "../../../data/axiosInstance";
 import { RootState } from "../../../app/store";
 import { Socket, io } from "socket.io-client";
 import { setNoti } from "../../chat/chatSlice";
-import { SocketChannelData, SocketMessageData } from "../../../@types/chat";
+import { SocketChannelData, SocketMessageData } from "../../../types/chat";
 
 const useConnect = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -29,7 +29,9 @@ const useConnect = () => {
         });
 
         setSocket(connection);
-      } catch (err) {}
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     initialConnect();
@@ -55,7 +57,7 @@ const useConnect = () => {
       socket?.off("sendMessageRes", messageNoti);
       socket?.on("getChannelRes", channelNoti);
     };
-  }, [socket, chat.open]);
+  }, [socket, chat.open, dispatch]);
 
   return { socket };
 };

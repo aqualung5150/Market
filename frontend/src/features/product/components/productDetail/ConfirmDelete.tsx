@@ -16,7 +16,7 @@ const ConfirmDelete = ({
     try {
       await axiosInstance.delete(`/product/${paramId}`);
       alert("상품을 삭제했습니다.");
-      navigate(`/product/search?category=${category?.id}&page=1`);
+      navigate(`/search?category=${category?.id}&page=1`);
     } catch (err: any) {
       alert(`상품 삭제에 실패했습니다. - ${err.message}`);
     }
