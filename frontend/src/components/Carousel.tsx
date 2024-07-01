@@ -21,9 +21,9 @@ const Carousel = ({
   }, [autoSlideState]);
 
   return (
-    <div className="overflow-hidden relative">
+    <div className="overflow-hidden relative w-full h-full">
       <div
-        className="flex transition-transform ease-out duration-500"
+        className="w-full h-full flex transition-transform ease-out duration-500"
         style={{ transform: `translateX(-${cur * 100}%)` }}
       >
         {slides}

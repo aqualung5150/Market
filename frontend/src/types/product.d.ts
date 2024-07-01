@@ -28,3 +28,25 @@ interface ProductData {
   images: ProductImageData[];
   user: PublicUser;
 }
+
+interface CategoryData {
+  id: number;
+  label: string;
+}
+
+interface ProductDescriptionProps {
+  data: ProductData;
+}
+
+interface ProductTitleProps extends ProductDescriptionProps {
+  paramId: string | undefined;
+}
+
+interface ProductImageProps extends ProductDescriptionProps {}
+
+interface ConfirmDelteProps {
+  paramId: string | undefined;
+  category: CategoryData | undefined;
+  openConfirmDelete: boolean;
+  setOpenConfirmDelete: React.Dispatch<React.SetStateAction<boolean>>;
+}
