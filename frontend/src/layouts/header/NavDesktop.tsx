@@ -3,9 +3,11 @@ import useNavLogin from "../../features/auth/hooks/useNavLogin";
 import LoginButton from "./LoginButton";
 import SearchBar from "./SearchBar";
 import CategoryDropdown from "../../features/product/components/category/CategoryDropdown";
+import { useNavigate } from "react-router-dom";
 
 const NavLarge = () => {
   const navLogin = useNavLogin();
+  const navigate = useNavigate();
   const [openCategory, setOpenCategory] = useState(false);
   return (
     <div className="hidden lg:flex items-center w-full flex-row bg-white">
@@ -15,7 +17,7 @@ const NavLarge = () => {
           onMouseLeave={() => setOpenCategory(false)}
           className="relative hover:text-green-500 cursor-pointer"
         >
-          구매하기
+          <span onClick={() => navigate("/search")}>구매하기</span>
           {openCategory && <CategoryDropdown />}
         </li>
         <li

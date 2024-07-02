@@ -18,7 +18,7 @@ const Dropdown = () => {
   return (
     <div ref={wrapper} className="relative h-full">
       <div
-        className="rounded bg-sky-100 font-bold flex flex-col justify-center items-center w-[100px] h-10 truncate"
+        className="rounded bg-sky-100 font-bold flex flex-col justify-center items-center w-[100px] h-10"
         onClick={() => setOpen(!open)}
       >
         {userNickname}

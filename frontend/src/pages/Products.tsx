@@ -1,4 +1,4 @@
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import Loading from "../components/Loading";
 import { ProductData } from "../types/product";
@@ -9,6 +9,7 @@ const Products = () => {
   const categoryId = searchParams.get("category");
   const page = searchParams.get("page");
   const title = useParams().title;
+  const navigate = useNavigate();
 
   const {
     data,
@@ -18,12 +19,15 @@ const Products = () => {
     `search/${title}?categoryId=${categoryId}&page=${page}`
   );
 
-  if (error) alert("상품 정보를 불러오지 못했습니다.");
+  if (error) {
+    alert("상품 정보를 불러오지 못했습니다.");
+    navigate(-1);
+  }
 
   return (
     <>
       {loading && <Loading text="로딩중..." />}
-      {data && (
+      {!loading && (
         <div className="xl:w-2/3 h-full grid grid-cols-2 md:grid-cols-4 gap-5 p-5">
           {data?.map((product: ProductData) => (
             <div

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const ProfileMenu = () => {
   return (
-    <div className="flex flex-col w-1/4 h-full p-10 border-r truncate">
+    <div className="hidden lg:flex flex-col w-1/4 h-full p-10 border-r truncate">
       <h2 className="text-2xl font-bold py-2">마이페이지</h2>
       <h3 className="text-xl font-bold py-2">거래정보</h3>
       <ul>

@@ -49,7 +49,7 @@ const ProductForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="w-full h-full" onSubmit={handleSubmit}>
       <ImageSelector {...images} />
       <ul className="border w-[150px] rounded m-2 space-y-2">
         {categories.map((category) => (

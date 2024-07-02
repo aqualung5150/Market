@@ -30,7 +30,7 @@ const NavMobile = () => {
   return (
     <div
       className={`absolute p-4 flex lg:hidden flex-col gap-4 left-0 w-full bg-white duration-500 ${
-        toggle ? "top-20" : "top-[-100%]"
+        toggle ? "top-16" : "top-[-100%]"
       }`}
     >
       <div className="w-full flex gap-2 items-center">
