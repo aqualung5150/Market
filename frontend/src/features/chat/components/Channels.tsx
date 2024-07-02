@@ -21,7 +21,7 @@ const Channels = ({
             className={
               "border-b bg-white px-3 flex items-center cursor-pointer " +
               (selectedChannelId === channelData.id
-                ? " bg-gray-500"
+                ? " bg-blue-100"
                 : " hover:bg-gray-100")
             }
             onClick={() => {

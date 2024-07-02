@@ -29,7 +29,7 @@ const NavMobile = () => {
 
   return (
     <div
-      className={`absolute p-4 flex lg:hidden flex-col gap-4 left-0 w-full bg-white duration-500 ${
+      className={`absolute p-4 flex lg:hidden flex-col gap-4 left-0 w-full bg-white duration-300 ${
         toggle ? "top-16" : "top-[-100%]"
       }`}
     >
@@ -50,7 +50,7 @@ const NavMobile = () => {
             <ul>
               {Object.values(categoryData).map((category) => (
                 <li
-                  className="text-lg hover:text-green-500"
+                  className="text-lg"
                   key={category.id}
                   onClick={() => navigate(`/search?category=${category.id}`)}
                 >

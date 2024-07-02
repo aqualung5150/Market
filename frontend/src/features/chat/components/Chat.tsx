@@ -28,7 +28,7 @@ const Chat = () => {
         <div className="flex w-full h-full overflow-auto">
           <div
             className={`${
-              selectedChannelId ? "hidden" : "w-full"
+              selectedChannelId || sendTo ? "hidden" : "w-full"
             } lg:inline-block lg:w-1/3`}
           >
             <Channels {...{ selectedChannelId, setSelectedChannelId }} />

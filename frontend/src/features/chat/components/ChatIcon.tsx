@@ -1,5 +1,5 @@
 import React from "react";
-import icon from "../../../assets/free-icon-message-8316231.png";
+import icon from "../../../assets/chatIcon.png";
 import { useDispatch, useSelector } from "react-redux";
 import { setNoti, setOpenChat, setSendTo } from "../chatSlice";
 import { RootState } from "../../../app/store";
