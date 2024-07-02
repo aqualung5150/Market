@@ -20,6 +20,7 @@ const NavMobile = ({ handleCloseMenu }: any) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const navLogin = useNavLogin();
+  const noti = useSelector((state: RootState) => state.chat.noti);
 
   useEffect(() => {
     if (!toggle) {
@@ -115,14 +116,15 @@ const NavMobile = ({ handleCloseMenu }: any) => {
             </ul>
           </div>
           <div
-            className="text-xl font-semibold flex gap-1 w-fit"
+            className="text-xl font-semibold gap-1 flex w-fit items-center"
             onClick={() => {
               handleCloseMenu();
               dispatch(setOpenChat(true));
             }}
           >
+            {noti && <p className="w-4 h-4 mr-1 rounded-full bg-red-500" />}
             <span>채팅하기</span>
-            <SendIcon className="w-7 h-7 stroke-sky-400" />
+            <SendIcon className="w-7 h-7 stroke-sky-300" />
           </div>
         </>
       )}
