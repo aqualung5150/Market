@@ -41,28 +41,44 @@ const EditProfile = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col flex-1 items-center">
-      <label htmlFor="image">프로필이미지</label>
-      <img
-        className="w-[200px] h-[200px] object-cover rounded-full cursor-pointer"
-        src={file.url}
-        onClick={() => profileImage.current?.click()}
-      />
-      <input
-        type="file"
-        id="image"
-        onChange={file.handleFileChange}
-        accept={"image/png, image/gif, image/jpeg"}
-        className="hidden"
-        ref={profileImage}
-      />
-      <label htmlFor="nickname">닉네임</label>
-      <Input id="nickname" type="text" {...nickname} />
-      <label htmlFor="name">이름</label>
-      <Input id="name" type="text" {...name} />
-      <label htmlFor="email">이메일</label>
-      <Input id="email" type="text" value={user.email} disabled={true} />
-      <Button text="저장하기" type="submit" disabled={disabled} />
+    <form
+      onSubmit={handleSubmit}
+      className="w-full flex flex-col flex-1 items-center gap-10 p-10"
+    >
+      <div className="w-[300px] h-[300px]">
+        <img
+          className="max-w-full h-full object-cover rounded-full cursor-pointer shadow"
+          src={file.url}
+          onClick={() => profileImage.current?.click()}
+        />
+        <input
+          type="file"
+          onChange={file.handleFileChange}
+          accept={"image/png, image/gif, image/jpeg"}
+          className="hidden"
+          ref={profileImage}
+        />
+      </div>
+      <div className="w-full space-y-2 bg-white rounded-lg p-3 shadow">
+        <label htmlFor="nickname">닉네임</label>
+        <Input id="nickname" type="text" {...nickname} />
+      </div>
+      <div className="w-full space-y-2 bg-white rounded-lg p-3 shadow">
+        <label htmlFor="name">이름</label>
+        <Input id="name" type="text" {...name} />
+      </div>
+      <div className="w-full space-y-2 bg-white rounded-lg p-3 shadow">
+        <label htmlFor="email">이메일</label>
+        <Input id="email" type="text" value={user.email} disabled={true} />
+      </div>
+
+      <button
+        className="w-[100px] h-[50px] bg-green-400 rounded-lg text-lg font-bold"
+        type="submit"
+        disabled={disabled}
+      >
+        저장
+      </button>
     </form>
   );
 };

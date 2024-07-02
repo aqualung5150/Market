@@ -19,7 +19,7 @@ const ProductImage = ({ data }: ProductImageProps) => {
       </Carousel>
       {imageIndex > -1 && (
         <div
-          className="fixed top-0 left-0 w-screen h-screen bg-black bg-opacity-85 flex justify-center items-center"
+          className="fixed z-10 top-0 left-0 w-screen h-screen bg-black bg-opacity-85 flex justify-center items-center"
           onClick={() => setImageIndex(-1)}
         >
           <Carousel initialIndex={imageIndex}>

@@ -13,15 +13,15 @@ const Layout = ({ children }: LayoutProps) => {
   const openLogin = useSelector((state: RootState) => state.login.openLogin);
   const dispatch = useDispatch();
   return (
-    <div className="flex flex-col h-screen ">
+    <div className="flex flex-col h-screen">
       <Header />
       <div
+        className="flex-1 bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]"
         onClick={() => dispatch(setToggle(false))}
-        className="flex flex-col flex-1 justify-center items-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]"
       >
         {children || <Outlet />}
-        <Footer />
       </div>
+      <Footer />
       <ChatIcon />
       {openChat && <Chat />}
       {openLogin && <LoginModal />}

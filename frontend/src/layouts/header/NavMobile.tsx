@@ -3,11 +3,13 @@ import { RootState } from "../../app/store";
 import SearchBar from "./SearchBar";
 import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 import { ReactComponent as AngleDownIcon } from "../../assets/angleDown.svg";
+import { ReactComponent as SendIcon } from "../../assets/send.svg";
 import categoryData from "../../features/product/data/category.json";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logout } from "../../features/user/userSlice";
 import useNavLogin from "../../features/auth/hooks/useNavLogin";
+import { setOpenChat } from "../../features/chat/chatSlice";
 
 const NavMobile = ({ handleCloseMenu }: any) => {
   const { pathname } = useLocation();
@@ -28,13 +30,13 @@ const NavMobile = ({ handleCloseMenu }: any) => {
 
   return (
     <div
-      className={`absolute p-4 flex lg:hidden flex-col gap-4 left-0 w-full bg-white duration-300 ${
+      className={`fixed p-4 flex lg:hidden flex-col gap-4 left-0 w-full bg-white duration-500 text-lg ${
         toggle ? "top-16" : "top-[-100%]"
       }`}
     >
       <div className="w-full flex gap-2 items-center">
         <SearchIcon className="w-10 h-10" />
-        <SearchBar handleCloseMenu={handleCloseMenu} />
+        <SearchBar />
       </div>
       <div>
         <ul className="flex flex-1 flex-col gap-1">
@@ -56,7 +58,6 @@ const NavMobile = ({ handleCloseMenu }: any) => {
             <ul>
               {Object.values(categoryData).map((category) => (
                 <li
-                  className="text-lg"
                   key={category.id}
                   onClick={() => {
                     handleCloseMenu();
@@ -70,19 +71,18 @@ const NavMobile = ({ handleCloseMenu }: any) => {
           )}
         </ul>
       </div>
-      <div className="text-xl font-semibold">
-        <span
-          onClick={() => {
-            handleCloseMenu();
-            navLogin("/product/form");
-          }}
-        >
-          판매하기
-        </span>
+      <div
+        className="text-xl font-semibold w-fit"
+        onClick={() => {
+          handleCloseMenu();
+          navLogin("/product/form");
+        }}
+      >
+        <span>판매하기</span>
       </div>
-      <div>
-        {userId && (
-          <>
+      {userId && (
+        <>
+          <div>
             <ul className="flex flex-1 flex-col gap-1">
               <li className="text-xl font-semibold flex justify-between items-center">
                 <div
@@ -113,23 +113,34 @@ const NavMobile = ({ handleCloseMenu }: any) => {
                 </ul>
               )}
             </ul>
-          </>
-        )}
-      </div>
+          </div>
+          <div
+            className="text-xl font-semibold flex gap-1 w-fit"
+            onClick={() => {
+              handleCloseMenu();
+              dispatch(setOpenChat(true));
+            }}
+          >
+            <span>채팅하기</span>
+            <SendIcon className="w-7 h-7 stroke-sky-400" />
+          </div>
+        </>
+      )}
+
       {!userId ? (
         <div
           onClick={() => navLogin(pathname)}
-          className="text-green-600 text-center font-bold cursor-pointer w-24 border-2 border-green-600 rounded"
+          className="text-green-500 text-center font-bold w-24 border-2 border-green-500 rounded"
         >
           로그인
         </div>
       ) : (
-        <div
+        <span
           onClick={() => dispatch(logout("/"))}
-          className="text-gray-600 cursor-pointer"
+          className="text-sm text-gray-600 w-fit"
         >
           로그아웃
-        </div>
+        </span>
       )}
     </div>
   );

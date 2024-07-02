@@ -9,14 +9,14 @@ const ProductDescription = ({ data }: ProductDescriptionProps) => {
   const dispatch = useDispatch();
   return (
     <>
-      <div className="m-4 min-h-[500px] flex-1 flex flex-col">
-        <div className="mb-4 text-3xl">상품정보</div>
+      <div className="p-4 min-h-[500px] flex-1 flex flex-col">
+        <div className="text-3xl">상품정보</div>
         <div>{data.description}</div>
       </div>
       {userId !== data.user.id && (
-        <div className="m-4 min-h-[500px] flex-1">
-          <div className="mb-4 text-3xl">판매자</div>
-          <div className="mb-4 font-bold text-xl">{data.user.nickname}</div>
+        <div className="border-l p-4 min-h-[500px] flex-1">
+          <div className="text-3xl">판매자</div>
+          <div className="font-bold text-xl">{data.user.nickname}</div>
           <button
             className="w-[100px] h-[50px] bg-green-300 rounded"
             onClick={() => {

@@ -18,7 +18,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="font-[D2Coding] z-10 border-b bg-white">
+    <header className="sticky top-0 font-[D2Coding] z-10 border-b bg-white">
       <nav className="flex justify-between items-center w-[92%] h-16 mx-auto">
         <div className="flex items-center">
           <span
@@ -32,12 +32,12 @@ const Header = () => {
         <NavMobile handleCloseMenu={handleCloseMenu} />
         {toggleMenu ? (
           <CloseIcon
-            className="lg:hidden w-10"
+            className="lg:hidden w-10 h-10"
             onClick={() => dispatch(setToggle(false))}
           />
         ) : (
           <MenuIcon
-            className="lg:hidden w-10"
+            className="lg:hidden w-10 h-10"
             onClick={() => dispatch(setToggle(true))}
           />
         )}

@@ -49,24 +49,42 @@ const ProductForm = () => {
   };
 
   return (
-    <form className="w-full h-full" onSubmit={handleSubmit}>
-      <ImageSelector {...images} />
-      <ul className="border w-[150px] rounded m-2 space-y-2">
+    <form
+      className="flex flex-col items-center w-full h-full p-10 gap-10"
+      onSubmit={handleSubmit}
+    >
+      <div className="self-start w-full">
+        <ImageSelector {...images} />
+      </div>
+      <ul className="w-2/3 rounded bg-white shadow overflow-auto">
         {categories.map((category) => (
           <li
             onClick={() => setCategoryId(category.id)}
-            className="text-center border-b"
+            className={`p-2 ${categoryId === category.id && "bg-gray-200"}`}
             key={category.id}
           >
             {category.label}
           </li>
         ))}
       </ul>
-      <Input placeholder="상품명" {...title} />
-      <Input placeholder="₩ 판매가격" {...price} />
-      <Input placeholder="상품에 대한 설명을 입력해주세요." {...description} />
-      <button type="submit" disabled={disabled}>
-        보내기
+      <div className="w-full p-3 bg-white rounded shadow">
+        <Input placeholder="상품명" {...title} />
+      </div>
+      <div className="w-full p-3 bg-white rounded shadow">
+        <Input placeholder="₩ 판매가격" {...price} />
+      </div>
+      <div className="w-full p-3 bg-white rounded shadow">
+        <Input
+          placeholder="상품에 대한 설명을 입력해주세요."
+          {...description}
+        />
+      </div>
+      <button
+        className="w-[100px] h-[50px] bg-green-400 rounded-lg text-lg font-bold"
+        type="submit"
+        disabled={disabled}
+      >
+        등록
       </button>
     </form>
   );

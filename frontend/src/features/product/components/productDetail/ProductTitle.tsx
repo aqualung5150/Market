@@ -15,8 +15,8 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
   );
 
   return (
-    <>
-      <div className="p-2 text-lg text-gray-700">
+    <div className="h-full flex flex-col justify-between gap-10">
+      <div className="flex-1 text-lg text-gray-700 space-y-3">
         <span>{"카테고리 > "}</span>
         <span
           className="cursor-pointer"
@@ -24,17 +24,26 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
         >
           {category?.label}
         </span>
-      </div>
-      <div className="p-2 text-2xl font-bold">{data.title}</div>
-      <div className="p-2 text-4xl font-bold">
-        {data.price.toLocaleString()}원
+        <div className="text-2xl font-bold">{data.title}</div>
+        <div className="text-4xl font-bold">
+          {data.price.toLocaleString()}원
+        </div>
       </div>
       {userId === data.user.id && (
-        <div className="m-2 flex-1 flex justify-center items-center cursor-pointer">
+        <div className="flex h-16 cursor-pointer rounded-2xl bg-gray-100">
           <button
             onClick={() => setOpenConfirmDelete(true)}
-            className="w-[100px] h-[40px] rounded bg-gray-300"
+            className="flex-1 border-r"
           >
+            글 삭제하기
+          </button>
+          <button
+            onClick={() => setOpenConfirmDelete(true)}
+            className="flex-1 border-r"
+          >
+            글 삭제하기
+          </button>
+          <button onClick={() => setOpenConfirmDelete(true)} className="flex-1">
             글 삭제하기
           </button>
         </div>
@@ -45,7 +54,7 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
         openConfirmDelete={openConfirmDelete}
         setOpenConfirmDelete={setOpenConfirmDelete}
       />
-    </>
+    </div>
   );
 };
 
