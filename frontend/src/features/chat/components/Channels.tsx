@@ -12,7 +12,8 @@ const Channels = ({
   });
 
   return (
-    <div className="w-1/3 max-w-[420px] border-r flex flex-col select-none">
+    // <div className="w-1/3 max-w-[420px] border-r flex flex-col select-none">
+    <div className="w-full h-full border-r flex flex-col select-none">
       <div className="flex-1 overflow-auto">
         {channelsData?.map((channelData: SocketChannelData) => (
           <div

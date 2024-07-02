@@ -1,13 +1,14 @@
 import ChatRoom from "./ChatRoom";
 import useChat from "../hooks/useChat";
 import ChatHeader from "./ChatHeader";
-import ChatBody from "./ChatBody";
 import Channels from "./Channels";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setOpenChat, setSendTo } from "../chatSlice";
 import EmptyRoom from "./EmptyRoom";
+import { RootState } from "../../../app/store";
 
 const Chat = () => {
+  const sendTo = useSelector((state: RootState) => state.chat.sendTo);
   const { selectedChannelId, setSelectedChannelId } = useChat();
   const dispatch = useDispatch();
 
@@ -21,24 +22,33 @@ const Chat = () => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white h-3/4  w-3/4  flex flex-col border border-grey rounded shadow-xl"
+        className="w-full h-full bg-white lg:h-3/4  lg:w-3/4  flex flex-col border border-grey lg:rounded shadow-xl"
       >
-        <ChatHeader />
-        <ChatBody>
-          <Channels
-            selectedChannelId={selectedChannelId}
-            setSelectedChannelId={setSelectedChannelId}
-          />
-          {selectedChannelId ? (
-            // set key props to re-mount component
-            <ChatRoom
-              key={selectedChannelId}
-              selectedChannelId={selectedChannelId}
-            />
-          ) : (
-            <EmptyRoom />
-          )}
-        </ChatBody>
+        <ChatHeader {...{ selectedChannelId, setSelectedChannelId }} />
+        <div className="flex w-full h-full overflow-auto">
+          <div
+            className={`${
+              selectedChannelId ? "hidden" : "w-full"
+            } lg:inline-block lg:w-1/3`}
+          >
+            <Channels {...{ selectedChannelId, setSelectedChannelId }} />
+          </div>
+          <div
+            className={`${
+              selectedChannelId || sendTo ? "w-full" : "hidden"
+            } lg:inline-block lg:w-2/3`}
+          >
+            {selectedChannelId ? (
+              // set key props to re-mount component
+              <ChatRoom
+                key={selectedChannelId}
+                selectedChannelId={selectedChannelId}
+              />
+            ) : (
+              <EmptyRoom />
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -8,7 +8,8 @@ const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
     selectedChannelId,
   });
   return (
-    <div className="w-2/3 flex-1 flex flex-col">
+    // <div className="w-2/3 flex-1 flex flex-col">
+    <div className="w-full h-full flex-1 flex flex-col">
       <div className="py-2 px-3 bg-gray-100 flex flex-row justify-between items-center">
         Selected Channel is {selectedChannelId}
       </div>
