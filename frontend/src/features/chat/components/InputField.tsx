@@ -2,6 +2,7 @@ import { useCallback, useContext, useState } from "react";
 import Input from "../../../components/Input";
 import { SocketContext } from "../../../context/SocketContext";
 import { InputFieldProps } from "../../../types/chat";
+import { ReactComponent as SendIcon } from "../../../assets/send.svg";
 
 const InputField = ({ channelId }: InputFieldProps) => {
   const [value, setValue] = useState<string>("");
@@ -9,6 +10,7 @@ const InputField = ({ channelId }: InputFieldProps) => {
 
   const sendMessage = useCallback(
     (message: string, channelId: number) => {
+      if (message.length === 0) return;
       socket?.emit("sendMessageReq", {
         body: message,
         channelId: channelId,
@@ -19,8 +21,8 @@ const InputField = ({ channelId }: InputFieldProps) => {
   );
 
   return (
-    <div className="bg-gray-100 px-4 py-4 flex items-center">
-      <div className="flex-1 mx-4">
+    <div className="bg-gray-100 px-4 py-3 gap-4 flex items-center">
+      <div className="flex-1">
         <Input
           value={value}
           placeholder="메세지를 입력하세요."
@@ -28,6 +30,10 @@ const InputField = ({ channelId }: InputFieldProps) => {
           onEnter={() => sendMessage(value, channelId)}
         />
       </div>
+      <SendIcon
+        className="w-9 h-9 stroke-sky-400"
+        onClick={() => sendMessage(value, channelId)}
+      />
     </div>
   );
 };

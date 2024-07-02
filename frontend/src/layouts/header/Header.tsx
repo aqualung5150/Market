@@ -6,11 +6,16 @@ import { RootState } from "../../app/store";
 import { setToggle } from "../menuSlice";
 import NavLarge from "./NavDesktop";
 import NavMobile from "./NavMobile";
+import { useCallback } from "react";
 
 const Header = () => {
   const navigate = useNavigate();
   const toggleMenu = useSelector((state: RootState) => state.menu.toggle);
   const dispatch = useDispatch();
+
+  const handleCloseMenu = useCallback(() => {
+    dispatch(setToggle(false));
+  }, []);
 
   return (
     <header className="font-[D2Coding] z-10 border-b bg-white">
@@ -24,7 +29,7 @@ const Header = () => {
           </span>
         </div>
         <NavLarge />
-        <NavMobile />
+        <NavMobile handleCloseMenu={handleCloseMenu} />
         {toggleMenu ? (
           <CloseIcon
             className="lg:hidden w-10"

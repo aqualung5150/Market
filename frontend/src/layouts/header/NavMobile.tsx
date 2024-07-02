@@ -6,11 +6,10 @@ import { ReactComponent as AngleDownIcon } from "../../assets/angleDown.svg";
 import categoryData from "../../features/product/data/category.json";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { setOpenLogin } from "../../features/auth/loginSlice";
 import { logout } from "../../features/user/userSlice";
 import useNavLogin from "../../features/auth/hooks/useNavLogin";
 
-const NavMobile = () => {
+const NavMobile = ({ handleCloseMenu }: any) => {
   const { pathname } = useLocation();
   const userId = useSelector((state: RootState) => state.user.id);
   const toggle = useSelector((state: RootState) => state.menu.toggle);
@@ -35,12 +34,19 @@ const NavMobile = () => {
     >
       <div className="w-full flex gap-2 items-center">
         <SearchIcon className="w-10 h-10" />
-        <SearchBar />
+        <SearchBar handleCloseMenu={handleCloseMenu} />
       </div>
       <div>
         <ul className="flex flex-1 flex-col gap-1">
           <li className="text-xl font-semibold flex justify-between items-center">
-            <div onClick={() => navigate("/search")}>구매하기</div>
+            <div
+              onClick={() => {
+                handleCloseMenu();
+                navigate("/search");
+              }}
+            >
+              구매하기
+            </div>
             <AngleDownIcon
               onClick={() => setOpenCategory(!openCategory)}
               className="w-7 h-7"
@@ -52,7 +58,10 @@ const NavMobile = () => {
                 <li
                   className="text-lg"
                   key={category.id}
-                  onClick={() => navigate(`/search?category=${category.id}`)}
+                  onClick={() => {
+                    handleCloseMenu();
+                    navigate(`/search?category=${category.id}`);
+                  }}
                 >
                   - {category.label}
                 </li>
@@ -62,14 +71,26 @@ const NavMobile = () => {
         </ul>
       </div>
       <div className="text-xl font-semibold">
-        <span onClick={() => navLogin("/product/form")}>판매하기</span>
+        <span
+          onClick={() => {
+            handleCloseMenu();
+            navLogin("/product/form");
+          }}
+        >
+          판매하기
+        </span>
       </div>
       <div>
         {userId && (
           <>
             <ul className="flex flex-1 flex-col gap-1">
               <li className="text-xl font-semibold flex justify-between items-center">
-                <div onClick={() => navigate(`/users/${userId}`)}>
+                <div
+                  onClick={() => {
+                    handleCloseMenu();
+                    navigate(`/users/${userId}`);
+                  }}
+                >
                   마이페이지
                 </div>
                 <AngleDownIcon
@@ -81,7 +102,12 @@ const NavMobile = () => {
                 <ul>
                   <li>- 판매내역</li>
                   <li>- 찜한 상품</li>
-                  <li onClick={() => navigate(`/users/${userId}/edit`)}>
+                  <li
+                    onClick={() => {
+                      handleCloseMenu();
+                      navigate(`/users/${userId}/edit`);
+                    }}
+                  >
                     - 정보 수정
                   </li>
                 </ul>
