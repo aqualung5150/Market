@@ -28,12 +28,12 @@ interface SocketChannelData {
   users: PublicUser[];
 }
 
-interface ChannelProps extends SocketChannelData {
-  userId: number | null;
+interface ChannelProps {
+  data: SocketChannelData;
 }
 
-interface MessageProps extends SocketMessageData {
-  userId: number | null;
+interface MessageProps {
+  data: SocketMessageData;
 }
 
 interface ChatRoomProps {

@@ -1,7 +1,5 @@
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../../../context/SocketContext";
-import { RootState } from "../../../app/store";
-import { useSelector } from "react-redux";
 
 const useChat = () => {
   const socket = useContext(SocketContext).socket;

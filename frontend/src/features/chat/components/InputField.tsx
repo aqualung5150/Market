@@ -1,4 +1,4 @@
-import { useCallback, useContext, useState } from "react";
+import React, { useCallback, useContext, useState } from "react";
 import Input from "../../../components/Input";
 import { SocketContext } from "../../../context/SocketContext";
 import { InputFieldProps } from "../../../types/chat";
@@ -38,4 +38,4 @@ const InputField = ({ channelId }: InputFieldProps) => {
   );
 };
 
-export default InputField;
+export default React.memo(InputField);

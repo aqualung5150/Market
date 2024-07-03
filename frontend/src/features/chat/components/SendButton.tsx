@@ -5,6 +5,7 @@ import { useLocation } from "react-router-dom";
 import { RootState } from "../../../app/store";
 
 const SendButton = ({ className, text, sendTo }: any) => {
+  console.log("sendButton!");
   const { pathname } = useLocation();
   const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();

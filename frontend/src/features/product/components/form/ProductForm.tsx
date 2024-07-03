@@ -1,52 +1,27 @@
-import React, { useState } from "react";
 import Input from "../../../../components/Input";
-import useFormInput from "../../../../hooks/useFormInput";
-import useSelectImages from "../../../../hooks/useSelectImages";
 import ImageSelector from "./ImageSelector";
-import { axiosInstance } from "../../../../data/axiosInstance";
-import { useNavigate } from "react-router-dom";
 import categoryData from "../../data/category.json";
 import { CategoryData } from "../../../../types/product";
+import useProductForm from "../../hooks/useProductForm";
 
 const ProductForm = () => {
-  const [disabled, setDisabled] = useState(false);
-  const images = useSelectImages();
-  const title = useFormInput("");
-  const price = useFormInput("");
-  const description = useFormInput("");
-  const navigate = useNavigate();
-  const [categoryId, setCategoryId] = useState(0);
-
+  const {
+    buttonDisable,
+    categoryId,
+    isNew,
+    title,
+    price,
+    description,
+    images,
+    handleSubmit,
+  } = useProductForm();
   const categories: CategoryData[] = [];
   Object.values(categoryData).map((category) => categories.push(category));
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (categoryId === 0) {
-      alert("상품의 카테고리를 선택해주세요.");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("title", title.value);
-    formData.append("price", price.value);
-    formData.append("description", description.value);
-    images.files.map((file) => formData.append("image", file));
-    formData.append("categoryId", categoryId.toString());
-    //test
-    formData.append("status", "1");
-
-    try {
-      setDisabled(true);
-      const res = await axiosInstance.postForm("product", formData);
-      navigate(`/product/${res.data}`);
-    } catch (err: any) {
-      alert(err.response.data.message);
-    } finally {
-      setDisabled(false);
-    }
-  };
+  const buttonOn =
+    "h-10 w-[80px] rounded-md border border-solid font-semibold text-base mb-2 text-white bg-green-500 border-green-500";
+  const buttonOff =
+    "h-10 w-[80px] rounded-md border border-solid font-semibold text-base mb-2 border-jnblack text-black bg-white";
 
   return (
     <form
@@ -59,14 +34,32 @@ const ProductForm = () => {
       <ul className="w-2/3 rounded bg-white shadow overflow-auto">
         {categories.map((category) => (
           <li
-            onClick={() => setCategoryId(category.id)}
-            className={`p-2 ${categoryId === category.id && "bg-gray-200"}`}
+            onClick={() => categoryId.setCategoryId(category.id)}
+            className={`p-2 ${
+              categoryId.categoryId === category.id && "bg-gray-200"
+            }`}
             key={category.id}
           >
             {category.label}
           </li>
         ))}
       </ul>
+      <div className="flex gap-2">
+        <button
+          type="button"
+          onClick={() => isNew.setIsNew(0)}
+          className={!isNew.isNew ? buttonOn : buttonOff}
+        >
+          중고
+        </button>
+        <button
+          type="button"
+          onClick={() => isNew.setIsNew(1)}
+          className={isNew.isNew ? buttonOn : buttonOff}
+        >
+          새상품
+        </button>
+      </div>
       <div className="w-full p-3 bg-white rounded shadow">
         <Input placeholder="상품명" {...title} />
       </div>
@@ -82,7 +75,7 @@ const ProductForm = () => {
       <button
         className="w-[100px] h-[50px] bg-green-400 rounded-lg text-lg font-bold"
         type="submit"
-        disabled={disabled}
+        disabled={buttonDisable.buttonDisable}
       >
         등록
       </button>

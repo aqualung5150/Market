@@ -22,11 +22,11 @@ const useOauthCallback = () => {
         const redirect = sessionStorage.getItem("redirect");
         if (redirect) {
           sessionStorage.removeItem("redirect");
-          navigate(redirect);
-        } else navigate("/");
+          navigate(redirect, { replace: true });
+        } else navigate("/", { replace: true });
       })
       .catch((err) => {
-        navigate(-1);
+        navigate("/", { replace: true });
         alert(err);
       });
   }, [dispatch, navigate]);

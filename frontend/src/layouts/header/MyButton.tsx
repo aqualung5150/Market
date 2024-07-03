@@ -5,7 +5,7 @@ import { RootState } from "../../app/store";
 import { Link } from "react-router-dom";
 import useClickOutside from "../../hooks/useClickOutside";
 
-const Dropdown = () => {
+const Mybutton = () => {
   const userId = useSelector((state: RootState) => state.user.id);
   const userNickname = useSelector((state: RootState) => state.user.nickname);
   const dispatch = useDispatch();
@@ -48,4 +48,4 @@ const Dropdown = () => {
   );
 };
 
-export default Dropdown;
+export default Mybutton;

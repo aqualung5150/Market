@@ -6,18 +6,19 @@ import { ReactComponent as CloseIcon } from "../../../assets/close.svg";
 import { ReactComponent as BackIcon } from "../../../assets/back.svg";
 
 const ChatHeader = ({ selectedChannelId, setSelectedChannelId }: any) => {
-  const user = useSelector((state: RootState) => state.user);
+  const nickname = useSelector((state: RootState) => state.user.nickname);
+  const image = useSelector((state: RootState) => state.user.image);
   const dispatch = useDispatch();
   return (
     <div className="py-2 px-3 bg-gray-200 flex flex-row items-center border">
       <div>
         <img
           className="min-w-10 w-10 h-10 rounded-full object-cover"
-          src={`${process.env.REACT_APP_API_URL}/users/profileImage/${user.image}`}
+          src={`${process.env.REACT_APP_API_URL}/users/profileImage/${image}`}
         />
       </div>
       <span className="ml-3 text-xl font-medium truncate flex-1">
-        {user.nickname}
+        {nickname}
       </span>
       <BackIcon
         onClick={() => {

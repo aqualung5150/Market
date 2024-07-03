@@ -87,7 +87,7 @@ const useChannels = ({
     }
   }, [channelsData]);
 
-  return { userId, channelsData };
+  return channelsData;
 };
 
 export default useChannels;

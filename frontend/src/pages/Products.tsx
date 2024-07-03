@@ -1,11 +1,10 @@
-import { Link, useParams, useSearchParams } from "react-router-dom";
+import { useParams, useSearchParams } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import Loading from "../components/Loading";
 import { ProductData } from "../types/product";
-import timeAgo from "../utils/timeAgo";
+import ProductThumbnail from "../features/product/components/productThumbnail/ProductThumbnail";
 
 const Products = () => {
-  console.log("Products");
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryId = searchParams.get("category");
   const page = searchParams.get("page");
@@ -26,28 +25,7 @@ const Products = () => {
       {!loading && (
         <div className="2xl:w-2/3 h-full grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 auto-rows-min  gap-5 p-5">
           {data?.map((product: ProductData) => (
-            <div
-              key={product.id}
-              className="bg-white aspect-[3/4] flex flex-col w-full rounded-lg shadow-lg cursor-pointer"
-            >
-              <Link className="h-fit" to={`/product/${product.id}`}>
-                <img
-                  className="aspect-square rounded-t-lg object-cover"
-                  src={`${process.env.REACT_APP_API_URL}/product/productImage/${
-                    product.images.find((e) => e.main)?.url
-                  }`}
-                />
-              </Link>
-              <div className="flex-1 w-full justify-between flex flex-col p-2">
-                <div className="text-lg font-semibold">{product?.title}</div>
-                <div className="font-semibold">
-                  {product?.price.toLocaleString()}원
-                </div>
-                <div className="text-sm text-gray-700">
-                  {timeAgo(new Date(product.createdAt))}
-                </div>
-              </div>
-            </div>
+            <ProductThumbnail key={product.id} product={product} />
           ))}
         </div>
       )}

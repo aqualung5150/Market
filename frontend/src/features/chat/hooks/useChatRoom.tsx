@@ -98,7 +98,7 @@ const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
     };
   }, [cursor]);
 
-  return { userId, messagesData, loader };
+  return { messagesData, loader };
 };
 
 export default useChatRoom;

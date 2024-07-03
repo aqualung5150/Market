@@ -7,7 +7,6 @@ import { setOpenLogin } from "../../auth/loginSlice";
 import { useLocation } from "react-router-dom";
 
 const ChatIcon = () => {
-  console.log("ChatIcon");
   const { pathname } = useLocation();
   const userId = useSelector((state: RootState) => state.user.id);
   const noti = useSelector((state: RootState) => state.chat.noti);
