@@ -1,26 +1,19 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
-import { useNavigate, useParams } from "react-router-dom";
-import Button from "../../../components/Button";
-import { setOpenChat, setSendTo } from "../../chat/chatSlice";
+import { useParams } from "react-router-dom";
 import useAxios from "../../../hooks/useAxios";
 import Loading from "../../../components/Loading";
+import SendButton from "../../chat/components/SendButton";
 
 const Profile = () => {
   const paramId = useParams().id;
   const me = useSelector((state: RootState) => state.user);
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { data, error, loading } = useAxios(`users/${paramId}`);
-
-  if (error) {
-    alert("유저 정보를 불러올 수 없습니다.");
-    navigate(-1);
-  }
 
   return (
     <>
       {loading && <Loading text="로딩중..." />}
+      {error && <div>존재하지 않는 회원입니다.</div>}
       {data && (
         <div className="p-10 w-full flex flex-col items-center">
           <div className="p-9 aspect-square h-[350px]">
@@ -38,15 +31,11 @@ const Profile = () => {
             </p>
             {me.id !== data.id && (
               <div className="mt-2 self-end">
-                <button
+                <SendButton
                   className="w-20 h-10 bg-green-300 rounded"
-                  onClick={() => {
-                    dispatch(setSendTo(data.id));
-                    dispatch(setOpenChat(true));
-                  }}
-                >
-                  채팅하기
-                </button>
+                  text="채팅하기"
+                  sendTo={data.id}
+                />
               </div>
             )}
           </div>

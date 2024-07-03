@@ -45,13 +45,9 @@ const userSlice = createSlice({
 
     logout: (state, action) => {
       const url = `${process.env.REACT_APP_BASE_URL}/api/auth/logout`;
-      axios
-        .post(url, {})
-        .catch(() => {})
-        .finally(() => {
-          window.location.href = action.payload;
-        });
+      axios.post(url, {}).catch(() => {});
 
+      window.location.href = action.payload;
       return initialState;
     },
   },

@@ -1,7 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { ReactComponent as CloseIcon } from "../assets/close.svg";
 
 const Modal = ({ open, onClose, children }: ModalProps) => {
-  const navigate = useNavigate();
   if (!open) return null;
   return (
     <div
@@ -14,20 +13,8 @@ const Modal = ({ open, onClose, children }: ModalProps) => {
         }}
         className="flex flex-col mx-2 bg-white h-[500px] w-[400px] border border-grey rounded shadow-xl"
       >
-        <div className="flex items-center justify-between p-4 md:p-5 border-b rounded-t">
-          {onClose ? (
-            <>
-              <div></div>
-              <p className="" onClick={onClose}>
-                X
-              </p>
-            </>
-          ) : (
-            <>
-              <p onClick={() => navigate("/")}>Home</p>
-              <p onClick={() => navigate(-1)}>Back</p>
-            </>
-          )}
+        <div className="flex items-center justify-end p-4 md:p-5 border-b rounded-t">
+          {onClose && <CloseIcon onClick={onClose} className="w-12 h-12" />}
         </div>
 
         <div className="h-full w-full">{children}</div>

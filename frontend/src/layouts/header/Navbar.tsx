@@ -3,7 +3,7 @@ import useNavLogin from "../../features/auth/hooks/useNavLogin";
 import CategoryDropdown from "../../features/product/components/category/CategoryDropdown";
 import homeButton from "../../assets/home_button.png";
 import LoginButton from "./LoginButton";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
 
@@ -16,11 +16,13 @@ const Navbar = () => {
     <nav className="flex justify-between items-center w-[92%] h-20 mx-auto">
       <div className="flex items-center gap-6">
         <MenuIcon className="md:hidden w-[80px]" />
+        {/* <Link to="/"> */}
         <img
           className="w-14 cursor-pointer"
           src={homeButton}
           onClick={() => navigate("/")}
         />
+        {/* </Link> */}
       </div>
       <div className="md:static absolute bg-white md:min-h-fit min-h-[60vh] left-0 top-[-100%] w-full">
         <ul className="flex md:flex-row flex-col md:justify-evenly md:items-center">

@@ -17,32 +17,32 @@ import Products from "../pages/Products";
 
 const App = () => {
   useAxiosInterceptor(axiosInstance);
-  const socket = useConnect();
+  // const socket = useConnect();
   // useAuthCheck();
 
   return (
     <BrowserRouter>
-      <SocketContext.Provider value={socket}>
-        <Routes>
-          <Route element={<Layout />}>
-            <Route path="" element={<Home />} />
-            <Route path="dummy" element={<Dummy />} />
-            <Route path="foo" element={<Foo />} />
-            <Route path="users/:id" element={<Users />}>
-              <Route path="" element={<Profile />} />
-              <Route path="edit" element={<EditProfile />} />
-            </Route>
-            <Route path="product">
-              <Route path={"form"} element={<ProductForm />} />
-              <Route path={":id"} element={<Product />} />
-            </Route>
-            <Route path={"search"} element={<Products />}>
-              <Route path={":title"} element={<Products />} />
-            </Route>
+      {/* <SocketContext.Provider value={socket}> */}
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="" element={<Home />} />
+          <Route path="dummy" element={<Dummy />} />
+          <Route path="foo" element={<Foo />} />
+          <Route path="users/:id" element={<Users />}>
+            <Route path="" element={<Profile />} />
+            <Route path="edit" element={<EditProfile />} />
           </Route>
-          <Route path="callback" element={<Callback />} />
-        </Routes>
-      </SocketContext.Provider>
+          <Route path="product">
+            <Route path={"form"} element={<ProductForm />} />
+            <Route path={":id"} element={<Product />} />
+          </Route>
+          <Route path={"search"} element={<Products />}>
+            <Route path={":title"} element={<Products />} />
+          </Route>
+        </Route>
+        <Route path="callback" element={<Callback />} />
+      </Routes>
+      {/* </SocketContext.Provider> */}
     </BrowserRouter>
   );
 };

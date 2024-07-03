@@ -1,36 +1,37 @@
 import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
 import { ReactComponent as CloseIcon } from "../../assets/close.svg";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import { setToggle } from "../menuSlice";
-import NavLarge from "./NavDesktop";
 import NavMobile from "./NavMobile";
-import { useCallback } from "react";
+import React from "react";
+import { SocketContext } from "../../context/SocketContext";
+import useConnect from "../../features/auth/hooks/useConnect";
+import Chat from "../../features/chat/components/Chat";
+import ChatIcon from "../../features/chat/components/ChatIcon";
+import LoginModal from "../../features/auth/components/LoginModal";
+import NavDesktop from "./NavDesktop";
 
 const Header = () => {
-  const navigate = useNavigate();
-  const toggleMenu = useSelector((state: RootState) => state.menu.toggle);
+  console.log("header");
+  const socket = useConnect();
+  const openChat = useSelector((state: RootState) => state.chat.open);
+  const openLogin = useSelector((state: RootState) => state.login.openLogin);
+  const toggle = useSelector((state: RootState) => state.menu.toggle);
   const dispatch = useDispatch();
-
-  const handleCloseMenu = useCallback(() => {
-    dispatch(setToggle(false));
-  }, []);
 
   return (
     <header className="sticky top-0 font-[D2Coding] z-10 border-b bg-white">
       <nav className="flex justify-between items-center w-[92%] h-16 mx-auto">
         <div className="flex items-center">
-          <span
-            className="w-14 text-2xl font-bold cursor-pointer"
-            onClick={() => navigate("/")}
-          >
+          <Link to="/" className="w-14 text-2xl font-bold cursor-pointer">
             Logo
-          </span>
+          </Link>
         </div>
-        <NavLarge />
-        <NavMobile handleCloseMenu={handleCloseMenu} />
-        {toggleMenu ? (
+        <NavDesktop />
+        <NavMobile toggle={toggle} />
+        {toggle ? (
           <CloseIcon
             className="lg:hidden w-10 h-10"
             onClick={() => dispatch(setToggle(false))}
@@ -42,8 +43,13 @@ const Header = () => {
           />
         )}
       </nav>
+      <ChatIcon />
+      <SocketContext.Provider value={socket}>
+        {openChat && <Chat />}
+      </SocketContext.Provider>
+      {openLogin && <LoginModal />}
     </header>
   );
 };
 
-export default Header;
+export default React.memo(Header);

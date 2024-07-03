@@ -5,22 +5,25 @@ import { ReactComponent as SearchIcon } from "../../assets/search.svg";
 import { ReactComponent as AngleDownIcon } from "../../assets/angleDown.svg";
 import { ReactComponent as SendIcon } from "../../assets/send.svg";
 import categoryData from "../../features/product/data/category.json";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import React, { useCallback, useEffect, useState } from "react";
 import { logout } from "../../features/user/userSlice";
-import useNavLogin from "../../features/auth/hooks/useNavLogin";
 import { setOpenChat } from "../../features/chat/chatSlice";
+import LinkLogin from "../../components/LinkLogin";
+import { setToggle } from "../menuSlice";
 
-const NavMobile = ({ handleCloseMenu }: any) => {
+const NavMobile = ({ toggle }: any) => {
+  console.log("NavMobile");
   const { pathname } = useLocation();
   const userId = useSelector((state: RootState) => state.user.id);
-  const toggle = useSelector((state: RootState) => state.menu.toggle);
   const [openCategory, setOpenCategory] = useState(false);
   const [openMypage, setOpenMypage] = useState(false);
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const navLogin = useNavLogin();
   const noti = useSelector((state: RootState) => state.chat.noti);
+
+  const handleCloseMenu = useCallback(() => {
+    dispatch(setToggle(false));
+  }, []);
 
   useEffect(() => {
     if (!toggle) {
@@ -42,14 +45,9 @@ const NavMobile = ({ handleCloseMenu }: any) => {
       <div>
         <ul className="flex flex-1 flex-col gap-1">
           <li className="text-xl font-semibold flex justify-between items-center">
-            <div
-              onClick={() => {
-                handleCloseMenu();
-                navigate("/search");
-              }}
-            >
+            <Link onClick={() => handleCloseMenu()} to="/search">
               구매하기
-            </div>
+            </Link>
             <AngleDownIcon
               onClick={() => setOpenCategory(!openCategory)}
               className="w-7 h-7"
@@ -58,42 +56,31 @@ const NavMobile = ({ handleCloseMenu }: any) => {
           {openCategory && (
             <ul>
               {Object.values(categoryData).map((category) => (
-                <li
-                  key={category.id}
-                  onClick={() => {
-                    handleCloseMenu();
-                    navigate(`/search?category=${category.id}`);
-                  }}
-                >
-                  - {category.label}
+                <li key={category.id} onClick={() => handleCloseMenu()}>
+                  <Link to={`/search?category=${category.id}`}>
+                    - {category.label}
+                  </Link>
                 </li>
               ))}
             </ul>
           )}
         </ul>
       </div>
-      <div
+      <LinkLogin
         className="text-xl font-semibold w-fit"
-        onClick={() => {
-          handleCloseMenu();
-          navLogin("/product/form");
-        }}
+        to="/product/form"
+        onClick={handleCloseMenu}
       >
         <span>판매하기</span>
-      </div>
+      </LinkLogin>
       {userId && (
         <>
           <div>
             <ul className="flex flex-1 flex-col gap-1">
               <li className="text-xl font-semibold flex justify-between items-center">
-                <div
-                  onClick={() => {
-                    handleCloseMenu();
-                    navigate(`/users/${userId}`);
-                  }}
-                >
+                <Link onClick={() => handleCloseMenu()} to={`/users/${userId}`}>
                   마이페이지
-                </div>
+                </Link>
                 <AngleDownIcon
                   onClick={() => setOpenMypage(!openMypage)}
                   className="w-7 h-7"
@@ -103,13 +90,8 @@ const NavMobile = ({ handleCloseMenu }: any) => {
                 <ul>
                   <li>- 판매내역</li>
                   <li>- 찜한 상품</li>
-                  <li
-                    onClick={() => {
-                      handleCloseMenu();
-                      navigate(`/users/${userId}/edit`);
-                    }}
-                  >
-                    - 정보 수정
+                  <li onClick={() => handleCloseMenu()}>
+                    <Link to={`/users/${userId}/edit`}>- 정보 수정</Link>
                   </li>
                 </ul>
               )}
@@ -130,12 +112,12 @@ const NavMobile = ({ handleCloseMenu }: any) => {
       )}
 
       {!userId ? (
-        <div
-          onClick={() => navLogin(pathname)}
+        <LinkLogin
+          to={pathname}
           className="text-green-500 text-center font-bold w-24 border-2 border-green-500 rounded"
         >
           로그인
-        </div>
+        </LinkLogin>
       ) : (
         <span
           onClick={() => dispatch(logout("/"))}
@@ -148,4 +130,4 @@ const NavMobile = ({ handleCloseMenu }: any) => {
   );
 };
 
-export default NavMobile;
+export default React.memo(NavMobile);

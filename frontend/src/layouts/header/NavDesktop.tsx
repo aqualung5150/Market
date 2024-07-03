@@ -1,13 +1,12 @@
-import { useState } from "react";
-import useNavLogin from "../../features/auth/hooks/useNavLogin";
+import React, { useState } from "react";
 import LoginButton from "./LoginButton";
 import SearchBar from "./SearchBar";
 import CategoryDropdown from "../../features/product/components/category/CategoryDropdown";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import LinkLogin from "../../components/LinkLogin";
 
-const NavLarge = () => {
-  const navLogin = useNavLogin();
-  const navigate = useNavigate();
+const NavDesktop = () => {
+  console.log("NavLarge");
   const [openCategory, setOpenCategory] = useState(false);
   return (
     <div className="hidden lg:flex items-center w-full flex-row bg-white">
@@ -17,15 +16,12 @@ const NavLarge = () => {
           onMouseLeave={() => setOpenCategory(false)}
           className="relative hover:text-green-500 cursor-pointer"
         >
-          <span onClick={() => navigate("/search")}>구매하기</span>
+          <Link to="/search">구매하기</Link>
           {openCategory && <CategoryDropdown />}
         </li>
-        <li
-          className="hover:text-green-500 cursor-pointer"
-          onClick={() => navLogin("/product/form")}
-        >
-          판매하기
-        </li>
+        <LinkLogin to="/product/form">
+          <li className="hover:text-green-500 cursor-pointer">판매하기</li>
+        </LinkLogin>
       </ul>
       <div className="w-full h-10 px-2 max-w-[400px]">
         <SearchBar />
@@ -35,4 +31,4 @@ const NavLarge = () => {
   );
 };
 
-export default NavLarge;
+export default React.memo(NavDesktop);

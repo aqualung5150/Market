@@ -1,4 +1,7 @@
+import React from "react";
+
 const Footer = () => {
+  console.log("Footer");
   return (
     <footer className="flex w-full justify-around items-center bg-gray-200 min-h-20 h-20 font-bold">
       <div className="flex flex-col justify-around items-center">
@@ -17,4 +20,4 @@ const Footer = () => {
   );
 };
 
-export default Footer;
+export default React.memo(Footer);
