@@ -75,7 +75,8 @@ const useProductForm = () => {
     formData.append("categoryId", categoryId.toString());
     formData.append("condition", condition.toString());
     images.newFiles.map((file) => formData.append("image", file));
-    images.prevToDelete.map((file) => formData.append("prevToDelete", file));
+    if (images.prevToDelete.length > 0)
+      images.prevToDelete.map((file) => formData.append("prevToDelete", file));
 
     try {
       const res = await axiosInstance.postForm(url, formData);
