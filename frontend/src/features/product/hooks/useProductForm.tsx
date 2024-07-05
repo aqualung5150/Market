@@ -4,14 +4,15 @@ import useSelectImages from "../../../hooks/useSelectImages";
 import useFormInput from "../../../hooks/useFormInput";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { ProductData } from "../../../types/product";
+import useFormTextArea from "../../../hooks/useFormTextArea";
 
 const useProductForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [buttonDisable, setButtonDisable] = useState(false);
   const images = useSelectImages();
-  const title = useFormInput("");
-  const price = useFormInput("");
-  const description = useFormInput("");
+  const title = useFormInput();
+  const price = useFormInput();
+  const description = useFormTextArea();
   const [categoryId, setCategoryId] = useState(0);
   const [condition, setCondition] = useState(0);
 
@@ -36,7 +37,6 @@ const useProductForm = () => {
 
         // images to File blob
         const files: File[] = [];
-        const urls: string[] = [];
         data.images.map(async (image) => {
           const imageRes = await axiosInstance.get(
             `${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`,
@@ -46,10 +46,8 @@ const useProductForm = () => {
             type: imageRes.data.type,
           });
           files.push(file);
-          urls.push(URL.createObjectURL(file));
-          if (urls.length === data.images.length) {
+          if (files.length === data.images.length) {
             images.setFiles(files);
-            images.setUrls(urls);
           }
         });
       } catch (err) {
@@ -62,7 +60,7 @@ const useProductForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const url = "product/" + (type === "regist" ? "add" : "modify");
+    const url = "product/" + (type === "modify" ? "modify" : "add");
     setButtonDisable(true);
 
     if (categoryId === 0) {
@@ -76,7 +74,8 @@ const useProductForm = () => {
     formData.append("description", description.value);
     formData.append("categoryId", categoryId.toString());
     formData.append("condition", condition.toString());
-    images.files.map((file) => formData.append("image", file));
+    images.newFiles.map((file) => formData.append("image", file));
+    images.prevToDelete.map((file) => formData.append("prevToDelete", file));
 
     try {
       const res = await axiosInstance.postForm(url, formData);

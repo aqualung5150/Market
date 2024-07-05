@@ -1,4 +1,3 @@
-import Input from "../../../../components/Input";
 import ImageSelector from "./ImageSelector";
 import categoryData from "../../data/category.json";
 import { CategoryData } from "../../../../types/product";
@@ -6,9 +5,10 @@ import useProductForm from "../../hooks/useProductForm";
 
 const ProductForm = () => {
   const {
+    type,
     buttonDisable,
     categoryId,
-    isNew,
+    condition,
     title,
     price,
     description,
@@ -25,13 +25,13 @@ const ProductForm = () => {
 
   return (
     <form
-      className="flex flex-col items-center w-full h-full p-10 gap-10"
+      className="xl:w-2/3 flex flex-col items-center w-full h-full p-5 gap-10"
       onSubmit={handleSubmit}
     >
       <div className="self-start w-full">
         <ImageSelector {...images} />
       </div>
-      <ul className="w-2/3 rounded bg-white shadow overflow-auto">
+      <ul className="w-2/3 rounded bg-white shadow overflow-auto select-none">
         {categories.map((category) => (
           <li
             onClick={() => categoryId.setCategoryId(category.id)}
@@ -47,37 +47,38 @@ const ProductForm = () => {
       <div className="flex gap-2">
         <button
           type="button"
-          onClick={() => isNew.setIsNew(0)}
-          className={!isNew.isNew ? buttonOn : buttonOff}
+          onClick={() => condition.setCondition(0)}
+          className={!condition.condition ? buttonOn : buttonOff}
         >
           중고
         </button>
         <button
           type="button"
-          onClick={() => isNew.setIsNew(1)}
-          className={isNew.isNew ? buttonOn : buttonOff}
+          onClick={() => condition.setCondition(1)}
+          className={condition.condition ? buttonOn : buttonOff}
         >
           새상품
         </button>
       </div>
       <div className="w-full p-3 bg-white rounded shadow">
-        <Input placeholder="상품명" {...title} />
+        <input className="w-full p-2" placeholder="상품명" {...title} />
       </div>
       <div className="w-full p-3 bg-white rounded shadow">
-        <Input placeholder="₩ 판매가격" {...price} />
+        <input className="w-full p-2" placeholder="₩ 상품가격" {...price} />
       </div>
       <div className="w-full p-3 bg-white rounded shadow">
-        <Input
+        <textarea
+          className="w-full h-32 p-2"
           placeholder="상품에 대한 설명을 입력해주세요."
           {...description}
-        />
+        ></textarea>
       </div>
       <button
-        className="w-[100px] h-[50px] bg-green-400 rounded-lg text-lg font-bold"
+        className="h-14 w-[120px] rounded-md border border-solid font-semibold text-base mb-2 text-white bg-green-500 border-green-500"
         type="submit"
         disabled={buttonDisable.buttonDisable}
       >
-        등록
+        {type === "modify" ? "수정" : "등록"}
       </button>
     </form>
   );

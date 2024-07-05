@@ -2,9 +2,11 @@ import { PublicUser } from "./user";
 
 interface ImageSelectorProps {
   files: File[];
-  urls: string[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  setUrls: React.Dispatch<React.SetStateAction<string[]>>;
+  newFiles: File[];
+  setNewFiles: React.Dispatch<React.SetStateAction<File[]>>;
+  prevToDelete: string[];
+  setPrevToDelete: React.Dispatch<React.SetStateAction<string[]>>;
   handleFilesChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
@@ -20,6 +22,7 @@ interface ProductData {
   id: number;
   title: string;
   status: number;
+  condition: number;
   description: string;
   price: number;
   createdAt: Date;
