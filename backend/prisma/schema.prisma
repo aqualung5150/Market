@@ -64,7 +64,8 @@ model Category {
 model Product {
   id Int @id @default(autoincrement())
   title String @db.VarChar(30)
-  status Int @db.SmallInt // 0: 판매중, 1: 예약중, 2: 판매완료
+  status Int @db.SmallInt @default(0) // 0: 판매중, 1: 예약중, 2: 판매완료
+  condition Int @db.SmallInt // 0: 중고 1: 새상품
   description String @db.VarChar(1000)
   price Int
   createdAt DateTime @default(now())

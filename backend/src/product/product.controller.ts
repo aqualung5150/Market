@@ -9,7 +9,6 @@ import {
   Param,
   ParseIntPipe,
   Post,
-  Query,
   Req,
   StreamableFile,
   UnauthorizedException,
@@ -25,15 +24,16 @@ import * as multer from 'multer';
 import * as path from 'path';
 import { v4 } from 'uuid';
 import { Request } from 'express';
-import { ProductPayloadDto } from './dto/product.dto';
+import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 import * as fs from 'fs';
+import { plainToClass, plainToInstance } from 'class-transformer';
 
 const storage = {
   storage: multer.diskStorage({
     destination: './uploads/productImages',
     filename: (req, file, cb) => {
       const origin = path.parse(file.originalname);
-      const filename: string = origin.name.replace(/\s/g, '') + v4();
+      const filename: string = v4();
       const extension: string = origin.ext;
       cb(null, `${filename}${extension}`);
     },
@@ -67,26 +67,58 @@ export class ProductController {
 
   @UseGuards(JwtGuard)
   @UseInterceptors(FilesInterceptor('image', 5, storage))
-  @Post()
+  @Post('add')
   async postProduct(
     @Req() req: Request,
     @UploadedFiles() files: Express.Multer.File[],
-    @Body() data: ProductPayloadDto,
+    @Body() data: CreateProductDto,
   ) {
+    // file validation
     if (req.fileValidationError) {
       throw new UnsupportedMediaTypeException(req.fileValidationError);
     }
     if (files.length < 1) {
       throw new BadRequestException('at least one file is required');
     }
+
+    // create product
     try {
       return await this.productService.createProduct(req.user.id, data, files);
     } catch (err) {
-      // fail to post Product
       for (const file of files)
         fs.unlink(`uploads/productImages/${file.filename}`, () => {});
 
       throw new HttpException('failed to create', 409);
+    }
+  }
+
+  @UseGuards(JwtGuard)
+  @UseInterceptors(FilesInterceptor('image', 5, storage))
+  @Post('modify')
+  async updateProduct(
+    @Req() req: Request,
+    @UploadedFiles() files: Express.Multer.File[],
+    @Body() data: UpdateProductDto,
+  ) {
+    if (!data.existingFiles) data.existingFiles = [];
+    // auth check
+    const productUserId = (
+      await this.productService.getUserIdByProductId(data.productId)
+    ).user.id;
+    if (req.user.id !== productUserId) throw new UnauthorizedException();
+    // file validation
+    if (req.fileValidationError) {
+      throw new UnsupportedMediaTypeException(req.fileValidationError);
+    }
+    // update product
+    try {
+      return await this.productService.updateProduct(data, files);
+    } catch (err) {
+      this.logger.error(err);
+      for (const file of files)
+        fs.unlink(`uploads/productImages/${file.filename}`, () => {});
+
+      throw new HttpException('failed to update', 409);
     }
   }
 
@@ -110,8 +142,8 @@ export class ProductController {
     @Req() req: Request,
     @Param('id', ParseIntPipe) id: number,
   ) {
-    const productUserId = (await this.productService.getProductUserId(id)).user
-      .id;
+    const productUserId = (await this.productService.getUserIdByProductId(id))
+      .user.id;
     if (req.user.id !== productUserId) throw new UnauthorizedException();
 
     return await this.productService.deleteProduct(id);

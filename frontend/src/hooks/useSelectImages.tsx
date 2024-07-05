@@ -3,7 +3,8 @@ import { useState } from "react";
 const useSelectImages = () => {
   const [files, setFiles] = useState<File[]>([]);
   const [newFiles, setNewFiles] = useState<File[]>([]);
-  const [prevToDelete, setPrevToDelete] = useState<string[]>([]);
+  // const [prevToDelete, setPrevToDelete] = useState<string[]>([]);
+  const [existingFiles, setExistingFiles] = useState<string[]>([]);
 
   const handleFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
@@ -43,8 +44,8 @@ const useSelectImages = () => {
     setFiles,
     newFiles,
     setNewFiles,
-    prevToDelete,
-    setPrevToDelete,
+    existingFiles,
+    setExistingFiles,
     handleFilesChange,
   };
 };

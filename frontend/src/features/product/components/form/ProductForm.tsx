@@ -13,7 +13,8 @@ const ProductForm = () => {
     price,
     description,
     images,
-    handleSubmit,
+    handleSubmitCreate,
+    handleSubmitUpdate,
   } = useProductForm();
   const categories: CategoryData[] = [];
   Object.values(categoryData).map((category) => categories.push(category));
@@ -26,7 +27,7 @@ const ProductForm = () => {
   return (
     <form
       className="xl:w-2/3 flex flex-col items-center w-full h-full p-5 gap-10"
-      onSubmit={handleSubmit}
+      onSubmit={type === "modify" ? handleSubmitUpdate : handleSubmitCreate}
     >
       <div className="self-start w-full">
         <ImageSelector {...images} />
