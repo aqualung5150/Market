@@ -8,7 +8,7 @@ import useFormTextArea from "../../../hooks/useFormTextArea";
 
 const useProductForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [buttonDisable, setButtonDisable] = useState(false);
+  const [disabled, setDisabled] = useState(false);
   const images = useSelectImages();
   const title = useFormInput();
   const price = useFormInput();
@@ -70,7 +70,7 @@ const useProductForm = () => {
   const handleSubmitCreate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const url = "product/add";
-    setButtonDisable(true);
+    setDisabled(true);
 
     if (categoryId === 0) {
       alert("상품의 카테고리를 선택해주세요.");
@@ -83,7 +83,7 @@ const useProductForm = () => {
     formData.append("description", description.value);
     formData.append("categoryId", categoryId.toString());
     formData.append("condition", condition.toString());
-    images.newFiles.map((file) => formData.append("image", file));
+    images.newFiles.map((file) => formData.append("image", file, file.name));
 
     try {
       const res = await axiosInstance.postForm(url, formData);
@@ -91,14 +91,14 @@ const useProductForm = () => {
     } catch (err: any) {
       alert(err.response.data.message);
     } finally {
-      setButtonDisable(false);
+      setDisabled(false);
     }
   };
 
   const handleSubmitUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const url = "product/modify";
-    setButtonDisable(true);
+    setDisabled(true);
 
     if (categoryId === 0) {
       alert("상품의 카테고리를 선택해주세요.");
@@ -112,7 +112,7 @@ const useProductForm = () => {
     formData.append("description", description.value);
     formData.append("categoryId", categoryId.toString());
     formData.append("condition", condition.toString());
-    images.newFiles.map((file) => formData.append("image", file));
+    images.newFiles.map((file) => formData.append("image", file, file.name));
     if (images.existingFiles.length > 0)
       images.existingFiles.map((e) => formData.append("existingFiles[]", e));
 
@@ -122,13 +122,13 @@ const useProductForm = () => {
     } catch (err: any) {
       alert(err.response.data.message);
     } finally {
-      setButtonDisable(false);
+      setDisabled(false);
     }
   };
 
   return {
     type,
-    buttonDisable: { buttonDisable, setButtonDisable },
+    disabled: { disabled, setDisabled },
     categoryId: { categoryId, setCategoryId },
     condition: { condition, setCondition },
     title,
