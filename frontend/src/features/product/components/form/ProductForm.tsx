@@ -6,7 +6,7 @@ import useProductForm from "../../hooks/useProductForm";
 const ProductForm = () => {
   const {
     type,
-    buttonDisable,
+    disabled,
     categoryId,
     condition,
     title,
@@ -19,10 +19,12 @@ const ProductForm = () => {
   const categories: CategoryData[] = [];
   Object.values(categoryData).map((category) => categories.push(category));
 
+  const buttonSmall = "h-10 w-[80px]";
+  const buttonLarge = "h-14 w-[120px]";
   const buttonOn =
-    "h-10 w-[80px] rounded-md border border-solid font-semibold text-base mb-2 text-white bg-green-500 border-green-500";
+    "rounded-md font-semibold text-base mb-2 text-white bg-green-500 border-green-500";
   const buttonOff =
-    "h-10 w-[80px] rounded-md border border-solid font-semibold text-base mb-2 border-jnblack text-black bg-white";
+    "rounded-md font-semibold text-base mb-2 border-jnblack text-black bg-white";
 
   return (
     <form
@@ -49,14 +51,18 @@ const ProductForm = () => {
         <button
           type="button"
           onClick={() => condition.setCondition(0)}
-          className={!condition.condition ? buttonOn : buttonOff}
+          className={`${buttonSmall} ${
+            !condition.condition ? buttonOn : buttonOff
+          }`}
         >
           중고
         </button>
         <button
           type="button"
           onClick={() => condition.setCondition(1)}
-          className={condition.condition ? buttonOn : buttonOff}
+          className={`${buttonSmall} ${
+            condition.condition ? buttonOn : buttonOff
+          }`}
         >
           새상품
         </button>
@@ -75,11 +81,17 @@ const ProductForm = () => {
         ></textarea>
       </div>
       <button
-        className="h-14 w-[120px] rounded-md border border-solid font-semibold text-base mb-2 text-white bg-green-500 border-green-500"
+        className={`${buttonLarge} ${
+          disabled.disabled || images.disabled ? buttonOff : buttonOn
+        }`}
         type="submit"
-        disabled={buttonDisable.buttonDisable}
+        disabled={(disabled.disabled || images.disabled) && true}
       >
-        {type === "modify" ? "수정" : "등록"}
+        {disabled.disabled || images.disabled
+          ? "처리중"
+          : type === "modify"
+          ? "수정"
+          : "등록"}
       </button>
     </form>
   );

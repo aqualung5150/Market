@@ -1,12 +1,16 @@
 import { PublicUser } from "./user";
 
 interface ImageSelectorProps {
+  disabled: boolean;
+  setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   newFiles: File[];
   setNewFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  prevToDelete: string[];
-  setPrevToDelete: React.Dispatch<React.SetStateAction<string[]>>;
+  // prevToDelete: string[];
+  // setPrevToDelete: React.Dispatch<React.SetStateAction<string[]>>;
+  existingFiles: string[];
+  setExistingFiles: React.Dispatch<React.SetStateAction<string[]>>;
   handleFilesChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
