@@ -8,19 +8,14 @@ export class SearchService {
   async getProducts({ keyword, categoryId, page = 1 }) {
     return await this.prisma.product.findMany({
       where: {
-        title:
-          keyword !== 'undefined'
-            ? {
-                contains: keyword,
-              }
-            : undefined,
+        title: keyword ? { contains: keyword } : undefined,
         categoryId: categoryId ? categoryId : undefined,
       },
       orderBy: {
         createdAt: 'desc',
       },
-      // skip: (page - 1) * 10,
-      skip: 0,
+      skip: (page - 1) * 10,
+      // skip: 0,
       take: 10,
       include: {
         images: {

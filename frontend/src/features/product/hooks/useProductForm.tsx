@@ -97,7 +97,7 @@ const useProductForm = () => {
 
   const handleSubmitUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const url = "product/modify";
+    const url = `product/modify/${productId}`;
     setDisabled(true);
 
     if (categoryId === 0) {
@@ -106,7 +106,6 @@ const useProductForm = () => {
     }
 
     const formData = new FormData();
-    if (type === "modify" && productId) formData.append("productId", productId);
     formData.append("title", title.value);
     formData.append("price", price.value);
     formData.append("description", description.value);

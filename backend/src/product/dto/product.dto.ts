@@ -33,10 +33,6 @@ export class CreateProductDto {
 
 export class UpdateProductDto {
   @IsNotEmpty()
-  @IsNumber()
-  productId: number;
-
-  @IsNotEmpty()
   @IsString()
   title: string;
 
@@ -64,3 +60,18 @@ export class UpdateProductDto {
   @IsString({ each: true })
   existingFiles: string[];
 }
+
+export class StatusParamDto {
+  @IsNotEmpty()
+  @IsNumber()
+  id: number;
+}
+
+export class StatusQueryDto {
+  @IsNotEmpty()
+  @IsNumber()
+  status: number;
+}
+
+export class ModifyParamDto extends StatusParamDto {}
+export class DeleteParamDto extends StatusParamDto {}

@@ -10,21 +10,26 @@ const Products = () => {
   const page = searchParams.get("page");
   const title = useParams().title;
 
+  const params = new URLSearchParams();
+  if (title) params.append("keyword", title);
+  if (categoryId) params.append("categoryId", categoryId.toString());
+  params.append("page", page ? page.toString() : "1");
+
+  const url = `search?${params.toString()}`;
+
   const {
     data,
     error,
     loading,
-  }: { data: ProductData[]; error: any; loading: boolean } = useAxios(
-    `search/${title}?categoryId=${categoryId}&page=${page}`
-  );
+  }: { data: ProductData[]; error: any; loading: boolean } = useAxios(url);
 
   return (
     <>
       {loading && <Loading text="로딩중..." />}
       {error && <div>상품 정보를 불러오지 못했습니다.</div>}
-      {!loading && (
+      {!loading && data && (
         <div className="2xl:w-2/3 h-full grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 auto-rows-min  gap-5 p-5">
-          {data?.map((product: ProductData) => (
+          {data.map((product: ProductData) => (
             <ProductThumbnail key={product.id} product={product} />
           ))}
         </div>

@@ -78,12 +78,16 @@ export class ProductService {
     }
   }
 
-  async updateProduct(data: UpdateProductDto, files: Express.Multer.File[]) {
+  async updateProduct(
+    productId: number,
+    data: UpdateProductDto,
+    files: Express.Multer.File[],
+  ) {
     return await this.prisma.$transaction(async (tx) => {
       // DELETE
       const deletedImages = await tx.productImage.findMany({
         where: {
-          productId: data.productId,
+          productId: productId,
           url: { notIn: data.existingFiles },
         },
         select: {
@@ -93,7 +97,7 @@ export class ProductService {
       // delete from database
       await tx.productImage.deleteMany({
         where: {
-          productId: data.productId,
+          productId: productId,
           url: { notIn: data.existingFiles },
         },
       });
@@ -102,7 +106,7 @@ export class ProductService {
       data.existingFiles.forEach(async (e, idx) => {
         await tx.productImage.updateMany({
           where: {
-            productId: data.productId,
+            productId: productId,
             url: e,
           },
           data: {
@@ -122,7 +126,7 @@ export class ProductService {
             url: file.filename,
             order: order,
             main: order === 0 ? true : false,
-            productId: data.productId,
+            productId: productId,
           };
           imagesData.push(image);
         });
@@ -135,7 +139,7 @@ export class ProductService {
       // UPDATE Product
       await tx.product.update({
         where: {
-          id: data.productId,
+          id: productId,
         },
         data: {
           title: data.title,
@@ -143,7 +147,7 @@ export class ProductService {
           description: data.description,
           categoryId: data.categoryId,
           condition: data.condition,
-        }, // TODO - TEST
+        },
       });
 
       // delete images from storage
@@ -176,6 +180,17 @@ export class ProductService {
   //     },
   //   });
   // }
+
+  async changeProductStatus(productId: number, status: number) {
+    return await this.prisma.product.update({
+      where: {
+        id: productId,
+      },
+      data: {
+        status: status,
+      },
+    });
+  }
 
   async getUserIdByProductId(productId) {
     return await this.prisma.product.findUnique({

@@ -8,7 +8,9 @@ import {
   Logger,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
+  Query,
   Req,
   StreamableFile,
   UnauthorizedException,
@@ -24,9 +26,15 @@ import * as multer from 'multer';
 import * as path from 'path';
 import { v4 } from 'uuid';
 import { Request } from 'express';
-import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
+import {
+  CreateProductDto,
+  UpdateProductDto,
+  StatusParamDto,
+  StatusQueryDto,
+  ModifyParamDto,
+  DeleteParamDto,
+} from './dto/product.dto';
 import * as fs from 'fs';
-import { plainToClass, plainToInstance } from 'class-transformer';
 
 const storage = {
   storage: multer.diskStorage({
@@ -78,7 +86,7 @@ export class ProductController {
       throw new UnsupportedMediaTypeException(req.fileValidationError);
     }
     if (files.length < 1) {
-      throw new BadRequestException('at least one file is required');
+      throw new BadRequestException('at least one image is required');
     }
 
     // create product
@@ -94,16 +102,21 @@ export class ProductController {
 
   @UseGuards(JwtGuard)
   @UseInterceptors(FilesInterceptor('image', 5, storage))
-  @Post('modify')
+  @Post('modify/:id')
   async updateProduct(
     @Req() req: Request,
+    @Param() param: ModifyParamDto,
     @UploadedFiles() files: Express.Multer.File[],
     @Body() data: UpdateProductDto,
   ) {
+    const productId = param.id;
+    if (!data.existingFiles && files.length <= 0) {
+      throw new BadRequestException('at least one image is required');
+    }
     if (!data.existingFiles) data.existingFiles = [];
     // auth check
     const productUserId = (
-      await this.productService.getUserIdByProductId(data.productId)
+      await this.productService.getUserIdByProductId(productId)
     ).user.id;
     if (req.user.id !== productUserId) throw new UnauthorizedException();
     // file validation
@@ -112,7 +125,7 @@ export class ProductController {
     }
     // update product
     try {
-      return await this.productService.updateProduct(data, files);
+      return await this.productService.updateProduct(productId, data, files);
     } catch (err) {
       this.logger.error(err);
       for (const file of files)
@@ -120,6 +133,24 @@ export class ProductController {
 
       throw new HttpException('failed to update', 409);
     }
+  }
+
+  @UseGuards(JwtGuard)
+  @Patch('status/:id')
+  async updateProductStatus(
+    @Req() req: Request,
+    @Param() param: StatusParamDto,
+    @Query() query: StatusQueryDto,
+  ) {
+    const productId = param.id;
+    const status = query.status;
+    // auth check
+    const productUserId = (
+      await this.productService.getUserIdByProductId(productId)
+    ).user.id;
+    if (req.user.id !== productUserId) throw new UnauthorizedException();
+
+    return await this.productService.changeProductStatus(productId, status);
   }
 
   @Get(':id')
@@ -138,14 +169,13 @@ export class ProductController {
 
   @UseGuards(JwtGuard)
   @Delete(':id')
-  async deleteProduct(
-    @Req() req: Request,
-    @Param('id', ParseIntPipe) id: number,
-  ) {
-    const productUserId = (await this.productService.getUserIdByProductId(id))
-      .user.id;
+  async deleteProduct(@Req() req: Request, @Param() param: DeleteParamDto) {
+    const productId = param.id;
+    const productUserId = (
+      await this.productService.getUserIdByProductId(productId)
+    ).user.id;
     if (req.user.id !== productUserId) throw new UnauthorizedException();
 
-    return await this.productService.deleteProduct(id);
+    return await this.productService.deleteProduct(productId);
   }
 }

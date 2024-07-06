@@ -45,7 +45,7 @@ const NavMobile = ({ toggle }: any) => {
       <div>
         <ul className="flex flex-1 flex-col gap-1">
           <li className="text-xl font-semibold flex justify-between items-center">
-            <Link onClick={() => handleCloseMenu()} to="/search">
+            <Link onClick={() => handleCloseMenu()} to="/search?page=1">
               구매하기
             </Link>
             <AngleDownIcon
@@ -57,7 +57,7 @@ const NavMobile = ({ toggle }: any) => {
             <ul>
               {Object.values(categoryData).map((category) => (
                 <li key={category.id} onClick={() => handleCloseMenu()}>
-                  <Link to={`/search?category=${category.id}`}>
+                  <Link to={`/search?category=${category.id}&page=1`}>
                     - {category.label}
                   </Link>
                 </li>
@@ -68,7 +68,7 @@ const NavMobile = ({ toggle }: any) => {
       </div>
       <LinkLogin
         className="text-xl font-semibold w-fit"
-        to="/product/form"
+        to="/product/form?type=regist"
         onClick={handleCloseMenu}
       >
         <span>판매하기</span>

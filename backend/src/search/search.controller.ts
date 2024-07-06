@@ -1,5 +1,6 @@
 import { Controller, Get, Logger, Param, Query } from '@nestjs/common';
 import { SearchService } from './search.service';
+import { SearchQueryDto } from './dto/searchQuery.dto';
 
 @Controller('search')
 export class SearchController {
@@ -7,14 +8,11 @@ export class SearchController {
   constructor(private readonly searchService: SearchService) {}
 
   @Get()
-  async getAll() {}
-
-  @Get(':keyword')
-  async getKeyword(@Param('keyword') keyword, @Query() query) {
+  async getProducts(@Query() query: SearchQueryDto) {
     const res = await this.searchService.getProducts({
-      keyword,
-      categoryId: parseInt(query.categoryId),
-      page: query.page ? parseInt(query.page) : undefined,
+      keyword: query.keyword,
+      categoryId: query.categoryId,
+      page: query.page,
     });
     return res;
   }

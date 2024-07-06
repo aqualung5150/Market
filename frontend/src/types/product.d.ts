@@ -45,15 +45,24 @@ interface ProductDescriptionProps {
   data: ProductData;
 }
 
-interface ProductTitleProps extends ProductDescriptionProps {
+interface ProductTitleProps {
+  data: ProductData;
   paramId: string | undefined;
 }
 
-interface ProductImageProps extends ProductDescriptionProps {}
+interface ProductImageProps {
+  data: ProductData;
+}
 
 interface ConfirmDelteProps {
   paramId: string | undefined;
   category: CategoryData | undefined;
   openConfirmDelete: boolean;
   setOpenConfirmDelete: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+interface SetStatusModalProps {
+  data: ProductData;
+  openSetStatus: boolean;
+  setOpenSetStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }

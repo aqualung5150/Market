@@ -8,7 +8,9 @@ const CategoryDropdown = () => {
       <ul className="text-sm  font-normal p-2 space-y-2 cursor-pointer">
         {Object.values(categoryData).map((category) => (
           <li className="hover:text-green-500" key={category.id}>
-            <Link to={`/search?category=${category.id}`}>{category.label}</Link>
+            <Link to={`/search?category=${category.id}&page=1`}>
+              {category.label}
+            </Link>
           </li>
         ))}
       </ul>

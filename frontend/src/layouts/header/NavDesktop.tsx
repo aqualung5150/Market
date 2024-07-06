@@ -16,10 +16,10 @@ const NavDesktop = () => {
           onMouseLeave={() => setOpenCategory(false)}
           className="relative hover:text-green-500 cursor-pointer"
         >
-          <Link to="/search">구매하기</Link>
+          <Link to="/search?page=1">구매하기</Link>
           {openCategory && <CategoryDropdown />}
         </li>
-        <LinkLogin to="/product/form">
+        <LinkLogin to="/product/form?type=regist">
           <li className="hover:text-green-500 cursor-pointer">판매하기</li>
         </LinkLogin>
       </ul>
