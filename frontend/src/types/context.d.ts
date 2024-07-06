@@ -10,3 +10,8 @@ interface ConnectionContextProps {
 interface SocketContextProps {
   socket: Socket | null;
 }
+
+interface ProductStatusContextType {
+  status: number;
+  setStatus: Dispatch<SetStateAction<number>> | null;
+}

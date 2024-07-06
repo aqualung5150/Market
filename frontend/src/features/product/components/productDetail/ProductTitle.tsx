@@ -5,9 +5,11 @@ import React, { useState } from "react";
 import categoryData from "../../data/category.json";
 import { ProductTitleProps } from "../../../../types/product";
 import ConfirmDelete from "./ConfirmDelete";
+import SetStatusModal from "./SetStatusModal";
 
 const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openSetStatus, setOpenSetStatus] = useState(false);
   const userId = useSelector((state: RootState) => state.user.id);
   const category = Object.values(categoryData).find(
     (e) => e.id === data?.categoryId
@@ -29,7 +31,7 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
             제품상태
           </span>
           <div className="text-sm text-black  p-2">
-            {data.status ? "새상품" : "중고"}
+            {data.condition ? "새상품" : "중고"}
           </div>
         </div>
         <div className="text-2xl font-bold">{data.title}</div>
@@ -40,22 +42,28 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
       {userId === data.user.id && (
         <div className="flex h-16 cursor-pointer rounded-2xl bg-gray-200 shadow-sm">
           <button
-            onClick={() => setOpenConfirmDelete(true)}
+            onClick={() => setOpenSetStatus(true)}
             className="flex-1 border-r border-gray-300"
           >
-            글 삭제하기
+            상태변경
           </button>
-          <button
-            onClick={() => setOpenConfirmDelete(true)}
+          <Link
             className="flex-1 border-r border-gray-300"
+            to={`/product/form?type=modify&productId=${data.id}`}
           >
-            글 삭제하기
-          </button>
+            <button className="w-full h-full">수정하기</button>
+          </Link>
+
           <button onClick={() => setOpenConfirmDelete(true)} className="flex-1">
-            글 삭제하기
+            삭제하기
           </button>
         </div>
       )}
+      <SetStatusModal
+        data={data}
+        openSetStatus={openSetStatus}
+        setOpenSetStatus={setOpenSetStatus}
+      />
       <ConfirmDelete
         paramId={paramId}
         category={category}

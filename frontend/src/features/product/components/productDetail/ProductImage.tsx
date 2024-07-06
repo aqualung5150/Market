@@ -1,20 +1,35 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import Carousel from "../../../../components/Carousel";
 import { ProductImageData, ProductImageProps } from "../../../../types/product";
+import ProductStatusContext from "../../context/ProductStatusContext";
+import { ReactComponent as CheckIcon } from "../../../../assets/check.svg";
 
 const ProductImage = ({ data }: ProductImageProps) => {
   const [imageIndex, setImageIndex] = useState(-1);
+  const status = useContext(ProductStatusContext).status;
 
   return (
     <>
       <Carousel autoSlide={true}>
         {data.images.map((image: ProductImageData, idx: number) => (
-          <img
-            onClick={() => setImageIndex(idx)}
+          <div
             key={idx}
-            className="aspect-square object-cover rounded-2xl"
-            src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`}
-          />
+            className="relative aspect-square"
+            onClick={() => setImageIndex(idx)}
+          >
+            <img
+              className="aspect-square object-cover rounded-2xl"
+              src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`}
+            />
+            {status === 1 && (
+              <div className="absolute w-full h-full top-0 left-0 bg-black/50 rounded-2xl flex flex-col justify-center items-center gap-2">
+                <CheckIcon className="w-24 h-24 stroke-white/85" />
+                <span className="text-white/85 text-2xl font-bold">
+                  판매완료
+                </span>
+              </div>
+            )}
+          </div>
         ))}
       </Carousel>
       {imageIndex > -1 && (
