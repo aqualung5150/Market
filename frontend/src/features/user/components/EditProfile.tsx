@@ -26,7 +26,7 @@ const EditProfile = () => {
     const formData = new FormData();
     formData.append("nickname", nickname.value);
     formData.append("name", name.value);
-    file.file && formData.append("image", file.file);
+    file.file && formData.append("image", file.file, file.file.name);
 
     try {
       const res = await axiosInstance.postForm(`users/${user.id}`, formData);
