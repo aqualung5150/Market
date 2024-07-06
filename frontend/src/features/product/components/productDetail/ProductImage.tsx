@@ -18,13 +18,13 @@ const ProductImage = ({ data }: ProductImageProps) => {
             onClick={() => setImageIndex(idx)}
           >
             <img
-              className="aspect-square object-cover rounded-2xl"
+              className="aspect-square rounded-2xl object-cover"
               src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`}
             />
             {status === 1 && (
-              <div className="absolute w-full h-full top-0 left-0 bg-black/50 rounded-2xl flex flex-col justify-center items-center gap-2">
-                <CheckIcon className="w-24 h-24 stroke-white/85" />
-                <span className="text-white/85 text-2xl font-bold">
+              <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl bg-black/50">
+                <CheckIcon className="h-24 w-24 stroke-white/85" />
+                <span className="text-2xl font-bold text-white/85">
                   판매완료
                 </span>
               </div>
@@ -34,17 +34,17 @@ const ProductImage = ({ data }: ProductImageProps) => {
       </Carousel>
       {imageIndex > -1 && (
         <div
-          className="fixed z-10 top-0 left-0 w-screen h-screen bg-black bg-opacity-85 flex justify-center items-center"
+          className="fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center bg-black bg-opacity-85"
           onClick={() => setImageIndex(-1)}
         >
           <Carousel initialIndex={imageIndex}>
             {data.images.map((image: ProductImageData, idx: number) => (
               <div
                 key={idx}
-                className="w-screen h-screen shrink-0 flex items-center"
+                className="flex h-screen w-screen shrink-0 items-center"
               >
                 <img
-                  className="object-contain w-full h-full"
+                  className="h-full w-full object-contain"
                   src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`}
                 />
               </div>

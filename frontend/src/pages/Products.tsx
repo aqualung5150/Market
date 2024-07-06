@@ -28,7 +28,7 @@ const Products = () => {
       {loading && <Loading text="로딩중..." />}
       {error && <div>상품 정보를 불러오지 못했습니다.</div>}
       {!loading && data && (
-        <div className="2xl:w-2/3 h-full grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 auto-rows-min  gap-5 p-5">
+        <div className="grid h-full auto-rows-min grid-cols-2 gap-5 p-5 sm:grid-cols-3 xl:grid-cols-4 2xl:w-2/3">
           {data.map((product: ProductData) => (
             <ProductThumbnail key={product.id} product={product} />
           ))}

@@ -21,16 +21,16 @@ const Carousel = ({
   }, [autoSlideState]);
 
   return (
-    <div className="overflow-hidden relative w-full h-full">
+    <div className="relative h-full w-full overflow-hidden">
       <div
-        className="w-full h-full flex transition-transform ease-out duration-500"
+        className="flex h-full w-full transition-transform duration-500 ease-out"
         style={{ transform: `translateX(-${cur * 100}%)` }}
       >
         {slides}
       </div>
       {/* <div className="absolute inset-0 flex items-center justify-between p-4"> */}
       <div
-        className="absolute top-1/2 translate-y-[-50%] left-4 rounded-full shadow bg-white bg-opacity-50 text-gray-800 hover:bg-white hover:bg-opacity-90"
+        className="absolute left-4 top-1/2 translate-y-[-50%] rounded-full bg-white bg-opacity-50 text-gray-800 shadow hover:bg-white hover:bg-opacity-90"
         onClick={(e) => {
           e.stopPropagation();
           prev();
@@ -41,7 +41,7 @@ const Carousel = ({
       </div>
 
       <div
-        className="absolute top-1/2 translate-y-[-50%] right-4 rounded-full shadow bg-white bg-opacity-50 text-gray-800 hover:bg-white hover:bg-opacity-90"
+        className="absolute right-4 top-1/2 translate-y-[-50%] rounded-full bg-white bg-opacity-50 text-gray-800 shadow hover:bg-white hover:bg-opacity-90"
         onClick={(e) => {
           e.stopPropagation();
           next();
@@ -52,12 +52,12 @@ const Carousel = ({
       </div>
       {/* </div> */}
 
-      <div className="absolute bottom-4 inset-x-0">
+      <div className="absolute inset-x-0 bottom-4">
         <div className="flex items-center justify-center gap-2">
           {slides.map((_, idx) => (
             <div
               key={idx}
-              className={`transition-all w-3 h-3 bg-white rounded-full ${
+              className={`h-3 w-3 rounded-full bg-white transition-all ${
                 cur === idx ? "p-2" : "bg-opacity-50"
               }`}
             />

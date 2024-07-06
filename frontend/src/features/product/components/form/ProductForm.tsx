@@ -28,13 +28,13 @@ const ProductForm = () => {
 
   return (
     <form
-      className="xl:w-2/3 flex flex-col items-center w-full h-full p-5 gap-10"
+      className="flex h-full w-full flex-col items-center gap-10 p-5 xl:w-2/3"
       onSubmit={type === "modify" ? handleSubmitUpdate : handleSubmitCreate}
     >
-      <div className="self-start w-full">
+      <div className="w-full self-start">
         <ImageSelector {...images} />
       </div>
-      <ul className="w-2/3 rounded bg-white shadow overflow-auto select-none">
+      <ul className="w-2/3 select-none overflow-auto rounded bg-white shadow">
         {categories.map((category) => (
           <li
             onClick={() => categoryId.setCategoryId(category.id)}
@@ -67,15 +67,15 @@ const ProductForm = () => {
           새상품
         </button>
       </div>
-      <div className="w-full p-3 bg-white rounded shadow">
+      <div className="w-full rounded bg-white p-3 shadow">
         <input className="w-full p-2" placeholder="상품명" {...title} />
       </div>
-      <div className="w-full p-3 bg-white rounded shadow">
+      <div className="w-full rounded bg-white p-3 shadow">
         <input className="w-full p-2" placeholder="₩ 상품가격" {...price} />
       </div>
-      <div className="w-full p-3 bg-white rounded shadow">
+      <div className="w-full rounded bg-white p-3 shadow">
         <textarea
-          className="w-full h-32 p-2"
+          className="h-32 w-full p-2"
           placeholder="상품에 대한 설명을 입력해주세요."
           {...description}
         ></textarea>
@@ -90,8 +90,8 @@ const ProductForm = () => {
         {disabled.disabled || images.disabled
           ? "처리중"
           : type === "modify"
-          ? "수정"
-          : "등록"}
+            ? "수정"
+            : "등록"}
       </button>
     </form>
   );

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 
 const ProductThumbnail = ({ product }: { product: ProductData }) => {
   return (
-    <div className="bg-white aspect-[3/5] flex flex-col w-full rounded-lg shadow-lg cursor-pointer">
+    <div className="flex aspect-[3/5] w-full cursor-pointer flex-col rounded-lg bg-white shadow-lg">
       <Link className="h-fit" to={`/product/${product.id}`}>
         <img
           className="aspect-square rounded-t-lg object-cover"
@@ -14,7 +14,7 @@ const ProductThumbnail = ({ product }: { product: ProductData }) => {
           }`}
         />
       </Link>
-      <div className="flex-1 w-full justify-around flex flex-col px-2">
+      <div className="flex w-full flex-1 flex-col justify-around px-2">
         <div className="text-base font-semibold">{product?.title}</div>
         <div className="text-sm font-semibold">
           {product?.price.toLocaleString()}원

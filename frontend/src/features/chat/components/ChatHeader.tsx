@@ -10,28 +10,28 @@ const ChatHeader = ({ selectedChannelId, setSelectedChannelId }: any) => {
   const image = useSelector((state: RootState) => state.user.image);
   const dispatch = useDispatch();
   return (
-    <div className="py-2 px-3 bg-gray-200 flex flex-row items-center border">
+    <div className="flex flex-row items-center border bg-gray-200 px-3 py-2">
       <div>
         <img
-          className="min-w-10 w-10 h-10 rounded-full object-cover"
+          className="h-10 w-10 min-w-10 rounded-full object-cover"
           src={`${process.env.REACT_APP_API_URL}/users/profileImage/${image}`}
         />
       </div>
-      <span className="ml-3 text-xl font-medium truncate flex-1">
+      <span className="ml-3 flex-1 truncate text-xl font-medium">
         {nickname}
       </span>
       <BackIcon
         onClick={() => {
           setSelectedChannelId(0);
         }}
-        className={`${selectedChannelId ? "" : "hidden"} lg:hidden w-10 h-10`}
+        className={`${selectedChannelId ? "" : "hidden"} h-10 w-10 lg:hidden`}
       />
       <CloseIcon
         onClick={() => {
           dispatch(setOpenChat(false));
           dispatch(setSendTo(0));
         }}
-        className={`${selectedChannelId ? "hidden" : ""} lg:inline w-10 h-10`}
+        className={`${selectedChannelId ? "hidden" : ""} h-10 w-10 lg:inline`}
       />
     </div>
   );

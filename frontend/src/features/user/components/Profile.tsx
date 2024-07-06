@@ -15,16 +15,16 @@ const Profile = () => {
       {loading && <Loading text="로딩중..." />}
       {error && <div>존재하지 않는 회원입니다.</div>}
       {data && (
-        <div className="p-10 w-full flex flex-col items-center">
-          <div className="p-9 aspect-square h-[350px]">
+        <div className="flex w-full flex-col items-center p-10">
+          <div className="aspect-square h-[350px] p-9">
             <img
-              className="h-full max-w-full aspect-square rounded-full object-cover"
+              className="aspect-square h-full max-w-full rounded-full object-cover"
               src={`${process.env.REACT_APP_API_URL}/users/profileImage/${data.image}`}
             />
           </div>
-          <div className="p-5 w-full md:w-2/3 flex flex-col bg-white rounded-2xl">
+          <div className="flex w-full flex-col rounded-2xl bg-white p-5 md:w-2/3">
             <span className="text-3xl font-bold">{data.nickname}</span>
-            <p className="flex-1 mt-2">
+            <p className="mt-2 flex-1">
               {
                 "이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n"
               }
@@ -32,7 +32,7 @@ const Profile = () => {
             {me.id !== data.id && (
               <div className="mt-2 self-end">
                 <SendButton
-                  className="w-20 h-10 bg-green-300 rounded"
+                  className="h-10 w-20 rounded bg-green-300"
                   text="채팅하기"
                   sendTo={data.id}
                 />

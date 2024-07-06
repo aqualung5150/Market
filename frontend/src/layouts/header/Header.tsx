@@ -22,10 +22,10 @@ const Header = () => {
   const dispatch = useDispatch();
 
   return (
-    <header className="sticky top-0 font-[D2Coding] z-10 border-b bg-white">
-      <nav className="flex justify-between items-center w-[92%] h-16 mx-auto">
+    <header className="sticky top-0 z-10 border-b bg-white font-[D2Coding]">
+      <nav className="mx-auto flex h-16 w-[92%] items-center justify-between">
         <div className="flex items-center">
-          <Link to="/" className="w-14 text-2xl font-bold cursor-pointer">
+          <Link to="/" className="w-14 cursor-pointer text-2xl font-bold">
             Logo
           </Link>
         </div>
@@ -33,12 +33,12 @@ const Header = () => {
         <NavMobile toggle={toggle} />
         {toggle ? (
           <CloseIcon
-            className="lg:hidden w-10 h-10"
+            className="h-10 w-10 lg:hidden"
             onClick={() => dispatch(setToggle(false))}
           />
         ) : (
           <MenuIcon
-            className="lg:hidden w-10 h-10"
+            className="h-10 w-10 lg:hidden"
             onClick={() => dispatch(setToggle(true))}
           />
         )}

@@ -8,13 +8,13 @@ const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
     selectedChannelId,
   });
   return (
-    <div className="w-full h-full flex-1 flex flex-col">
-      <div className="py-2 px-3 bg-gray-100 flex flex-row justify-between items-center">
+    <div className="flex h-full w-full flex-1 flex-col">
+      <div className="flex flex-row items-center justify-between bg-gray-100 px-3 py-2">
         Selected Channel is {selectedChannelId}
       </div>
       <div
         style={{ overflowAnchor: "none" }}
-        className="py-2 px-3 flex-1 bg-stone-200 flex flex-col-reverse overflow-auto sticky"
+        className="sticky flex flex-1 flex-col-reverse overflow-auto bg-stone-200 px-3 py-2"
       >
         {messagesData.map((messageData: SocketMessageData) => {
           return <Message key={messageData.id} data={messageData} />;

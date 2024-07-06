@@ -23,7 +23,7 @@ const ChatLogin = ({ children }: any) => {
   return (
     <div
       onClick={handleClick}
-      className="hidden lg:block rounded-full bg-blue-300 shadow-lg fixed bottom-[5%] right-[5%] hover:bg-blue-400 cursor-pointer"
+      className="fixed bottom-[5%] right-[5%] hidden cursor-pointer rounded-full bg-blue-300 shadow-lg hover:bg-blue-400 lg:block"
     >
       {children}
     </div>

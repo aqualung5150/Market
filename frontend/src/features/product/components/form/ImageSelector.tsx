@@ -39,20 +39,20 @@ const ImageSelector = ({
         type="button"
         disabled={disabled}
         onClick={() => selectFile.current?.click()}
-        className="flex flex-col justify-center items-center min-w-24 w-24 h-24 rounded bg-gray-200 cursor-pointer shadow mr-1"
+        className="mr-1 flex h-24 w-24 min-w-24 cursor-pointer flex-col items-center justify-center rounded bg-gray-200 shadow"
       >
-        <CameraIcon className="pt-1 w-8 h-8" />
+        <CameraIcon className="h-8 w-8 pt-1" />
         <span className="text-xs">{files.length} / 5</span>
       </button>
       <div className="flex overflow-auto">
         {files.map((file, idx) => (
           <div key={file.name} className="relative mr-1">
             {idx === 0 && (
-              <div className="absolute top-0 left-0 min-w-24 w-24 h-24 rounded border-green-500 border-2 bg-transparent"></div>
+              <div className="absolute left-0 top-0 h-24 w-24 min-w-24 rounded border-2 border-green-500 bg-transparent"></div>
             )}
             <FileToImage file={file} />
             <div
-              className="absolute border w-5 h-5 text-xs bg-white rounded-full top-1 right-1 flex justify-center items-center cursor-pointer"
+              className="absolute right-1 top-1 flex h-5 w-5 cursor-pointer items-center justify-center rounded-full border bg-white text-xs"
               onClick={() => deleteImage(file.name)}
             >
               X

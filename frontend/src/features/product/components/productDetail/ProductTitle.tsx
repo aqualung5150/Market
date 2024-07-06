@@ -12,12 +12,12 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
   const [openSetStatus, setOpenSetStatus] = useState(false);
   const userId = useSelector((state: RootState) => state.user.id);
   const category = Object.values(categoryData).find(
-    (e) => e.id === data?.categoryId
+    (e) => e.id === data?.categoryId,
   );
 
   return (
-    <div className="h-full flex flex-col justify-between gap-10">
-      <div className="flex-1 text-lg text-gray-700 space-y-3">
+    <div className="flex h-full flex-col justify-between gap-10">
+      <div className="flex-1 space-y-3 text-lg text-gray-700">
         <span>{"카테고리 > "}</span>
 
         <Link
@@ -26,11 +26,11 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
         >
           {category?.label}
         </Link>
-        <div className="w-[100px] flex flex-col bg-gray-200 rounded-lg items-center shadow-sm">
-          <span className="text-center text-xs text-gray-500 p-2 border-b border-gray-300 w-full">
+        <div className="flex w-[100px] flex-col items-center rounded-lg bg-gray-200 shadow-sm">
+          <span className="w-full border-b border-gray-300 p-2 text-center text-xs text-gray-500">
             제품상태
           </span>
-          <div className="text-sm text-black  p-2">
+          <div className="p-2 text-sm text-black">
             {data.condition ? "새상품" : "중고"}
           </div>
         </div>
@@ -51,7 +51,7 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
             className="flex-1 border-r border-gray-300"
             to={`/product/form?type=modify&productId=${data.id}`}
           >
-            <button className="w-full h-full">수정하기</button>
+            <button className="h-full w-full">수정하기</button>
           </Link>
 
           <button onClick={() => setOpenConfirmDelete(true)} className="flex-1">

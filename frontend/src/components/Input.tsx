@@ -16,7 +16,7 @@ const Input = ({
   };
   return (
     <input
-      className="w-full border rounded px-2 py-2"
+      className="w-full rounded border px-2 py-2"
       id={id}
       value={value}
       placeholder={placeholder}

@@ -14,7 +14,7 @@ const EmptyRoom = () => {
   };
 
   return (
-    <div className="w-2/3 flex justify-center items-center">
+    <div className="flex w-2/3 items-center justify-center">
       {sendTo ? (
         <Input
           value={value}

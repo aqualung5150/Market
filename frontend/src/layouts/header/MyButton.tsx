@@ -17,23 +17,23 @@ const Mybutton = () => {
   return (
     <div ref={wrapper} className="relative h-full">
       <div
-        className="rounded bg-sky-100 font-bold flex flex-col justify-center items-center w-[100px] h-10"
+        className="flex h-10 w-[100px] flex-col items-center justify-center rounded bg-sky-100 font-bold"
         onClick={() => setOpen(!open)}
       >
         {userNickname}
       </div>
       {open && (
-        <div className="absolute border my-1 rounded bg-white w-[100px] top-full right-0 shadow">
-          <ul className="flex flex-col justify-center h-[150px]">
+        <div className="absolute right-0 top-full my-1 w-[100px] rounded border bg-white shadow">
+          <ul className="flex h-[150px] flex-col justify-center">
             <Link
-              className="flex flex-1 justify-center items-center border-b"
+              className="flex flex-1 items-center justify-center border-b"
               to={`users/${userId}`}
               onClick={() => setOpen(false)}
             >
               마이페이지
             </Link>
             <li
-              className="flex flex-1 justify-center items-center"
+              className="flex flex-1 items-center justify-center"
               onClick={() => {
                 setOpen(false);
                 dispatch(logout("/"));

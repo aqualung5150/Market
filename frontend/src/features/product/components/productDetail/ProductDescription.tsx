@@ -9,16 +9,16 @@ const ProductDescription = ({ data }: ProductDescriptionProps) => {
   const dispatch = useDispatch();
   return (
     <>
-      <div className="p-4 min-h-[500px] flex-1 flex flex-col">
+      <div className="flex min-h-[500px] flex-1 flex-col p-4">
         <div className="text-3xl">상품정보</div>
         <div>{data.description}</div>
       </div>
       {userId !== data.user.id && (
-        <div className="border-l p-4 min-h-[500px] flex-1">
+        <div className="min-h-[500px] flex-1 border-l p-4">
           <div className="text-3xl">판매자</div>
-          <div className="font-bold text-xl">{data.user.nickname}</div>
+          <div className="text-xl font-bold">{data.user.nickname}</div>
           <button
-            className="w-[100px] h-[50px] bg-green-300 rounded"
+            className="h-[50px] w-[100px] rounded bg-green-300"
             onClick={() => {
               dispatch(setSendTo(data.user.id));
               dispatch(setOpenChat(true));

@@ -13,34 +13,34 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   return (
-    <nav className="flex justify-between items-center w-[92%] h-20 mx-auto">
+    <nav className="mx-auto flex h-20 w-[92%] items-center justify-between">
       <div className="flex items-center gap-6">
-        <MenuIcon className="md:hidden w-[80px]" />
+        <MenuIcon className="w-[80px] md:hidden" />
         <img
           className="w-14 cursor-pointer"
           src={homeButton}
           onClick={() => navigate("/")}
         />
       </div>
-      <div className="md:static absolute bg-white md:min-h-fit min-h-[60vh] left-0 top-[-100%] w-full">
-        <ul className="flex md:flex-row flex-col md:justify-evenly md:items-center">
+      <div className="absolute left-0 top-[-100%] min-h-[60vh] w-full bg-white md:static md:min-h-fit">
+        <ul className="flex flex-col md:flex-row md:items-center md:justify-evenly">
           <li
             onMouseEnter={() => setOpenCategory(true)}
             onMouseLeave={() => setOpenCategory(false)}
-            className="relative hover:text-green-500 cursor-pointer"
+            className="relative cursor-pointer hover:text-green-500"
           >
             구매하기
             {openCategory && <CategoryDropdown />}
           </li>
           <li
-            className="hover:text-green-500 cursor-pointer"
+            className="cursor-pointer hover:text-green-500"
             onClick={() => navLogin("/product/form")}
           >
             판매하기
           </li>
         </ul>
       </div>
-      <div className="invisible md:visible md:static md:w-[300px] m-2">
+      <div className="invisible m-2 md:visible md:static md:w-[300px]">
         <SearchBar />
       </div>
       <div>

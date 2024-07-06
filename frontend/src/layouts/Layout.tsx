@@ -8,10 +8,10 @@ import React from "react";
 const Layout = ({ children }: LayoutProps) => {
   const dispatch = useDispatch();
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex h-screen flex-col">
       <Header />
       <div
-        className="flex-1 flex justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]"
+        className="flex flex-1 justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]"
         onClick={() => dispatch(setToggle(false))}
       >
         {children || <Outlet />}

@@ -5,7 +5,7 @@ import { setOpenChat, setSendTo } from "../features/chat/chatSlice";
 const Home = () => {
   const dispatch = useDispatch();
   return (
-    <div className="flex w-full h-full flex-col">
+    <div className="flex h-full w-full flex-col">
       <div className="w-10">
         <Button
           text="Message to id: 6"

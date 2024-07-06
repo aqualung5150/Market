@@ -25,11 +25,11 @@ const ChatIcon = () => {
   return (
     <div
       onClick={handleClick}
-      className="hidden lg:block rounded-full bg-blue-300 shadow-lg fixed bottom-[5%] right-[5%] hover:bg-blue-400 cursor-pointer"
+      className="fixed bottom-[5%] right-[5%] hidden cursor-pointer rounded-full bg-blue-300 shadow-lg hover:bg-blue-400 lg:block"
     >
       <img className="h-[70px] p-3" src={icon} />
       {noti && (
-        <p className="rounded-full w-6 h-6 bg-red-500 border-2 border-white border-opacity-100 fixed bottom-28 right-16" />
+        <p className="fixed bottom-28 right-16 h-6 w-6 rounded-full border-2 border-white border-opacity-100 bg-red-500" />
       )}
     </div>
   );

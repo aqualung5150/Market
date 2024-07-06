@@ -10,12 +10,12 @@ const LoginButton = () => {
   const userId = useSelector((state: RootState) => state.user.id);
 
   return (
-    <div className="flex justify-center items-center cursor-pointer select-none">
+    <div className="flex cursor-pointer select-none items-center justify-center">
       {userId ? (
         <MyButton />
       ) : (
         <LinkLogin
-          className="rounded bg-green-400 font-semibold flex flex-col justify-center items-center w-[100px] h-10"
+          className="flex h-10 w-[100px] flex-col items-center justify-center rounded bg-green-400 font-semibold"
           to={pathname}
         >
           로그인

@@ -34,23 +34,23 @@ const NavMobile = ({ toggle }: any) => {
 
   return (
     <div
-      className={`fixed p-4 flex lg:hidden flex-col gap-4 left-0 w-full bg-white duration-500 text-lg ${
+      className={`fixed left-0 flex w-full flex-col gap-4 bg-white p-4 text-lg duration-500 lg:hidden ${
         toggle ? "top-16" : "top-[-100%]"
       }`}
     >
-      <div className="w-full flex gap-2 items-center">
-        <SearchIcon className="w-10 h-10" />
+      <div className="flex w-full items-center gap-2">
+        <SearchIcon className="h-10 w-10" />
         <SearchBar />
       </div>
       <div>
         <ul className="flex flex-1 flex-col gap-1">
-          <li className="text-xl font-semibold flex justify-between items-center">
+          <li className="flex items-center justify-between text-xl font-semibold">
             <Link onClick={() => handleCloseMenu()} to="/search?page=1">
               구매하기
             </Link>
             <AngleDownIcon
               onClick={() => setOpenCategory(!openCategory)}
-              className="w-7 h-7"
+              className="h-7 w-7"
             />
           </li>
           {openCategory && (
@@ -67,7 +67,7 @@ const NavMobile = ({ toggle }: any) => {
         </ul>
       </div>
       <LinkLogin
-        className="text-xl font-semibold w-fit"
+        className="w-fit text-xl font-semibold"
         to="/product/form?type=regist"
         onClick={handleCloseMenu}
       >
@@ -77,13 +77,13 @@ const NavMobile = ({ toggle }: any) => {
         <>
           <div>
             <ul className="flex flex-1 flex-col gap-1">
-              <li className="text-xl font-semibold flex justify-between items-center">
+              <li className="flex items-center justify-between text-xl font-semibold">
                 <Link onClick={() => handleCloseMenu()} to={`/users/${userId}`}>
                   마이페이지
                 </Link>
                 <AngleDownIcon
                   onClick={() => setOpenMypage(!openMypage)}
-                  className="w-7 h-7"
+                  className="h-7 w-7"
                 />
               </li>
               {openMypage && (
@@ -98,15 +98,15 @@ const NavMobile = ({ toggle }: any) => {
             </ul>
           </div>
           <div
-            className="text-xl font-semibold gap-1 flex w-fit items-center"
+            className="flex w-fit items-center gap-1 text-xl font-semibold"
             onClick={() => {
               handleCloseMenu();
               dispatch(setOpenChat(true));
             }}
           >
-            {noti && <p className="w-4 h-4 mr-1 rounded-full bg-red-500" />}
+            {noti && <p className="mr-1 h-4 w-4 rounded-full bg-red-500" />}
             <span>채팅하기</span>
-            <SendIcon className="w-7 h-7 stroke-sky-300" />
+            <SendIcon className="h-7 w-7 stroke-sky-300" />
           </div>
         </>
       )}
@@ -114,14 +114,14 @@ const NavMobile = ({ toggle }: any) => {
       {!userId ? (
         <LinkLogin
           to={pathname}
-          className="text-green-500 text-center font-bold w-24 border-2 border-green-500 rounded"
+          className="w-24 rounded border-2 border-green-500 text-center font-bold text-green-500"
         >
           로그인
         </LinkLogin>
       ) : (
         <span
           onClick={() => dispatch(logout("/"))}
-          className="text-sm text-gray-600 w-fit"
+          className="w-fit text-sm text-gray-600"
         >
           로그아웃
         </span>

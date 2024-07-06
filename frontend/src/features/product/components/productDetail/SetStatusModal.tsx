@@ -16,7 +16,7 @@ const SetStatusModal = ({
 
     try {
       await axiosInstance.patch(
-        `product/status/${data.id}?status=${newStatus}`
+        `product/status/${data.id}?status=${newStatus}`,
       );
       status.setStatus(newStatus);
     } catch (err) {
@@ -29,10 +29,10 @@ const SetStatusModal = ({
   return (
     <Modal open={openSetStatus} onClose={() => setOpenSetStatus(false)}>
       <div>
-        <button onClick={() => updateStatus(0)} className="bg-gray-300 rounded">
+        <button onClick={() => updateStatus(0)} className="rounded bg-gray-300">
           판매중
         </button>
-        <button onClick={() => updateStatus(1)} className="bg-gray-300 rounded">
+        <button onClick={() => updateStatus(1)} className="rounded bg-gray-300">
           판매완료
         </button>
       </div>

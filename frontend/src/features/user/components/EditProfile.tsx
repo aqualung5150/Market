@@ -16,7 +16,7 @@ const EditProfile = () => {
   const [disabled, setDisabled] = useState(false);
   const profileImage = useRef<HTMLInputElement>(null);
   const file = useSelectImage(
-    `${process.env.REACT_APP_API_URL}/users/profileImage/${user.image}`
+    `${process.env.REACT_APP_API_URL}/users/profileImage/${user.image}`,
   );
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -43,11 +43,11 @@ const EditProfile = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full flex flex-col flex-1 items-center gap-10 p-10"
+      className="flex w-full flex-1 flex-col items-center gap-10 p-10"
     >
-      <div className="w-[300px] h-[300px]">
+      <div className="h-[300px] w-[300px]">
         <img
-          className="max-w-full h-full object-cover rounded-full cursor-pointer shadow"
+          className="h-full max-w-full cursor-pointer rounded-full object-cover shadow"
           src={file.url}
           onClick={() => profileImage.current?.click()}
         />
@@ -59,21 +59,21 @@ const EditProfile = () => {
           ref={profileImage}
         />
       </div>
-      <div className="w-full space-y-2 bg-white rounded-lg p-3 shadow">
+      <div className="w-full space-y-2 rounded-lg bg-white p-3 shadow">
         <label htmlFor="nickname">닉네임</label>
         <Input id="nickname" type="text" {...nickname} />
       </div>
-      <div className="w-full space-y-2 bg-white rounded-lg p-3 shadow">
+      <div className="w-full space-y-2 rounded-lg bg-white p-3 shadow">
         <label htmlFor="name">이름</label>
         <Input id="name" type="text" {...name} />
       </div>
-      <div className="w-full space-y-2 bg-white rounded-lg p-3 shadow">
+      <div className="w-full space-y-2 rounded-lg bg-white p-3 shadow">
         <label htmlFor="email">이메일</label>
         <Input id="email" type="text" value={user.email} disabled={true} />
       </div>
 
       <button
-        className="w-[100px] h-[50px] bg-green-400 rounded-lg text-lg font-bold"
+        className="h-[50px] w-[100px] rounded-lg bg-green-400 text-lg font-bold"
         type="submit"
         disabled={disabled}
       >

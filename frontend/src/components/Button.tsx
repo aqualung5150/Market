@@ -1,7 +1,7 @@
 const Button = ({ text, type, onClick, disabled }: ButtonProps) => {
   return (
     <button
-      className="p-3 bg-slate-300 rounded-md text-xl"
+      className="rounded-md bg-slate-300 p-3 text-xl"
       type={type}
       onClick={onClick}
       disabled={disabled}

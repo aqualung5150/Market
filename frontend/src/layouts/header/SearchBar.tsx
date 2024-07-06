@@ -10,7 +10,7 @@ const SearchBar = () => {
   const dispatch = useDispatch();
 
   return (
-    <div className="flex justify-start items-left w-full mr-3">
+    <div className="items-left mr-3 flex w-full justify-start">
       <Input
         value={value}
         onChange={(e) => setValue(e.target.value)}

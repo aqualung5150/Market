@@ -15,24 +15,24 @@ const Message = ({ data }: MessageProps) => {
   if (date) time = `${date} ${time}`;
 
   return userId === data.sender.id ? (
-    <div className="flex justify-end mb-2">
+    <div className="mb-2 flex justify-end">
       <div className="flex flex-col justify-end">
-        <p className=" text-gray-500 text-xs mr-1 mb-1">
+        <p className="mb-1 mr-1 text-xs text-gray-500">
           {data.read ? "읽음" : "전송"}
         </p>
       </div>
-      <div className="rounded py-2 px-3 bg-amber-100 max-w-full">
+      <div className="max-w-full rounded bg-amber-100 px-3 py-2">
         <p className="text-sm font-semibold">{data.sender.nickname}</p>
-        <p className="break-words text-sm mt-1">{data.body}</p>
-        <p className="text-right text-gray-400 text-xs ml-1">{time}</p>
+        <p className="mt-1 break-words text-sm">{data.body}</p>
+        <p className="ml-1 text-right text-xs text-gray-400">{time}</p>
       </div>
     </div>
   ) : (
-    <div className="flex mb-2">
-      <div className="rounded py-2 px-3 bg-stone-50 max-w-full">
+    <div className="mb-2 flex">
+      <div className="max-w-full rounded bg-stone-50 px-3 py-2">
         <p className="text-sm font-semibold">{data.sender.nickname}</p>
-        <p className="break-words text-sm mt-1">{data.body}</p>
-        <p className="text-right text-gray-400 text-xs ml-1">{time}</p>
+        <p className="mt-1 break-words text-sm">{data.body}</p>
+        <p className="ml-1 text-right text-xs text-gray-400">{time}</p>
       </div>
     </div>
   );

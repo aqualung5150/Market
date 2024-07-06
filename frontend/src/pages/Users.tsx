@@ -8,9 +8,9 @@ const Users = () => {
   const paramId = useParams().id;
 
   return (
-    <div className="flex w-full h-full">
+    <div className="flex h-full w-full">
       {user.id && paramId && user.id === parseInt(paramId) && <ProfileMenu />}
-      <div className="flex flex-1 w-3/4">
+      <div className="flex w-3/4 flex-1">
         <Outlet />
       </div>
     </div>

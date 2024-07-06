@@ -9,7 +9,7 @@ const LoginModal = () => {
 
   return (
     <div
-      className="fixed z-10 left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center"
+      className="fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50"
       onClick={() => {
         dispatch(setOpenLogin(false));
         sessionStorage.removeItem("redirect");
@@ -17,12 +17,12 @@ const LoginModal = () => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="bg-white mx-2 h-[400px]  w-[500px]  flex flex-col justify-center items-center border border-grey rounded shadow-xl"
+        className="border-grey mx-2 flex h-[400px] w-[500px] flex-col items-center justify-center rounded border bg-white shadow-xl"
       >
-        <div className="flex justify-center items-center text-2xl mt-10">
+        <div className="mt-10 flex items-center justify-center text-2xl">
           로그인
         </div>
-        <div className="flex flex-col flex-1 justify-center items-center">
+        <div className="flex flex-1 flex-col items-center justify-center">
           <a className="m-2" href={googleAuthUrl}>
             <img
               className="w-[240px]"

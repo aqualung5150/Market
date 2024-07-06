@@ -14,7 +14,7 @@ const Chat = () => {
 
   return (
     <div
-      className="fixed z-10 left-0 top-0 bg-black bg-opacity-50 w-screen h-screen flex justify-center items-center"
+      className="fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50"
       onClick={() => {
         dispatch(setOpenChat(false));
         dispatch(setSendTo(0));
@@ -22,10 +22,10 @@ const Chat = () => {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full h-full bg-white lg:h-3/4  lg:w-3/4  flex flex-col border border-grey lg:rounded shadow-xl"
+        className="border-grey flex h-full w-full flex-col border bg-white shadow-xl lg:h-3/4 lg:w-3/4 lg:rounded"
       >
         <ChatHeader {...{ selectedChannelId, setSelectedChannelId }} />
-        <div className="flex w-full h-full overflow-auto">
+        <div className="flex h-full w-full overflow-auto">
           <div
             className={`${
               selectedChannelId || sendTo ? "hidden" : "w-full"

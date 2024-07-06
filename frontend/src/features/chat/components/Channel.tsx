@@ -22,7 +22,7 @@ const Channel = ({ data }: ChannelProps) => {
     <>
       <div className="relative">
         {data.senderId !== userId && !data.read && (
-          <p className="absolute left-[35px] bg-rose-600 w-[15px] h-[15px] rounded-full border-2 border-white  border-opacity-100" />
+          <p className="absolute left-[35px] h-[15px] w-[15px] rounded-full border-2 border-white border-opacity-100 bg-rose-600" />
         )}
         <img
           className="h-12 w-12 min-w-12 rounded-full object-cover"
@@ -33,16 +33,16 @@ const Channel = ({ data }: ChannelProps) => {
           }`}
         />
       </div>
-      <div className="ml-4 flex-1 py-4 truncate">
-        <div className="flex items-bottom justify-between">
-          <div className="font-medium truncate">
+      <div className="ml-4 flex-1 truncate py-4">
+        <div className="items-bottom flex justify-between">
+          <div className="truncate font-medium">
             {userId !== data.users[0].id
               ? data.users[0].nickname
               : data.users[1].nickname}
           </div>
-          <span className="text-xs text-grey-darkest">{time}</span>
+          <span className="text-grey-darkest text-xs">{time}</span>
         </div>
-        <div className="text-grey-dark mt-1 text-sm truncate">
+        <div className="text-grey-dark mt-1 truncate text-sm">
           <span>{data.lastMessage}</span>
         </div>
       </div>

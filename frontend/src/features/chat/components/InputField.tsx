@@ -17,11 +17,11 @@ const InputField = ({ channelId }: InputFieldProps) => {
       });
       setValue("");
     },
-    [socket]
+    [socket],
   );
 
   return (
-    <div className="bg-gray-100 px-4 py-3 gap-4 flex items-center">
+    <div className="flex items-center gap-4 bg-gray-100 px-4 py-3">
       <div className="flex-1">
         <Input
           value={value}
@@ -31,7 +31,7 @@ const InputField = ({ channelId }: InputFieldProps) => {
         />
       </div>
       <SendIcon
-        className="w-9 h-9 stroke-sky-400"
+        className="h-9 w-9 stroke-sky-400"
         onClick={() => sendMessage(value, channelId)}
       />
     </div>
