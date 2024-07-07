@@ -28,11 +28,17 @@ const SetStatusModal = ({
 
   return (
     <Modal open={openSetStatus} onClose={() => setOpenSetStatus(false)}>
-      <div>
-        <button onClick={() => updateStatus(0)} className="rounded bg-gray-300">
+      <div className="flex h-full w-full items-center justify-evenly">
+        <button
+          onClick={() => updateStatus(0)}
+          className="mb-2 h-14 w-28 rounded-md bg-gray-200 text-base font-semibold"
+        >
           판매중
         </button>
-        <button onClick={() => updateStatus(1)} className="rounded bg-gray-300">
+        <button
+          onClick={() => updateStatus(1)}
+          className="mb-2 h-14 w-28 rounded-md bg-gray-200 text-base font-semibold"
+        >
           판매완료
         </button>
       </div>
