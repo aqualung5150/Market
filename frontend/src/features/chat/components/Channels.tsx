@@ -28,7 +28,7 @@ const Channels = ({
               channelData.read = true;
             }}
           >
-            <Channel data={channelData} />
+            <Channel {...channelData} />
           </div>
         ))}
       </div>
