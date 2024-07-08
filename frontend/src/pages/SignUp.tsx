@@ -6,10 +6,13 @@ import useEmailInput from "../features/auth/hooks/useEmailInput";
 import useConfirmPasswordInput from "../features/auth/hooks/useConfirmPasswordInput";
 import useUsernameInput from "../features/auth/hooks/useUsernameInput";
 import useNicknameInput from "../features/auth/hooks/useNicknameInput";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [validations, setValidations] = useState<SignUpValidation>({
-    username: 0,
+    // username: 0,
     nickname: 0,
     email: 0,
     pwdCharSet: 0,
@@ -24,32 +27,40 @@ const SignUp = () => {
     validations,
     setValidations,
   );
-  const username = useUsernameInput(validations, setValidations);
+  // const username = useUsernameInput(validations, setValidations);
   const nickname = useNicknameInput(validations, setValidations);
 
-  const handleSubmit = useCallback(
-    (e: React.FormEvent<HTMLFormElement>) => {
-      e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-      let isValid = true;
-      let key: keyof SignUpValidation;
-      for (key in validations) {
-        if (validations[key] !== 1) {
-          validations[key] = -1;
-          isValid = false;
-        }
+    let isValid = true;
+    let key: keyof SignUpValidation;
+    for (key in validations) {
+      if (validations[key] !== 1) {
+        console.log(key);
+        validations[key] = -1;
+        isValid = false;
       }
+    }
 
-      if (isValid) {
-        console.log("Valid!!");
-      } else {
-        setValidations({ ...validations });
-        console.log("Invalid...");
+    if (isValid) {
+      console.log("Valid!!");
+      try {
+        await axios.post(`${process.env.REACT_APP_API_URL}/auth/signUp`, {
+          email: email.value,
+          password: password.value,
+          nickname: nickname.value,
+        });
+        alert("회원가입에 성공했습니다.");
+        navigate("/");
+      } catch (err) {
+        alert("회원가입에 실패했습니다.");
       }
-    },
-    [validations],
-  );
-
+    } else {
+      console.log("Invalid...");
+      setValidations({ ...validations });
+    }
+  };
   return (
     <form
       className="flex h-full w-full flex-col items-center gap-10 bg-white p-10"
@@ -89,7 +100,7 @@ const SignUp = () => {
           className="h-14 w-full rounded border p-4 shadow"
           {...password}
         />
-        <div className="flex flex-col gap-1 stroke-gray-500 p-1 text-sm text-gray-500">
+        <div className="flex flex-col gap-1 stroke-gray-400 p-1 text-sm text-gray-400">
           <div
             className={`flex items-center gap-1 ${validations.pwdCharSet !== 0 && (validations.pwdCharSet === -1 ? "stroke-red-500 text-red-500" : "stroke-green-500 text-green-500")}`}
           >
@@ -130,7 +141,7 @@ const SignUp = () => {
           </div>
         )}
       </div>
-      <div className="w-80">
+      {/* <div className="w-80">
         <label className="mb-2 block" htmlFor="username">
           Username
         </label>
@@ -147,7 +158,7 @@ const SignUp = () => {
             <p>최소 2자~20자 이하로 입력해 주세요.</p>
           </div>
         )}
-      </div>
+      </div> */}
       <div className="w-80">
         <label className="mb-2 block" htmlFor="nickname">
           Nickname

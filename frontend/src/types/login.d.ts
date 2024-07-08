@@ -10,3 +10,13 @@ interface ResLogin {
 interface ProtecedRouteProps {
   children: React.ReactNode;
 }
+
+interface SignUpValidation {
+  // username: number;
+  nickname: number;
+  email: number;
+  pwdCharSet: number;
+  pwdLength: number;
+  pwdSeriesOfSameChar: number;
+  confirmPassword: number;
+}

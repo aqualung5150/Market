@@ -1,8 +1,15 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable, Logger } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NotFoundException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { lastValueFrom } from 'rxjs';
 import * as bcrypt from 'bcrypt';
+import { SignInDto } from './dto/auth.dto';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
@@ -10,6 +17,7 @@ export class AuthService {
   constructor(
     private readonly httpService: HttpService,
     private readonly jwtService: JwtService,
+    private readonly prisma: PrismaService,
   ) {}
 
   async getGoogleUser(code: string) {
@@ -54,10 +62,37 @@ export class AuthService {
     );
   }
 
-  // async hashJwtToken(token: string) {
-  //   const signatue = token.split('.')[2];
-  //   const saltOrRounds = 10;
-  //   const hashedToken = await bcrypt.hash(signatue, saltOrRounds);
-  //   return hashedToken;
-  // }
+  async hash(text: string) {
+    const saltOrRounds = 10;
+    const hashedToken = await bcrypt.hash(text, saltOrRounds);
+    return hashedToken;
+  }
+
+  async signIn(data: SignInDto): Promise<UserData> {
+    const user = await this.prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+      select: {
+        id: true,
+        nickname: true,
+        password: true,
+        image: true,
+      },
+    });
+    if (!user) throw new NotFoundException('no such email');
+
+    const isMatched = await bcrypt.compare(data.password, user.password);
+
+    if (!isMatched) {
+      throw new UnauthorizedException('password not matched');
+    }
+
+    return {
+      id: user.id,
+      email: data.email,
+      nickname: user.nickname,
+      image: user.image,
+    };
+  }
 }

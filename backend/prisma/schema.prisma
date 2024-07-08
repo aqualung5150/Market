@@ -18,9 +18,9 @@ datasource db {
 
 model User {
   id           Int            @id @default(autoincrement())
-  name         String         @db.VarChar(20)
-  nickname     String        @db.VarChar(12) //TODO @default('닉네임')
+  nickname     String        @db.VarChar(18)
   email        String        @unique
+  password     String?
   image        String         @default("default.png")
   createdAt    DateTime       @default(now())
   messages Message[]

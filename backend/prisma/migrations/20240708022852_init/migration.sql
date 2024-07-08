@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "nickname" SET DATA TYPE VARCHAR(18);

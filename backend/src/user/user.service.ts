@@ -15,13 +15,12 @@ export class UserService {
       },
       update: {},
       create: {
-        name: data.name,
         email: data.email,
         nickname: data.nickname,
+        password: data.password ? data.password : undefined,
       },
       select: {
         id: true,
-        name: true,
         email: true,
         nickname: true,
         image: true,
@@ -84,7 +83,6 @@ export class UserService {
           id: id,
         },
         select: {
-          name: true,
           nickname: true,
           image: true,
         },
@@ -100,7 +98,6 @@ export class UserService {
         where: { id: id },
         select: {
           id: true,
-          name: true,
           nickname: true,
           email: true,
           image: true,
@@ -112,4 +109,21 @@ export class UserService {
       throw new NotFoundException('no such user');
     }
   }
+
+  // async getUserByEmail(email: string) {
+  //   try {
+  //     const user = await this.prisma.user.findUniqueOrThrow({
+  //       where: {
+  //         email: email,
+  //       },
+  //       select :{
+  //         id: true,
+  //         nickname: true,
+
+  //       }
+  //     })
+  //   } catch(err) {
+  //     throw new NotFoundException('no such user');
+  //   }
+  // }
 }
