@@ -8,6 +8,7 @@ import {
   Req,
   Post,
   Body,
+  BadRequestException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
@@ -61,16 +62,28 @@ export class AuthController {
 
   @Post('signUp')
   async signUp(@Res() res: Response, @Body() data: SignUpDto) {
+    if (!(await this.authService.isUniqueEmail(data.email))) {
+      throw new BadRequestException('you are already joined.');
+    }
     // hash
     const hashedPassword = await this.authService.hash(data.password);
     data.password = hashedPassword;
     // create user
-    const user = await this.userService.createUser(data);
+    await this.userService.createUser(data);
 
     // return success
     return res.send({
       message: 'success',
     });
+  }
+
+  @Post('signUp/available')
+  async emailAvailable(@Body() data: { email: string }) {
+    // if (await this.authService.isUniqueEmail(data.email))
+    //   return { message: 'unique' };
+    // else return { message: 'not unique' };
+
+    return { success: await this.authService.isUniqueEmail(data.email) };
   }
 
   @Post('google')

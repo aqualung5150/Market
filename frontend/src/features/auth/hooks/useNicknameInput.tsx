@@ -1,18 +1,16 @@
 import { useCallback, useState } from "react";
 
 const useNicknameInput = (
-  validations: SignUpValidation,
   setValidations: React.Dispatch<React.SetStateAction<SignUpValidation>>,
 ) => {
   const [value, setValue] = useState("");
 
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const input = e.target.value;
+    const isValid = input.length > 12 || input.length < 2 ? -1 : 1;
 
-    validations.nickname = value.length > 12 || value.length < 2 ? -1 : 1;
-
-    setValue(e.target.value);
-    setValidations(validations);
+    setValue(input);
+    setValidations((prev) => ({ ...prev, nickname: isValid }));
   }, []);
 
   return { value, onChange };

@@ -4,7 +4,6 @@ import { ReactComponent as CloseIcon } from "../assets/close.svg";
 import usePasswordInput from "../features/auth/hooks/usePasswordInput";
 import useEmailInput from "../features/auth/hooks/useEmailInput";
 import useConfirmPasswordInput from "../features/auth/hooks/useConfirmPasswordInput";
-import useUsernameInput from "../features/auth/hooks/useUsernameInput";
 import useNicknameInput from "../features/auth/hooks/useNicknameInput";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -12,55 +11,61 @@ import { useNavigate } from "react-router-dom";
 const SignUp = () => {
   const navigate = useNavigate();
   const [validations, setValidations] = useState<SignUpValidation>({
-    // username: 0,
     nickname: 0,
-    email: 0,
+    emailForm: 0,
+    emailUnique: 0,
     pwdCharSet: 0,
     pwdLength: 0,
     pwdSeriesOfSameChar: 0,
     confirmPassword: 0,
   });
-  const email = useEmailInput(validations, setValidations);
-  const password = usePasswordInput(validations, setValidations);
+  const email = useEmailInput(setValidations);
+  const password = usePasswordInput(setValidations);
   const confirmPassword = useConfirmPasswordInput(
     password.value,
-    validations,
     setValidations,
   );
-  // const username = useUsernameInput(validations, setValidations);
-  const nickname = useNicknameInput(validations, setValidations);
+  const nickname = useNicknameInput(setValidations);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
 
-    let isValid = true;
-    let key: keyof SignUpValidation;
-    for (key in validations) {
-      if (validations[key] !== 1) {
-        console.log(key);
-        validations[key] = -1;
-        isValid = false;
+      const newValidations = { ...validations };
+
+      let isValid = true;
+      let key: keyof SignUpValidation;
+      for (key in newValidations) {
+        if (newValidations[key] !== 1) {
+          isValid = false;
+        }
+        if (newValidations[key] === 0) {
+          if (key === "emailUnique") continue;
+          newValidations[key] = -1;
+        }
       }
-    }
 
-    if (isValid) {
-      console.log("Valid!!");
-      try {
-        await axios.post(`${process.env.REACT_APP_API_URL}/auth/signUp`, {
-          email: email.value,
-          password: password.value,
-          nickname: nickname.value,
-        });
-        alert("회원가입에 성공했습니다.");
-        navigate("/");
-      } catch (err) {
-        alert("회원가입에 실패했습니다.");
+      if (isValid) {
+        console.log("Valid!!");
+        try {
+          await axios.post(`${process.env.REACT_APP_API_URL}/auth/signUp`, {
+            email: email.value,
+            password: password.value,
+            nickname: nickname.value,
+          });
+          alert("회원가입에 성공했습니다.");
+          navigate("/");
+        } catch (err) {
+          alert("회원가입에 실패했습니다.");
+        }
+      } else {
+        console.log("Invalid...");
+        setValidations(newValidations);
       }
-    } else {
-      console.log("Invalid...");
-      setValidations({ ...validations });
-    }
-  };
+    },
+    [validations],
+  );
+
   return (
     <form
       className="flex h-full w-full flex-col items-center gap-10 bg-white p-10"
@@ -78,15 +83,18 @@ const SignUp = () => {
           {...email}
         />
         <div className="p-1">
-          {validations.email === -1 && (
+          {validations.emailForm === -1 && (
             <div className="flex items-center gap-1 stroke-red-500 text-sm text-red-500">
               <CloseIcon className="h-4 w-4" />
               <p>이메일 형식이 올바르지 않습니다.</p>
             </div>
           )}
-          {/* {errors.email === -1 && (
-            <CheckIcon className="h-4 w-4 stroke-green-500" />
-          )} */}
+          {validations.emailUnique === -1 && (
+            <div className="flex items-center gap-1 stroke-red-500 text-sm text-red-500">
+              <CloseIcon className="h-4 w-4" />
+              <p>이미 가입한 계정이 있습니다.</p>
+            </div>
+          )}
         </div>
       </div>
       <div className="w-80">
@@ -131,8 +139,6 @@ const SignUp = () => {
           placeholder="Confirm Password"
           className="h-14 w-full rounded border p-4 shadow"
           {...confirmPassword}
-          // value={confirmPassword.value}
-          // onChange={handleConfirmChange}
         />
         {validations.confirmPassword === -1 && (
           <div className="flex items-center gap-1 stroke-red-500 text-sm text-red-500">
@@ -141,24 +147,6 @@ const SignUp = () => {
           </div>
         )}
       </div>
-      {/* <div className="w-80">
-        <label className="mb-2 block" htmlFor="username">
-          Username
-        </label>
-        <input
-          id="username"
-          type="text"
-          placeholder="Username"
-          className="h-14 w-full rounded border p-4 shadow"
-          {...username}
-        />
-        {validations.username === -1 && (
-          <div className="flex items-center gap-1 stroke-red-500 text-sm text-red-500">
-            <CloseIcon className="h-4 w-4" />
-            <p>최소 2자~20자 이하로 입력해 주세요.</p>
-          </div>
-        )}
-      </div> */}
       <div className="w-80">
         <label className="mb-2 block" htmlFor="nickname">
           Nickname

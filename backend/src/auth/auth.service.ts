@@ -95,4 +95,18 @@ export class AuthService {
       image: user.image,
     };
   }
+
+  async isUniqueEmail(email: string): Promise<Boolean> {
+    const target = await this.prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        email: true,
+      },
+    });
+
+    if (!target) return true;
+    return false;
+  }
 }

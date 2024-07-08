@@ -1,21 +1,36 @@
 import { useCallback, useState } from "react";
+import debounce from "../../../utils/debounce";
+import axios from "axios";
 
 const useEmailInput = (
-  validations: SignUpValidation,
   setValidations: React.Dispatch<React.SetStateAction<SignUpValidation>>,
 ) => {
   const [value, setValue] = useState("");
 
+  const emailCheck = useCallback(async (email: string) => {
+    const res = await axios.post(
+      `${process.env.REACT_APP_API_URL}/auth/signUp/available`,
+      { email: email },
+    );
+    const emailUnique = res.data.success ? 1 : -1;
+    setValidations((prev) => ({ ...prev, emailUnique: emailUnique }));
+  }, []);
+
+  const debounceEmailCheck = useCallback(debounce(emailCheck, 300), []);
+
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
+    const input = e.target.value;
 
-    // validate
-    validations.email = value.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g)
-      ? 1
-      : -1;
+    const emailForm = input.match(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/g) ? 1 : -1;
 
-    setValue(e.target.value);
-    setValidations(validations);
+    debounceEmailCheck(input);
+
+    setValue(input);
+    setValidations((prev) => ({
+      ...prev,
+      emailForm: emailForm,
+      emailUnique: 0,
+    }));
   }, []);
 
   return { value, onChange };
