@@ -22,8 +22,8 @@ export class SearchService {
         orderBy: {
           createdAt: 'desc',
         },
-        skip: (page - 1) * 10,
-        take: 10,
+        skip: (page - 1) * 20,
+        take: 20,
         include: {
           images: {
             orderBy: {
