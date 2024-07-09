@@ -1,8 +1,8 @@
+import Modal from "components/Modal";
+import { axiosInstance } from "data/axiosInstance";
+import ProductStatusContext from "features/product/context/ProductStatusContext";
 import { useContext } from "react";
-import Modal from "../../../../components/Modal";
-import { axiosInstance } from "../../../../data/axiosInstance";
-import ProductStatusContext from "../../context/ProductStatusContext";
-import { SetStatusModalProps } from "../../../../types/product";
+import { SetStatusModalProps } from "types/product";
 
 const SetStatusModal = ({
   data,

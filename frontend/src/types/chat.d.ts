@@ -28,14 +28,6 @@ interface SocketChannelData {
   users: PublicUser[];
 }
 
-interface ChannelProps {
-  data: SocketChannelData;
-}
-
-interface MessageProps {
-  data: SocketMessageData;
-}
-
 interface ChatRoomProps {
   selectedChannelId: number;
 }

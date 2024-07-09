@@ -1,14 +1,15 @@
-import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { persistReducer, persistStore } from "redux-persist";
+import { configureStore } from "@reduxjs/toolkit";
+import loginSlice from "features/auth/loginSlice";
+import chatSlice from "features/chat/chatSlice";
+import userSlice from "features/user/userSlice";
+import menuSlice from "layouts/menuSlice";
+import { combineReducers } from "redux";
 import storage from "redux-persist/lib/storage";
-import userSlice from "../features/user/userSlice";
 import {
   createStateSyncMiddleware,
   initMessageListener,
 } from "redux-state-sync";
-import chatSlice from "../features/chat/chatSlice";
-import loginSlice from "../features/auth/loginSlice";
-import menuSlice from "../layouts/menuSlice";
 
 // redux-persist
 
@@ -26,7 +27,7 @@ const rootReducer = persistReducer(
     chat: chatSlice.reducer,
     login: loginSlice.reducer,
     menu: menuSlice.reducer,
-  })
+  }),
 );
 
 // redux-state-sync
@@ -34,16 +35,14 @@ const rootReducer = persistReducer(
 /*If you are using redux-persist, 
 you may need to blacklist some of the actions that is triggered by redux-persist. 
 e.g. persist/PERSIST, persist/REHYDRATE, etc.*/
+const whitelist = [
+  "user/logout",
+  "user/setUser",
+  "user/updateUser",
+  "user/resetUser",
+];
 const stateSyncMiddleware = createStateSyncMiddleware({
-  blacklist: [
-    "persist/PERSIST",
-    "persist/REHYDRATE",
-    // "persist/FLUSH",
-    // "persist/PAUSE",
-    // "persist/PURGE",
-    // "persist/REGISTER",
-  ],
-  whitelist: ["user"],
+  predicate: (action) => whitelist.includes(action.type),
 });
 
 // createStore

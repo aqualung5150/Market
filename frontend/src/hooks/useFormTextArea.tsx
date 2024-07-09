@@ -6,8 +6,8 @@ const useFormTextArea = (initialValue: string = "") => {
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
   };
-
-  return { value, setValue, onChange };
+  const inputProps = { value, onChange };
+  return { inputProps, setValue };
 };
 
 export default useFormTextArea;

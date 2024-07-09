@@ -1,14 +1,16 @@
 import { useDispatch } from "react-redux";
-import { setOpenLogin } from "../loginSlice";
-import { ReactComponent as GoogleLogin } from "../../../assets/googleLogin.svg";
-import useFormInput from "../../../hooks/useFormInput";
+import { ReactComponent as GoogleLogin } from "assets/googleLogin.svg";
+import { useState } from "react";
+import useFormInput from "hooks/useFormInput";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
-import { setUser } from "../../user/userSlice";
+import { setUser } from "features/user/userSlice";
+import { setOpenLogin } from "../loginSlice";
+import { Link } from "react-router-dom";
 
 const LoginModal = () => {
   const { inputProps: email } = useFormInput();
   const { inputProps: password } = useFormInput();
+  const [error, setError] = useState("");
   const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=${process.env.REACT_APP_GOOGLE_RESPONSE_TYPE}&scope=email+profile`;
   const dispatch = useDispatch();
 
@@ -25,10 +27,12 @@ const LoginModal = () => {
         },
       );
 
+      setError("");
       dispatch(setUser(res.data));
       dispatch(setOpenLogin(false));
     } catch (err: any) {
-      alert(err.response.data.message);
+      // alert(err.response.data.message);
+      setError("일치하는 계정이 없습니다.");
     }
   };
 
@@ -47,21 +51,29 @@ const LoginModal = () => {
       >
         <div className="text-2xl">로그인</div>
         <input
-          type="email"
-          className="h-12 w-56 rounded border p-2"
+          // type="email"
+          className={`h-12 w-56 rounded border p-2 outline-none ${error && "border-red-500"}`}
           {...email}
           placeholder="Email"
         />
         <input
           type="password"
-          className="h-12 w-56 rounded border p-2"
+          className={`h-12 w-56 rounded border p-2 outline-none ${error && "border-red-500"}`}
           {...password}
           placeholder="Password"
         />
+        {error && <p className="text-sm text-red-500">{error}</p>}
         <button type="submit" className="hidden" />
         <a href={googleAuthUrl}>
-          <GoogleLogin className="w-56" />
+          <GoogleLogin className="h-14 w-56" />
         </a>
+        <Link
+          to="/signUp"
+          className="text-sm text-green-500"
+          onClick={() => dispatch(setOpenLogin(false))}
+        >
+          회원가입
+        </Link>
       </form>
     </div>
   );

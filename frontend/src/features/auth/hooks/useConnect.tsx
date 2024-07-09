@@ -1,15 +1,16 @@
+import { RootState } from "app/store";
+import { axiosInstance } from "data/axiosInstance";
+import { setNoti } from "features/chat/chatSlice";
+import { resetUser } from "features/user/userSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { axiosInstance } from "../../../data/axiosInstance";
-import { RootState } from "../../../app/store";
 import { Socket, io } from "socket.io-client";
-import { setNoti } from "../../chat/chatSlice";
-import { SocketChannelData, SocketMessageData } from "../../../types/chat";
+import { SocketChannelData, SocketMessageData } from "types/chat";
 
 const useConnect = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const user = useSelector((state: RootState) => state.user);
-  const chat = useSelector((state: RootState) => state.chat);
+  const openChat = useSelector((state: RootState) => state.chat).open;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -20,6 +21,7 @@ const useConnect = () => {
 
     const initialConnect = async () => {
       try {
+        // 스토리지에 userId가 있다면 연결시도
         await axiosInstance.post("auth/check");
         console.log("연결시도: " + user.id);
 
@@ -30,7 +32,8 @@ const useConnect = () => {
 
         setSocket(connection);
       } catch (err) {
-        console.log(err);
+        // userId는 있지만 실제 연결되어 있지는 않은 상황
+        dispatch(resetUser());
       }
     };
 
@@ -44,11 +47,11 @@ const useConnect = () => {
 
   useEffect(() => {
     const messageNoti = (message: SocketMessageData) => {
-      if (message.sender.id !== user.id && !chat.open) dispatch(setNoti(true));
+      if (message.sender.id !== user.id && !openChat) dispatch(setNoti(true));
     };
 
     const channelNoti = (channel: SocketChannelData) => {
-      if (channel.senderId !== user.id && !chat.open) dispatch(setNoti(true));
+      if (channel.senderId !== user.id && !openChat) dispatch(setNoti(true));
     };
 
     socket?.on("sendMessageRes", messageNoti);
@@ -57,7 +60,7 @@ const useConnect = () => {
       socket?.off("sendMessageRes", messageNoti);
       socket?.on("getChannelRes", channelNoti);
     };
-  }, [socket, chat.open, dispatch]);
+  }, [socket, openChat, dispatch]);
 
   return { socket };
 };

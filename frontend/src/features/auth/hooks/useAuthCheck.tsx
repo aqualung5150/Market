@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { axiosInstance } from "../../../data/axiosInstance";
+import { axiosInstance } from "data/axiosInstance";
 
 const useAuthCheck = () => {
   useEffect(() => {

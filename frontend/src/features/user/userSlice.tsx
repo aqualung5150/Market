@@ -13,7 +13,6 @@ import axios from "axios";
 const initialState = {
   id: null,
   email: "",
-  name: "",
   nickname: "",
   image: "",
   iat: null,
@@ -28,7 +27,6 @@ const userSlice = createSlice({
       //   state = { ...action.payload };
       state.id = action.payload.id;
       state.email = action.payload.email;
-      state.name = action.payload.name;
       state.nickname = action.payload.nickname;
       state.image = action.payload.image;
       state.iat = action.payload.iat;

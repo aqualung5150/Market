@@ -1,7 +1,7 @@
-import ImageSelector from "./ImageSelector";
-import categoryData from "../../data/category.json";
-import { CategoryData } from "../../../../types/product";
-import useProductForm from "../../hooks/useProductForm";
+import ImageSelector from "features/product/components/form/ImageSelector";
+import categoryData from "features/product/data/category.json";
+import useProductForm from "features/product/hooks/useProductForm";
+import { CategoryData } from "types/product";
 
 const ProductForm = () => {
   const {
@@ -22,9 +22,9 @@ const ProductForm = () => {
   const buttonSmall = "h-10 w-[80px]";
   const buttonLarge = "h-14 w-[120px]";
   const buttonOn =
-    "rounded-md font-semibold text-base mb-2 text-white bg-green-500 border-green-500";
+    "rounded-md font-semibold text-base mb-2 text-white bg-green-500";
   const buttonOff =
-    "rounded-md font-semibold text-base mb-2 border-jnblack text-black bg-white";
+    "rounded-md font-semibold text-base mb-2 border text-black bg-white";
 
   return (
     <form
@@ -34,7 +34,7 @@ const ProductForm = () => {
       <div className="w-full self-start">
         <ImageSelector {...images} />
       </div>
-      <ul className="w-2/3 select-none overflow-auto rounded bg-white shadow">
+      <ul className="w-2/3 select-none overflow-auto rounded border bg-white shadow">
         {categories.map((category) => (
           <li
             onClick={() => categoryId.setCategoryId(category.id)}
@@ -67,13 +67,13 @@ const ProductForm = () => {
           새상품
         </button>
       </div>
-      <div className="w-full rounded bg-white p-3 shadow">
+      <div className="w-full rounded border bg-white p-3 shadow">
         <input className="w-full p-2" placeholder="상품명" {...title} />
       </div>
-      <div className="w-full rounded bg-white p-3 shadow">
+      <div className="w-full rounded border bg-white p-3 shadow">
         <input className="w-full p-2" placeholder="₩ 상품가격" {...price} />
       </div>
-      <div className="w-full rounded bg-white p-3 shadow">
+      <div className="w-full rounded border bg-white p-3 shadow">
         <textarea
           className="h-32 w-full p-2"
           placeholder="상품에 대한 설명을 입력해주세요."
@@ -88,7 +88,7 @@ const ProductForm = () => {
         disabled={(disabled.disabled || images.disabled) && true}
       >
         {disabled.disabled || images.disabled
-          ? "처리중"
+          ? "로딩중..."
           : type === "modify"
             ? "수정"
             : "등록"}

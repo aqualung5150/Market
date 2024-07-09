@@ -1,18 +1,19 @@
+import { axiosInstance } from "data/axiosInstance";
+import useFormInput from "hooks/useFormInput";
+import useFormTextArea from "hooks/useFormTextArea";
+import useSelectImages from "hooks/useSelectImages";
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../../../data/axiosInstance";
-import useSelectImages from "../../../hooks/useSelectImages";
-import useFormInput from "../../../hooks/useFormInput";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { ProductData } from "../../../types/product";
-import useFormTextArea from "../../../hooks/useFormTextArea";
+import { ProductData } from "types/product";
 
 const useProductForm = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [disabled, setDisabled] = useState(false);
   const images = useSelectImages();
-  const title = useFormInput();
-  const price = useFormInput();
-  const description = useFormTextArea();
+  const { inputProps: title, setValue: setTitle } = useFormInput();
+  const { inputProps: price, setValue: setPrice } = useFormInput();
+  const { inputProps: description, setValue: setDescription } =
+    useFormTextArea();
   const [categoryId, setCategoryId] = useState(0);
   const [condition, setCondition] = useState(0);
 
@@ -32,11 +33,12 @@ const useProductForm = () => {
 
     const getPrevData = async () => {
       try {
+        setDisabled(true);
         const res = await axiosInstance.get(`product/${productId}`);
         const data: ProductData = res.data;
-        title.setValue(data.title);
-        price.setValue(data.price.toString());
-        description.setValue(data.description);
+        setTitle(data.title);
+        setPrice(data.price.toString());
+        setDescription(data.description);
         setCategoryId(data.categoryId);
         setCondition(data.condition);
 
@@ -47,7 +49,7 @@ const useProductForm = () => {
             // get image as Blob data
             const imageRes = await axiosInstance.get(
               `${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`,
-              { responseType: "blob" }
+              { responseType: "blob" },
             );
             const file = new File([imageRes.data], image.url, {
               type: imageRes.data.type,
@@ -55,12 +57,14 @@ const useProductForm = () => {
 
             existingFiles[image.order] = file.name;
             return file;
-          })
+          }),
         );
         images.setFiles(files);
         images.setExistingFiles(existingFiles);
       } catch (err) {
         alert("상품 정보를 불러 올 수 없습니다.");
+      } finally {
+        setDisabled(false);
       }
     };
 

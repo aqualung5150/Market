@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
-import { setOpenChat, setSendTo } from "../chatSlice";
-import { setOpenLogin } from "../../auth/loginSlice";
 import { useLocation } from "react-router-dom";
-import { RootState } from "../../../app/store";
+import { RootState } from "app/store";
+import { setOpenLogin } from "features/auth/loginSlice";
+import { setOpenChat, setSendTo } from "../chatSlice";
 
 const SendButton = ({ className, text, sendTo }: any) => {
   console.log("sendButton!");

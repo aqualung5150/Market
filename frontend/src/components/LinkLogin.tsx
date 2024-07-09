@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../app/store";
+import { RootState } from "app/store";
 import { useNavigate } from "react-router-dom";
-import { setOpenLogin } from "../features/auth/loginSlice";
+import { setOpenLogin } from "features/auth/loginSlice";
 import { useCallback } from "react";
 
 const LinkLogin = ({
@@ -15,15 +15,18 @@ const LinkLogin = ({
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const handleClick = useCallback((to: string, redirect: string) => {
-    if (!userId) {
-      sessionStorage.setItem("redirect", redirect);
-      dispatch(setOpenLogin(true));
-    } else navigate(to);
-  }, []);
+  const handleClick = useCallback(
+    (to: string, redirect: string) => {
+      if (!userId) {
+        sessionStorage.setItem("redirect", redirect);
+        dispatch(setOpenLogin(true));
+      } else navigate(to);
+    },
+    [userId],
+  );
 
   return (
-    <div
+    <a
       className={className}
       onClick={() => {
         onClick && onClick();
@@ -31,7 +34,7 @@ const LinkLogin = ({
       }}
     >
       {children}
-    </div>
+    </a>
   );
 };
 

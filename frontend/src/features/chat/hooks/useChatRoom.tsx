@@ -1,8 +1,8 @@
+import { RootState } from "app/store";
+import { SocketContext } from "context/SocketContext";
 import { useContext, useEffect, useRef, useState } from "react";
-import { SocketMessageData, UseChatRoomProps } from "../../../types/chat";
-import { SocketContext } from "../../../context/SocketContext";
-import { RootState } from "../../../app/store";
 import { useSelector } from "react-redux";
+import { SocketMessageData, UseChatRoomProps } from "types/chat";
 
 const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
   const socket = useContext(SocketContext).socket;

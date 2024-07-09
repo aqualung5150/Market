@@ -14,7 +14,8 @@ interface ProtecedRouteProps {
 interface SignUpValidation {
   // username: number;
   nickname: number;
-  email: number;
+  emailForm: number;
+  emailUnique: number;
   pwdCharSet: number;
   pwdLength: number;
   pwdSeriesOfSameChar: number;

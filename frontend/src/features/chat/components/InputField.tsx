@@ -1,8 +1,8 @@
+import Input from "components/Input";
+import { SocketContext } from "context/SocketContext";
 import React, { useCallback, useContext, useState } from "react";
-import Input from "../../../components/Input";
-import { SocketContext } from "../../../context/SocketContext";
-import { InputFieldProps } from "../../../types/chat";
-import { ReactComponent as SendIcon } from "../../../assets/send.svg";
+import { InputFieldProps } from "types/chat";
+import { ReactComponent as SendIcon } from "assets/send.svg";
 
 const InputField = ({ channelId }: InputFieldProps) => {
   const [value, setValue] = useState<string>("");

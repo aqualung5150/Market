@@ -1,8 +1,8 @@
+import Input from "components/Input";
+import { setToggle } from "layouts/menuSlice";
 import { useState } from "react";
-import Input from "../../components/Input";
-import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { setToggle } from "../menuSlice";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
   const navigate = useNavigate();

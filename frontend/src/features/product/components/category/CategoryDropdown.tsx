@@ -4,12 +4,15 @@ import categoryData from "../../data/category.json";
 const CategoryDropdown = () => {
   console.log("category dropdown");
   return (
-    <div className="absolute left-[-50%] top-full z-10 w-[150px] min-w-[100px] select-none rounded border bg-white text-black shadow">
-      <ul className="cursor-pointer space-y-2 p-2 text-sm font-normal">
+    <div className="absolute left-[-50%] top-full z-10 h-64 w-[150px] min-w-[100px] select-none rounded border bg-white text-black shadow">
+      <ul className="flex h-full w-full cursor-pointer flex-col p-2 text-sm font-normal">
         {Object.values(categoryData).map((category) => (
-          <li className="hover:text-green-500" key={category.id}>
-            <Link to={`/search?category=${category.id}&page=1`}>
-              {category.label}
+          <li className="h-full w-full" key={category.id}>
+            <Link
+              className="flex h-full w-full items-center hover:text-green-500"
+              to={`/search?category=${category.id}&page=1`}
+            >
+              <span>{category.label}</span>
             </Link>
           </li>
         ))}

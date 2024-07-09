@@ -5,7 +5,7 @@ import Channels from "./Channels";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpenChat, setSendTo } from "../chatSlice";
 import EmptyRoom from "./EmptyRoom";
-import { RootState } from "../../../app/store";
+import { RootState } from "app/store";
 
 const Chat = () => {
   const sendTo = useSelector((state: RootState) => state.chat.sendTo);

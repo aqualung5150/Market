@@ -1,8 +1,8 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
-import Input from "../../../components/Input";
+import { RootState } from "app/store";
+import Input from "components/Input";
+import { SocketContext } from "context/SocketContext";
 import { useContext, useState } from "react";
-import { SocketContext } from "../../../context/SocketContext";
+import { useSelector } from "react-redux";
 
 const EmptyRoom = () => {
   const [value, setValue] = useState("");

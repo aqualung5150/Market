@@ -1,8 +1,8 @@
+import { RootState } from "app/store";
+import { setOpenChat, setSendTo } from "features/chat/chatSlice";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../../app/store";
-import { setOpenChat, setSendTo } from "../../../chat/chatSlice";
-import { ProductDescriptionProps } from "../../../../types/product";
+import { ProductDescriptionProps } from "types/product";
 
 const ProductDescription = ({ data }: ProductDescriptionProps) => {
   const userId = useSelector((state: RootState) => state.user.id);

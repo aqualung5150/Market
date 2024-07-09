@@ -1,17 +1,17 @@
-import { ReactComponent as MenuIcon } from "../../assets/menu.svg";
-import { ReactComponent as CloseIcon } from "../../assets/close.svg";
+import { ReactComponent as MenuIcon } from "assets/menu.svg";
+import { ReactComponent as CloseIcon } from "assets/close.svg";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import { setToggle } from "../menuSlice";
-import NavMobile from "./NavMobile";
-import React from "react";
-import { SocketContext } from "../../context/SocketContext";
-import useConnect from "../../features/auth/hooks/useConnect";
-import Chat from "../../features/chat/components/Chat";
-import ChatIcon from "../../features/chat/components/ChatIcon";
-import LoginModal from "../../features/auth/components/LoginModal";
+import useConnect from "features/auth/hooks/useConnect";
+import { RootState } from "app/store";
 import NavDesktop from "./NavDesktop";
+import NavMobile from "./NavMobile";
+import LoginModal from "features/auth/components/LoginModal";
+import { SocketContext } from "context/SocketContext";
+import Chat from "features/chat/components/Chat";
+import ChatIcon from "features/chat/components/ChatIcon";
+import { setToggle } from "layouts/menuSlice";
+import React from "react";
 
 const Header = () => {
   console.log("header");
@@ -33,7 +33,7 @@ const Header = () => {
         <NavMobile toggle={toggle} />
         {toggle ? (
           <CloseIcon
-            className="h-10 w-10 lg:hidden"
+            className="h-10 w-10 stroke-black lg:hidden"
             onClick={() => dispatch(setToggle(false))}
           />
         ) : (

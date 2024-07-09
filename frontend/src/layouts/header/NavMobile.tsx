@@ -1,16 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../app/store";
-import SearchBar from "./SearchBar";
-import { ReactComponent as SearchIcon } from "../../assets/search.svg";
-import { ReactComponent as AngleDownIcon } from "../../assets/angleDown.svg";
-import { ReactComponent as SendIcon } from "../../assets/send.svg";
-import categoryData from "../../features/product/data/category.json";
+import { ReactComponent as SearchIcon } from "assets/search.svg";
+import { ReactComponent as AngleDownIcon } from "assets/angleDown.svg";
+import { ReactComponent as SendIcon } from "assets/send.svg";
 import { Link, useLocation } from "react-router-dom";
-import React, { useCallback, useEffect, useState } from "react";
-import { logout } from "../../features/user/userSlice";
-import { setOpenChat } from "../../features/chat/chatSlice";
-import LinkLogin from "../../components/LinkLogin";
-import { setToggle } from "../menuSlice";
+import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { RootState } from "app/store";
+import LinkLogin from "components/LinkLogin";
+import { setToggle } from "layouts/menuSlice";
+import { logout } from "features/user/userSlice";
+import SearchBar from "./SearchBar";
+import categoryData from "features/product/data/category.json";
+import { setOpenChat } from "features/chat/chatSlice";
 
 const NavMobile = ({ toggle }: any) => {
   console.log("NavMobile");
@@ -21,10 +21,6 @@ const NavMobile = ({ toggle }: any) => {
   const dispatch = useDispatch();
   const noti = useSelector((state: RootState) => state.chat.noti);
 
-  const handleCloseMenu = useCallback(() => {
-    dispatch(setToggle(false));
-  }, []);
-
   useEffect(() => {
     if (!toggle) {
       setOpenCategory(false);
@@ -34,7 +30,7 @@ const NavMobile = ({ toggle }: any) => {
 
   return (
     <div
-      className={`fixed left-0 flex w-full flex-col gap-4 bg-white p-4 text-lg duration-500 lg:hidden ${
+      className={`fixed left-0 flex w-full flex-col gap-4 bg-white p-4 text-lg shadow duration-500 lg:hidden ${
         toggle ? "top-16" : "top-[-100%]"
       }`}
     >
@@ -45,7 +41,10 @@ const NavMobile = ({ toggle }: any) => {
       <div>
         <ul className="flex flex-1 flex-col gap-1">
           <li className="flex items-center justify-between text-xl font-semibold">
-            <Link onClick={() => handleCloseMenu()} to="/search?page=1">
+            <Link
+              onClick={() => dispatch(setToggle(false))}
+              to="/search?page=1"
+            >
               구매하기
             </Link>
             <AngleDownIcon
@@ -56,7 +55,10 @@ const NavMobile = ({ toggle }: any) => {
           {openCategory && (
             <ul>
               {Object.values(categoryData).map((category) => (
-                <li key={category.id} onClick={() => handleCloseMenu()}>
+                <li
+                  key={category.id}
+                  onClick={() => dispatch(setToggle(false))}
+                >
                   <Link to={`/search?category=${category.id}&page=1`}>
                     - {category.label}
                   </Link>
@@ -69,7 +71,7 @@ const NavMobile = ({ toggle }: any) => {
       <LinkLogin
         className="w-fit text-xl font-semibold"
         to="/product/form?type=regist"
-        onClick={handleCloseMenu}
+        onClick={() => dispatch(setToggle(false))}
       >
         <span>판매하기</span>
       </LinkLogin>
@@ -78,7 +80,10 @@ const NavMobile = ({ toggle }: any) => {
           <div>
             <ul className="flex flex-1 flex-col gap-1">
               <li className="flex items-center justify-between text-xl font-semibold">
-                <Link onClick={() => handleCloseMenu()} to={`/users/${userId}`}>
+                <Link
+                  onClick={() => dispatch(setToggle(false))}
+                  to={`/users/${userId}`}
+                >
                   마이페이지
                 </Link>
                 <AngleDownIcon
@@ -90,7 +95,7 @@ const NavMobile = ({ toggle }: any) => {
                 <ul>
                   <li>- 판매내역</li>
                   <li>- 찜한 상품</li>
-                  <li onClick={() => handleCloseMenu()}>
+                  <li onClick={() => dispatch(setToggle(false))}>
                     <Link to={`/users/${userId}/edit`}>- 정보 수정</Link>
                   </li>
                 </ul>
@@ -100,7 +105,7 @@ const NavMobile = ({ toggle }: any) => {
           <div
             className="flex w-fit items-center gap-1 text-xl font-semibold"
             onClick={() => {
-              handleCloseMenu();
+              dispatch(setToggle(false));
               dispatch(setOpenChat(true));
             }}
           >
@@ -115,6 +120,7 @@ const NavMobile = ({ toggle }: any) => {
         <LinkLogin
           to={pathname}
           className="w-24 rounded border-2 border-green-500 text-center font-bold text-green-500"
+          onClick={() => dispatch(setToggle(false))}
         >
           로그인
         </LinkLogin>

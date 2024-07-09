@@ -1,5 +1,5 @@
 import { createContext } from "react";
-import { ProductStatusContextType } from "../../../types/context";
+import { ProductStatusContextType } from "types/context";
 
 const ProductStatusContext = createContext<ProductStatusContextType>({
   status: 0,

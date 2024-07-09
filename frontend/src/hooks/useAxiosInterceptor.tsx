@@ -4,11 +4,11 @@ import axios, {
   AxiosResponse,
   InternalAxiosRequestConfig,
 } from "axios";
-import isTokenExpired from "../utils/isTokenExpired";
-import refreshToken from "../utils/refreshToken";
+import refreshToken from "utils/refreshToken";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { logout, setUser } from "../features/user/userSlice";
+import { logout, setUser } from "features/user/userSlice";
+import isTokenExpired from "utils/isTokenExpired";
 
 const useAxiosInterceptor = (instance: AxiosInstance) => {
   const dispatch = useDispatch();
@@ -40,11 +40,11 @@ const useAxiosInterceptor = (instance: AxiosInstance) => {
   useEffect(() => {
     const requestInterceptor = instance.interceptors.request.use(
       handleRequest,
-      handleError
+      handleError,
     );
     const responseInterceptor = instance.interceptors.response.use(
       handleResponse,
-      handleError
+      handleError,
     );
 
     return () => {

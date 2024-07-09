@@ -1,10 +1,10 @@
 import React from "react";
-import icon from "../../../assets/chatIcon.png";
-import { useDispatch, useSelector } from "react-redux";
-import { setNoti, setOpenChat } from "../chatSlice";
-import { RootState } from "../../../app/store";
-import { setOpenLogin } from "../../auth/loginSlice";
+import icon from "assets/chatIcon.png";
 import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "app/store";
+import { setOpenLogin } from "features/auth/loginSlice";
+import { setNoti, setOpenChat } from "../chatSlice";
 
 const ChatIcon = () => {
   const { pathname } = useLocation();

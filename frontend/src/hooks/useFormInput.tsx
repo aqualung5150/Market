@@ -7,7 +7,8 @@ const useFormInput = (initialValue: string = "") => {
     setValue(e.target.value);
   };
 
-  return { value, setValue, onChange };
+  const inputProps = { value, onChange };
+  return { inputProps, setValue };
 };
 
 export default useFormInput;

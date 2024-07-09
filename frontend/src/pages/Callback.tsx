@@ -1,5 +1,5 @@
-import Loading from "../components/Loading";
-import useOauthCallback from "../features/auth/hooks/useOauthCallback";
+import Loading from "components/Loading";
+import useOauthCallback from "features/auth/hooks/useOauthCallback";
 
 const Callback = () => {
   useOauthCallback();

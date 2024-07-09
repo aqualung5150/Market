@@ -1,4 +1,4 @@
-import SendButton from "../../../chat/components/SendButton";
+import SendButton from "features/chat/components/SendButton";
 
 const SellerInfo = ({ seller }: any) => {
   return (

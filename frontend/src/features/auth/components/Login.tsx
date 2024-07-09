@@ -1,20 +1,21 @@
-import googleLoginImg from "../../../assets/google_login.svg";
+import useFormInput from "hooks/useFormInput";
 
 const Login = () => {
-  const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=${process.env.REACT_APP_GOOGLE_RESPONSE_TYPE}&scope=email+profile`;
+  const { inputProps: email } = useFormInput();
+  const { inputProps: password } = useFormInput();
+
   return (
-    <div className="flex h-full w-full flex-col items-center">
-      <div className="flex h-1/4 items-center justify-center text-xl">
-        <h1>로그인</h1>
-      </div>
-      <div className="flex-1">
-        <a href={googleAuthUrl}>
-          <img src={googleLoginImg} alt="Sign in with Google" />
-        </a>
-        <a href={googleAuthUrl}>
-          <img src={googleLoginImg} alt="Sign in with Google" />
-        </a>
-      </div>
+    <div className="flex flex-col justify-center gap-3 p-3">
+      <input
+        className="h-12 rounded border p-2"
+        {...email}
+        placeholder="Email"
+      />
+      <input
+        className="h-12 rounded border p-2"
+        {...password}
+        placeholder="Password"
+      />
     </div>
   );
 };

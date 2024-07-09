@@ -29,11 +29,11 @@ const Dummy = () => {
 
   return (
     <div>
-      {userId ? (
+      {/* {userId ? (
         <div>${data?.name}</div>
       ) : (
         <Modal children={<Login />} open={true} />
-      )}
+      )} */}
 
       {/* <Button
         text="emit"

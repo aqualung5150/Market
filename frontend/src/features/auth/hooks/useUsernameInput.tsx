@@ -9,10 +9,10 @@ const useUsernameInput = (
   const onChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
 
-    validations.username = value.length > 20 || value.length < 2 ? -1 : 1;
+    // validations.username = value.length > 20 || value.length < 2 ? -1 : 1;
 
-    setValue(e.target.value);
-    setValidations(validations);
+    setValue(value);
+    setValidations({ ...validations });
   }, []);
 
   return { value, onChange };

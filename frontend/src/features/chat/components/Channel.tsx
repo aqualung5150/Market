@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
-import { SocketChannelData } from "../../../types/chat";
-import { PublicUser } from "../../../types/user";
-import timeAgo from "../../../utils/timeAgo";
+import { SocketChannelData } from "types/chat";
+import { PublicUser } from "types/user";
+import timeAgo from "utils/timeAgo";
 import React from "react";
-import { RootState } from "../../../app/store";
+import { RootState } from "app/store";
 
 const Channel = ({
   id,

@@ -1,14 +1,14 @@
 import { useParams } from "react-router-dom";
-import useAxios from "../hooks/useAxios";
-import Loading from "../components/Loading";
-import { ProductData } from "../types/product";
-import ProductImage from "../features/product/components/productDetail/ProductImage";
-import ProductTitle from "../features/product/components/productDetail/ProductTitle";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import SellerInfo from "../features/product/components/productDetail/SellerInfo";
 import { useEffect, useState } from "react";
-import ProductStatusContext from "../features/product/context/ProductStatusContext";
+import SellerInfo from "features/product/components/productDetail/SellerInfo";
+import { RootState } from "app/store";
+import ProductStatusContext from "features/product/context/ProductStatusContext";
+import useAxios from "hooks/useAxios";
+import { ProductData } from "types/product";
+import Loading from "components/Loading";
+import ProductImage from "features/product/components/productDetail/ProductImage";
+import ProductTitle from "features/product/components/productDetail/ProductTitle";
 
 const Product = () => {
   const paramId = useParams().id;

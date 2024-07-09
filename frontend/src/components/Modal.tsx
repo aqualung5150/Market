@@ -1,4 +1,4 @@
-import { ReactComponent as CloseIcon } from "../assets/close.svg";
+import { ReactComponent as CloseIcon } from "assets/close.svg";
 
 const Modal = ({ open, onClose, children }: ModalProps) => {
   if (!open) return null;
@@ -14,7 +14,9 @@ const Modal = ({ open, onClose, children }: ModalProps) => {
         className="border-grey mx-2 flex h-[500px] w-[400px] flex-col rounded border bg-white shadow-xl"
       >
         <div className="flex items-center justify-end rounded-t border-b p-4 md:p-5">
-          {onClose && <CloseIcon onClick={onClose} className="h-12 w-12" />}
+          {onClose && (
+            <CloseIcon onClick={onClose} className="h-12 w-12 stroke-black" />
+          )}
         </div>
 
         <div className="h-full w-full">{children}</div>

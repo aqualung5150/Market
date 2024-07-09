@@ -1,8 +1,8 @@
 import axios from "axios";
+import { setUser } from "features/user/userSlice";
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { setUser } from "../../user/userSlice";
 
 const useOauthCallback = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -15,7 +15,7 @@ const useOauthCallback = () => {
   useEffect(() => {
     console.log(code);
     axios
-      .get(url)
+      .post(url)
       .then((res) => {
         console.log("useOauthCallback");
         dispatch(setUser(res.data));

@@ -1,9 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setOpenChat, setSendTo } from "../chatSlice";
-import { RootState } from "../../../app/store";
-import { ReactComponent as CloseIcon } from "../../../assets/close.svg";
-import { ReactComponent as BackIcon } from "../../../assets/back.svg";
+import { RootState } from "app/store";
+import { ReactComponent as CloseIcon } from "assets/close.svg";
+import { ReactComponent as BackIcon } from "assets/back.svg";
 
 const ChatHeader = ({ selectedChannelId, setSelectedChannelId }: any) => {
   const nickname = useSelector((state: RootState) => state.user.nickname);
@@ -31,7 +31,7 @@ const ChatHeader = ({ selectedChannelId, setSelectedChannelId }: any) => {
           dispatch(setOpenChat(false));
           dispatch(setSendTo(0));
         }}
-        className={`${selectedChannelId ? "hidden" : ""} h-10 w-10 lg:inline`}
+        className={`${selectedChannelId ? "hidden" : ""} h-10 w-10 stroke-black lg:hidden`}
       />
     </div>
   );

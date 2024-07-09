@@ -1,8 +1,8 @@
+import Modal from "components/Modal";
+import { axiosInstance } from "data/axiosInstance";
 import { useCallback } from "react";
-import { axiosInstance } from "../../../../data/axiosInstance";
 import { useNavigate } from "react-router-dom";
-import Modal from "../../../../components/Modal";
-import { ConfirmDelteProps } from "../../../../types/product";
+import { ConfirmDelteProps } from "types/product";
 
 const ConfirmDelete = ({
   paramId,
@@ -31,13 +31,13 @@ const ConfirmDelete = ({
         <div className="absolute top-40 flex w-full justify-evenly text-xl">
           <button
             onClick={() => deleteProduct()}
-            className="h-10 w-24 rounded bg-green-300"
+            className="mb-2 h-14 w-28 rounded-md bg-green-500 text-base font-semibold text-white"
           >
             예
           </button>
           <button
             onClick={() => setOpenConfirmDelete(false)}
-            className="h-10 w-24 rounded bg-red-300"
+            className="mb-2 h-14 w-28 rounded-md bg-red-500 text-base font-semibold text-white"
           >
             아니오
           </button>

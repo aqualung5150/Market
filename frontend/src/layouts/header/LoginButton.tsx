@@ -1,9 +1,9 @@
+import { RootState } from "app/store";
 import { useSelector } from "react-redux";
-import { RootState } from "../../app/store";
 import { useLocation } from "react-router-dom";
-import MyButton from "./MyButton";
+import Mybutton from "./MyButton";
+import LinkLogin from "components/LinkLogin";
 import React from "react";
-import LinkLogin from "../../components/LinkLogin";
 
 const LoginButton = () => {
   const { pathname } = useLocation();
@@ -12,10 +12,10 @@ const LoginButton = () => {
   return (
     <div className="flex cursor-pointer select-none items-center justify-center">
       {userId ? (
-        <MyButton />
+        <Mybutton />
       ) : (
         <LinkLogin
-          className="flex h-10 w-[100px] flex-col items-center justify-center rounded bg-green-400 font-semibold"
+          className="flex h-10 w-[100px] flex-col items-center justify-center rounded bg-green-500 text-base font-semibold text-white"
           to={pathname}
         >
           로그인

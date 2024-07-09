@@ -1,8 +1,8 @@
+import { RootState } from "app/store";
 import React from "react";
-import { SocketMessageData } from "../../../types/chat";
-import dateAgo from "../../../utils/dateAgo";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
+import { SocketMessageData } from "types/chat";
+import dateAgo from "utils/dateAgo";
 
 const Message = ({
   id,

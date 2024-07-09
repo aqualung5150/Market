@@ -1,13 +1,14 @@
-import { useDispatch, useSelector } from "react-redux";
-import { logout } from "../../features/user/userSlice";
+import { RootState } from "app/store";
+import { logout } from "features/user/userSlice";
+import useClickOutside from "hooks/useClickOutside";
 import { useRef, useState } from "react";
-import { RootState } from "../../app/store";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import useClickOutside from "../../hooks/useClickOutside";
 
 const Mybutton = () => {
   const userId = useSelector((state: RootState) => state.user.id);
-  const userNickname = useSelector((state: RootState) => state.user.nickname);
+  const userImage = useSelector((state: RootState) => state.user.image);
+  // const userNickname = useSelector((state: RootState) => state.user.nickname);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const wrapper = useRef<HTMLDivElement>(null);
@@ -17,13 +18,16 @@ const Mybutton = () => {
   return (
     <div ref={wrapper} className="relative h-full">
       <div
-        className="flex h-10 w-[100px] flex-col items-center justify-center rounded bg-sky-100 font-bold"
+        className="aspect-square w-12 rounded-full"
         onClick={() => setOpen(!open)}
       >
-        {userNickname}
+        <img
+          className="aspect-square rounded-full object-cover"
+          src={`${process.env.REACT_APP_API_URL}/users/profileImage/${userImage}`}
+        />
       </div>
       {open && (
-        <div className="absolute right-0 top-full my-1 w-[100px] rounded border bg-white shadow">
+        <div className="absolute right-0 top-full my-1 w-24 rounded border bg-white shadow">
           <ul className="flex h-[150px] flex-col justify-center">
             <Link
               className="flex flex-1 items-center justify-center border-b"

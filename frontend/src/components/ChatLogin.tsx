@@ -1,8 +1,8 @@
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { setNoti, setOpenChat } from "../features/chat/chatSlice";
-import { setOpenLogin } from "../features/auth/loginSlice";
-import { RootState } from "../app/store";
+import { setNoti, setOpenChat } from "features/chat/chatSlice";
+import { setOpenLogin } from "features/auth/loginSlice";
+import { RootState } from "app/store";
 
 const ChatLogin = ({ children }: any) => {
   const { pathname } = useLocation();

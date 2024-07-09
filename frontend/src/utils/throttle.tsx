@@ -1,10 +1,24 @@
-const throttle = (
-  func: (...arg: any[]) => any,
+// const throttle = (func: (...args: any[]) => any, delay: number) => {
+//   let waiting = false;
+
+//   return (...args: any[]) => {
+//     if (!waiting) {
+//       waiting = true;
+//       func(...args);
+//       setTimeout(() => {
+//         waiting = false;
+//       }, delay);
+//     }
+//   };
+// };
+
+const throttle = <T extends (...args: any[]) => any>(
+  func: T,
   delay: number,
-): ((...arg: any[]) => any) => {
+) => {
   let waiting = false;
 
-  return (...args: any[]) => {
+  return (...args: Parameters<T>) => {
     if (!waiting) {
       waiting = true;
       func(...args);

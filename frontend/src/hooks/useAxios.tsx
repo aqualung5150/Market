@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { axiosInstance } from "../data/axiosInstance";
+import { axiosInstance } from "data/axiosInstance";
 
 const useAxios = (url: string) => {
   const [data, setData] = useState<any>(null);

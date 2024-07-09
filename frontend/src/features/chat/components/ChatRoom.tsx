@@ -1,7 +1,7 @@
-import { ChatRoomProps, SocketMessageData } from "../../../types/chat";
-import InputField from "./InputField";
-import Message from "./Message";
+import { ChatRoomProps, SocketMessageData } from "types/chat";
 import useChatRoom from "../hooks/useChatRoom";
+import Message from "./Message";
+import InputField from "./InputField";
 
 const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
   const { messagesData, loader } = useChatRoom({

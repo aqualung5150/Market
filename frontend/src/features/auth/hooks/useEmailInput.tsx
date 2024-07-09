@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
-import debounce from "../../../utils/debounce";
 import axios from "axios";
+import debounce from "utils/debounce";
 
 const useEmailInput = (
   setValidations: React.Dispatch<React.SetStateAction<SignUpValidation>>,

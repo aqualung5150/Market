@@ -1,8 +1,8 @@
+import Carousel from "components/Carousel";
+import ProductStatusContext from "features/product/context/ProductStatusContext";
 import React, { useContext, useState } from "react";
-import Carousel from "../../../../components/Carousel";
-import { ProductImageData, ProductImageProps } from "../../../../types/product";
-import ProductStatusContext from "../../context/ProductStatusContext";
-import { ReactComponent as CheckIcon } from "../../../../assets/check.svg";
+import { ProductImageData, ProductImageProps } from "types/product";
+import { ReactComponent as CheckIcon } from "assets/check.svg";
 
 const ProductImage = ({ data }: ProductImageProps) => {
   const [imageIndex, setImageIndex] = useState(-1);

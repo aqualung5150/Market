@@ -1,9 +1,9 @@
+import { RootState } from "app/store";
+import Loading from "components/Loading";
+import SendButton from "features/chat/components/SendButton";
+import useAxios from "hooks/useAxios";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
 import { useParams } from "react-router-dom";
-import useAxios from "../../../hooks/useAxios";
-import Loading from "../../../components/Loading";
-import SendButton from "../../chat/components/SendButton";
 
 const Profile = () => {
   const paramId = useParams().id;
@@ -16,7 +16,7 @@ const Profile = () => {
       {error && <div>존재하지 않는 회원입니다.</div>}
       {data && (
         <div className="flex w-full flex-col items-center p-10">
-          <div className="aspect-square h-[350px] p-9">
+          <div className="aspect-square h-96 w-96 p-9">
             <img
               className="aspect-square h-full max-w-full rounded-full object-cover"
               src={`${process.env.REACT_APP_API_URL}/users/profileImage/${data.image}`}

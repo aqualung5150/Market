@@ -1,4 +1,4 @@
-import { ChannelsProps, SocketChannelData } from "../../../types/chat";
+import { ChannelsProps, SocketChannelData } from "types/chat";
 import Channel from "./Channel";
 import useChannels from "../hooks/useChannels";
 

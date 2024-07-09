@@ -3,10 +3,10 @@ import {
   SocketChannelData,
   SocketMessageData,
   UseChannelsProps,
-} from "../../../types/chat";
-import { SocketContext } from "../../../context/SocketContext";
+} from "types/chat";
+import { SocketContext } from "context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../../app/store";
+import { RootState } from "app/store";
 import { setSendTo } from "../chatSlice";
 
 const useChannels = ({
@@ -79,7 +79,7 @@ const useChannels = ({
   useEffect(() => {
     if (!sendTo && channelsData.length < 1) return;
     const sendToChannel = channelsData.find((channel) =>
-      channel.users.find((user) => user.id === sendTo)
+      channel.users.find((user) => user.id === sendTo),
     );
     if (sendToChannel) {
       dispatch(setSendTo(0));

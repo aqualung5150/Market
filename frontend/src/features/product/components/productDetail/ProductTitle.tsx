@@ -1,11 +1,11 @@
+import categoryData from "../../data/category.json";
+import { RootState } from "app/store";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { RootState } from "../../../../app/store";
-import React, { useState } from "react";
-import categoryData from "../../data/category.json";
-import { ProductTitleProps } from "../../../../types/product";
-import ConfirmDelete from "./ConfirmDelete";
+import { ProductTitleProps } from "types/product";
 import SetStatusModal from "./SetStatusModal";
+import ConfirmDelete from "./ConfirmDelete";
 
 const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
@@ -19,7 +19,6 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
     <div className="flex h-full flex-col justify-between gap-10">
       <div className="flex-1 space-y-3 text-lg text-gray-700">
         <span>{"카테고리 > "}</span>
-
         <Link
           className="cursor-pointer"
           to={`/search?category=${category?.id}&page=1`}
@@ -53,7 +52,6 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
           >
             <button className="h-full w-full">수정하기</button>
           </Link>
-
           <button onClick={() => setOpenConfirmDelete(true)} className="flex-1">
             삭제하기
           </button>

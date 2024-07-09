@@ -1,7 +1,7 @@
-import { Outlet, useParams } from "react-router-dom";
+import { RootState } from "app/store";
+import ProfileMenu from "features/user/components/ProfileMenu";
 import { useSelector } from "react-redux";
-import { RootState } from "../app/store";
-import ProfileMenu from "../features/user/components/ProfileMenu";
+import { Outlet, useParams } from "react-router-dom";
 
 const Users = () => {
   const user = useSelector((state: RootState) => state.user);

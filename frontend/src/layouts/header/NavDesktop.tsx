@@ -1,9 +1,9 @@
+import LinkLogin from "components/LinkLogin";
+import CategoryDropdown from "features/product/components/category/CategoryDropdown";
 import React, { useState } from "react";
-import LoginButton from "./LoginButton";
-import SearchBar from "./SearchBar";
-import CategoryDropdown from "../../features/product/components/category/CategoryDropdown";
 import { Link } from "react-router-dom";
-import LinkLogin from "../../components/LinkLogin";
+import SearchBar from "./SearchBar";
+import LoginButton from "./LoginButton";
 
 const NavDesktop = () => {
   console.log("NavLarge");
@@ -23,7 +23,7 @@ const NavDesktop = () => {
           <li className="cursor-pointer hover:text-green-500">판매하기</li>
         </LinkLogin>
       </ul>
-      <div className="h-10 w-full max-w-[400px] px-2">
+      <div className="h-10 w-full max-w-[400px] px-3">
         <SearchBar />
       </div>
       <LoginButton />

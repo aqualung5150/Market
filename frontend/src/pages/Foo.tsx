@@ -56,7 +56,7 @@ const Foo = () => {
   return (
     <div>
       {user.id && <h1>login!</h1>}
-      <h2>{user.name}</h2>
+      {/* <h2>{user.username}</h2> */}
       <Button text="test" />
       {/* <Button
         text="socket.emit(it's me)"
@@ -65,10 +65,10 @@ const Foo = () => {
           chatSocket?.emit("hello", "it's me");
         }}
       /> */}
-      <Button
+      {/* <Button
         text="승준"
         onClick={() => dispatch(updateUser({ name: "최승준" }))}
-      />
+      /> */}
       <h1>Foo, the second test</h1>
       <Modal
         children={<Login />}

@@ -9,7 +9,7 @@ const EmailField = ({ email, validations }: any) => {
       </label>
       <input
         id="email"
-        type="email"
+        // type="email"
         placeholder="Email"
         className={`h-14 w-full rounded border p-4 shadow focus:outline-none ${(validations.emailForm === -1 || validations.emailUnique === -1) && "border-red-500"}`}
         {...email}

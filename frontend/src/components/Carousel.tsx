@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { ReactComponent as AngleLeft } from "../assets/angleLeft.svg";
-import { ReactComponent as AngleRight } from "../assets/angleRight.svg";
+import { ReactComponent as AngleLeft } from "assets/angleLeft.svg";
+import { ReactComponent as AngleRight } from "assets/angleRight.svg";
 
 const Carousel = ({
   children: slides,
