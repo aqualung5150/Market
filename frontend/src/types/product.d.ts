@@ -66,3 +66,10 @@ interface SetStatusModalProps {
   openSetStatus: boolean;
   setOpenSetStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
+interface PaginationProps {
+  totalSize: number;
+  displaySize: number;
+  interval: number;
+  page: number;
+}
