@@ -9,11 +9,10 @@ export class SearchController {
 
   @Get()
   async getProducts(@Query() query: SearchQueryDto) {
-    const res = await this.searchService.getProducts({
+    return await this.searchService.getProducts({
       keyword: query.keyword,
       categoryId: query.categoryId,
       page: query.page,
     });
-    return res;
   }
 }
