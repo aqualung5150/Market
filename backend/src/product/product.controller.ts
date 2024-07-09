@@ -178,4 +178,20 @@ export class ProductController {
 
     return await this.productService.deleteProduct(productId);
   }
+
+  // TEST
+  @Post('dummy5150')
+  async createDummy() {
+    return await this.productService.createTestDummy();
+  }
+
+  @Post('deleteAll5150')
+  async deleteAll() {
+    return await this.productService.deleteAll();
+  }
+
+  @Post('dummyUpdate5150')
+  async updateDummy() {
+    return await this.productService.dummyStatus();
+  }
 }

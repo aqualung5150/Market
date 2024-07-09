@@ -234,4 +234,72 @@ export class ProductService {
       });
     });
   }
+
+  async createTestDummy() {
+    const titles = ['노트북', '스마트폰', '세탁기', '티셔츠', '화장품'];
+    const urls = [
+      '794f5e0d-349b-43a0-9bf0-464283583fc7.jpeg',
+      'a9b95a74-554e-4c9a-8d99-5772885b16f6.jpg',
+      '095512f9-3bf2-4d3d-b02a-2b17d5658b8a.jpg',
+      '519e1c27-59c0-438c-95e9-83323daef8ba.png',
+      '5e18eb63-9b18-4482-9f2c-500a2a3387a3.jpg',
+    ];
+    for (let i = 0; i < 10000; ++i) {
+      // create product
+      const res = await this.prisma.product.create({
+        data: {
+          title: titles[i % 5] + (Math.floor(i / 5) + 1),
+          description: 'description' + i,
+          price: 10000 + i,
+          condition: 0,
+          user: {
+            connect: {
+              id: 8,
+            },
+          },
+          category: {
+            connect: {
+              id: (i % 5) + 1,
+            },
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      //create image
+
+      const image = {
+        url: urls[i % 5],
+        order: 0,
+        main: true,
+        productId: res.id,
+      };
+      await this.prisma.productImage.create({
+        data: image,
+      });
+    }
+    return { message: 'success' };
+    // });
+  }
+
+  async dummyStatus() {
+    for (let i = 1; i <= 20000; i += 7) {
+      try {
+        await this.prisma.product.update({
+          where: {
+            id: i,
+          },
+          data: {
+            status: 1,
+          },
+        });
+        console.log(i);
+      } catch (err) {}
+    }
+  }
+
+  async deleteAll() {
+    await this.prisma.product.deleteMany();
+  }
 }
