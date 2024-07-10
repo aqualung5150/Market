@@ -5,6 +5,7 @@ import { ProductData } from "../types/product";
 import ProductThumbnail from "../features/product/components/productThumbnail/ProductThumbnail";
 import { useEffect, useState } from "react";
 import ProductPagination from "features/product/components/search/ProductPagination";
+import NotFound from "components/NotFound";
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -30,9 +31,17 @@ const Products = () => {
   return (
     <>
       {loading && <Loading text="로딩중..." />}
-      {error && <div>상품 정보를 불러오지 못했습니다.</div>}
-      {!products.length ? (
-        <div>찾으려는 상품이 없습니다.</div>
+      {error && (
+        <NotFound
+          title="상품 정보를 불러오지 못했습니다."
+          description="다시 시도해주세요."
+        />
+      )}
+      {!error && !products.length ? (
+        <NotFound
+          title="찾으려는 상품이 없습니다."
+          description="다른 상품을 검색해주세요."
+        />
       ) : (
         <div className="flex flex-col items-center">
           <div className="grid h-full auto-rows-min grid-cols-2 gap-5 p-5 sm:grid-cols-3 xl:grid-cols-4 2xl:w-2/3">

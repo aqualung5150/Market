@@ -1,3 +1,4 @@
+import NotFound from "components/NotFound";
 import { axiosInstance } from "data/axiosInstance";
 import EditProfile from "features/user/components/EditProfile";
 import Profile from "features/user/components/Profile";
@@ -38,6 +39,10 @@ const App = () => {
             <Route path=":title" element={<Products />} />
           </Route>
           <Route path="/signUp" element={<SignUp />} />
+          <Route
+            path="*"
+            element={<NotFound title="페이지를 찾을 수 없습니다." />}
+          />
         </Route>
         <Route path="callback" element={<Callback />} />
       </Routes>

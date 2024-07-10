@@ -9,6 +9,7 @@ import { ProductData } from "types/product";
 import Loading from "components/Loading";
 import ProductImage from "features/product/components/productDetail/ProductImage";
 import ProductTitle from "features/product/components/productDetail/ProductTitle";
+import NotFound from "components/NotFound";
 
 const Product = () => {
   const paramId = useParams().id;
@@ -26,12 +27,10 @@ const Product = () => {
     if (data) setStatus(data.status);
   }, [data]);
 
-  if (error) alert("상품 정보를 불러올 수 없습니다.");
-
   return (
     <>
       {loading && <Loading text="로딩중..." />}
-      {error && <div>상품 정보를 불러올 수 없습니다.</div>}
+      {error && <NotFound title="상품 정보를 불러올 수 없습니다." />}
       {data && (
         <div className="flex h-full w-full flex-col items-center gap-10 bg-white p-5 2xl:w-2/3">
           <div className="flex grid-cols-2 flex-col gap-10 lg:grid">
