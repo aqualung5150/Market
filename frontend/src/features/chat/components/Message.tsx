@@ -22,24 +22,22 @@ const Message = ({
   if (date) time = `${date} ${time}`;
 
   return userId === sender.id ? (
-    <div className="mb-2 flex justify-end">
-      <div className="flex flex-col justify-end">
-        <p className="mb-1 mr-1 text-xs text-gray-500">
-          {read ? "읽음" : "전송"}
-        </p>
+    <div className="flex justify-end">
+      <div className="m-1 self-end text-nowrap text-xs text-gray-500">
+        {read ? "읽음" : "전송"}
       </div>
-      <div className="max-w-full rounded bg-amber-100 px-3 py-2">
-        <p className="text-sm font-semibold">{sender.nickname}</p>
-        <p className="mt-1 break-words text-sm">{body}</p>
-        <p className="ml-1 text-right text-xs text-gray-400">{time}</p>
+      <div className="flex max-w-[90%] flex-col gap-2 rounded bg-amber-100 px-3 py-2">
+        <p className="text-sm font-semibold italic">{sender.nickname}</p>
+        <p className="break-words text-sm">{body}</p>
+        <p className="self-end text-xs text-gray-500">{time}</p>
       </div>
     </div>
   ) : (
-    <div className="mb-2 flex">
-      <div className="max-w-full rounded bg-stone-50 px-3 py-2">
-        <p className="text-sm font-semibold">{sender.nickname}</p>
-        <p className="mt-1 break-words text-sm">{body}</p>
-        <p className="ml-1 text-right text-xs text-gray-400">{time}</p>
+    <div className="flex">
+      <div className="flex max-w-[90%] flex-col gap-2 rounded bg-stone-50 px-3 py-2">
+        <p className="text-sm font-semibold italic">{sender.nickname}</p>
+        <p className="break-words text-sm">{body}</p>
+        <p className="self-end text-xs text-gray-500">{time}</p>
       </div>
     </div>
   );

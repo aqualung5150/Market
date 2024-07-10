@@ -96,6 +96,12 @@ export class ChatGateway
       .emit('readMessagesRes', messages[0]?.createdAt);
   }
 
+  @SubscribeMessage('getRoomUsersReq')
+  async handleGetRoomUsers(client: ChatSocket, { selectedChannelId }) {
+    const users = await this.chatService.getUsersByChannelId(selectedChannelId);
+    client.emit('getRoomUsersRes', users);
+  }
+
   @SubscribeMessage('sendMessageReq')
   async handleSendMessage(client: ChatSocket, { body, channelId }) {
     const { message, users } = await this.chatService.createMessage(

@@ -3,15 +3,20 @@ import { SocketContext } from "context/SocketContext";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { SocketMessageData, UseChatRoomProps } from "types/chat";
+import { PublicUser } from "types/user";
 
 const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
   const socket = useContext(SocketContext).socket;
   const userId = useSelector((state: RootState) => state.user.id);
   const [messagesData, setMessagesData] = useState<SocketMessageData[]>([]);
+  const [roomUsers, setRoomUsers] = useState<PublicUser[]>([]);
   const [cursor, setCursor] = useState(0);
 
   useEffect(() => {
     if (!socket) return;
+
+    // Init Emit
+    socket.emit("getRoomUsersReq", { selectedChannelId: selectedChannelId });
 
     // Event
     const addNewMessage = (message: SocketMessageData) => {
@@ -49,15 +54,21 @@ const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
       });
     };
 
+    const getRoomUsers = (users: PublicUser[]) => {
+      setRoomUsers(users.filter((user) => user.id !== userId));
+    };
+
     // Listen
     socket.on("sendMessageRes", addNewMessage);
     socket.on("readMessagesRes", readMessages);
     socket.on("readMessageRes", readMessage);
+    socket.on("getRoomUsersRes", getRoomUsers);
 
     return () => {
       socket.off("sendMessageRes", addNewMessage);
       socket.off("readMessagesRes", readMessages);
       socket.off("readMessageRes", readMessage);
+      socket.on("getRoomUsersRes", getRoomUsers);
     };
   }, [socket]);
 
@@ -98,7 +109,7 @@ const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
     };
   }, [cursor]);
 
-  return { messagesData, loader };
+  return { roomUsers, messagesData, loader };
 };
 
 export default useChatRoom;
