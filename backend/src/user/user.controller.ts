@@ -30,7 +30,7 @@ const storage = {
     destination: './uploads/profileImages',
     filename: (req, file, cb) => {
       const origin = path.parse(file.originalname);
-      const filename: string = origin.name.replace(/\s/g, '') + v4();
+      const filename: string = v4();
       const extension: string = origin.ext;
       cb(null, `${filename}${extension}`);
     },
