@@ -5,11 +5,12 @@ import SendButton from "features/chat/components/SendButton";
 import useAxios from "hooks/useAxios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
+import { PublicUser } from "types/user";
 
 const Profile = () => {
   const paramId = useParams().id;
   const me = useSelector((state: RootState) => state.user);
-  const { data, error, loading } = useAxios(`users/${paramId}`);
+  const { data, error, loading } = useAxios<PublicUser>(`users/${paramId}`);
 
   return (
     <>
@@ -19,6 +20,7 @@ const Profile = () => {
         <div className="flex w-full flex-col items-center p-10">
           <div className="aspect-square h-96 w-96 p-9">
             <img
+              loading="lazy"
               className="aspect-square h-full max-w-full rounded-full object-cover"
               src={`${process.env.REACT_APP_API_URL}/users/profileImage/${data.image}`}
             />

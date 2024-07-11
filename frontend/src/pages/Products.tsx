@@ -1,7 +1,7 @@
 import { useParams, useSearchParams } from "react-router-dom";
 import useAxios from "../hooks/useAxios";
 import Loading from "../components/Loading";
-import { ProductData } from "../types/product";
+import { ProductData, ProductsData } from "../types/product";
 import ProductThumbnail from "../features/product/components/productThumbnail/ProductThumbnail";
 import { useEffect, useState } from "react";
 import ProductPagination from "features/product/components/search/ProductPagination";
@@ -11,6 +11,10 @@ const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryId = searchParams.get("category");
   const page = searchParams.get("page");
+  if (!page) {
+    searchParams.append("page", "1");
+    setSearchParams(searchParams);
+  }
   const title = useParams().title;
   const params = new URLSearchParams();
   if (title) params.append("keyword", title);
@@ -18,15 +22,7 @@ const Products = () => {
   params.append("page", page ? page : "1");
   const url = `search?${params.toString()}`;
 
-  const { data, error, loading } = useAxios(url);
-  const [totalSize, setTotalSize] = useState<number>(0);
-  const [products, setProducts] = useState<ProductData[]>([]);
-
-  useEffect(() => {
-    if (!data) return;
-    setTotalSize(data.totalSize);
-    setProducts(data.products);
-  }, [data]);
+  const { data, error, loading } = useAxios<ProductsData>(url);
 
   return (
     <>
@@ -37,36 +33,38 @@ const Products = () => {
           description="다시 시도해주세요."
         />
       )}
-      {!error && !products.length ? (
-        <NotFound
-          title="찾으려는 상품이 없습니다."
-          description="다른 상품을 검색해주세요."
-        />
-      ) : (
-        <div className="flex flex-col items-center">
-          <div className="grid h-full auto-rows-min grid-cols-2 gap-5 p-5 sm:grid-cols-3 xl:grid-cols-4 2xl:w-2/3">
-            {products.map((product: ProductData) => (
-              <ProductThumbnail key={product.id} product={product} />
-            ))}
+      {data ? (
+        data.products && data.products.length > 0 ? (
+          <div className="flex h-full w-full flex-col items-center">
+            <div className="grid h-full w-full auto-rows-min grid-cols-2 gap-5 p-5 sm:grid-cols-3 xl:grid-cols-4 2xl:w-2/3">
+              {data.products.map((product: ProductData) => (
+                <ProductThumbnail key={product.id} product={product} />
+              ))}
+            </div>
+            <div className="lg:hidden">
+              <ProductPagination
+                totalSize={data.totalSize}
+                displaySize={data.products.length}
+                interval={5}
+                page={page ? parseInt(page) : 1}
+              />
+            </div>
+            <div className="hidden lg:block">
+              <ProductPagination
+                totalSize={data.totalSize}
+                displaySize={data.products.length}
+                interval={10}
+                page={page ? parseInt(page) : 1}
+              />
+            </div>
           </div>
-          <div className="lg:hidden">
-            <ProductPagination
-              totalSize={totalSize}
-              displaySize={products.length}
-              interval={5}
-              page={page ? parseInt(page) : 1}
-            />
-          </div>
-          <div className="hidden lg:block">
-            <ProductPagination
-              totalSize={totalSize}
-              displaySize={products.length}
-              interval={10}
-              page={page ? parseInt(page) : 1}
-            />
-          </div>
-        </div>
-      )}
+        ) : (
+          <NotFound
+            title="찾으려는 상품이 없습니다."
+            description="다른 상품을 검색해주세요."
+          />
+        )
+      ) : null}
     </>
   );
 };

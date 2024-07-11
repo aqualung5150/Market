@@ -81,17 +81,11 @@ const ProductForm = () => {
         ></textarea>
       </div>
       <button
-        className={`${buttonLarge} ${
-          disabled.disabled || images.disabled ? buttonOff : buttonOn
-        }`}
+        className={`${buttonLarge} ${disabled.disabled ? buttonOff : buttonOn}`}
         type="submit"
-        disabled={(disabled.disabled || images.disabled) && true}
+        disabled={disabled.disabled && true}
       >
-        {disabled.disabled || images.disabled
-          ? "로딩중..."
-          : type === "modify"
-            ? "수정"
-            : "등록"}
+        {type === "modify" ? "수정" : "등록"}
       </button>
     </form>
   );

@@ -1,16 +1,30 @@
 import { RootState } from "app/store";
 import { SocketContext } from "context/SocketContext";
+import useFormInput from "hooks/useFormInput";
 import { useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
-import { SocketMessageData, UseChatRoomProps } from "types/chat";
+import { SocketMessageData } from "types/chat";
 import { PublicUser } from "types/user";
 
-const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
+const useChatRoom = (selectedChannelId: number) => {
   const socket = useContext(SocketContext).socket;
   const userId = useSelector((state: RootState) => state.user.id);
   const [messagesData, setMessagesData] = useState<SocketMessageData[]>([]);
   const [roomUsers, setRoomUsers] = useState<PublicUser[]>([]);
   const [cursor, setCursor] = useState(0);
+  // const [value, setValue] = useState("");
+  const { inputProps: messageInput, setValue: setMessageInput } =
+    useFormInput();
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (messageInput.value.length === 0) return;
+    socket?.emit("sendMessageReq", {
+      body: messageInput.value,
+      channelId: selectedChannelId,
+    });
+    setMessageInput("");
+  };
 
   useEffect(() => {
     if (!socket) return;
@@ -109,7 +123,7 @@ const useChatRoom = ({ selectedChannelId }: UseChatRoomProps) => {
     };
   }, [cursor]);
 
-  return { roomUsers, messagesData, loader };
+  return { roomUsers, messagesData, loader, messageInput, handleSubmit };
 };
 
 export default useChatRoom;

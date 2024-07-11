@@ -1,8 +1,6 @@
 import { PublicUser } from "./user";
 
 interface ImageSelectorProps {
-  disabled: boolean;
-  setDisabled: React.Dispatch<React.SetStateAction<boolean>>;
   files: File[];
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   newFiles: File[];
@@ -34,6 +32,11 @@ interface ProductData {
   categoryId: number;
   images: ProductImageData[];
   user: PublicUser;
+}
+
+interface ProductsData {
+  totalSize: number;
+  products: ProductData[];
 }
 
 interface CategoryData {

@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import { ReactComponent as AngleLeft } from "assets/angleLeft.svg";
 import { ReactComponent as AngleRight } from "assets/angleRight.svg";
 import { ReactComponent as AngleDoubleLeft } from "assets/angleDoubleLeft.svg";
@@ -11,7 +11,6 @@ const ProductPagination = ({
   interval,
   page,
 }: PaginationProps) => {
-  console.log("totalSize: " + totalSize);
   const { pathname, search } = useLocation();
   const path = pathname + search;
 

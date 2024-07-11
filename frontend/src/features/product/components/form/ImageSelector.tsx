@@ -4,8 +4,6 @@ import { ImageSelectorProps } from "types/product";
 import FileToImage from "./FileToImage";
 
 const ImageSelector = ({
-  disabled,
-  setDisabled,
   files,
   setFiles,
   newFiles,
@@ -36,7 +34,6 @@ const ImageSelector = ({
       />
       <button
         type="button"
-        disabled={disabled}
         onClick={() => selectFile.current?.click()}
         className="mr-1 flex h-24 w-24 min-w-24 cursor-pointer flex-col items-center justify-center rounded bg-gray-200 shadow"
       >

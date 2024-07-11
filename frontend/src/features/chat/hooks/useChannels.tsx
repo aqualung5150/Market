@@ -1,18 +1,14 @@
-import { useContext, useEffect, useState } from "react";
-import {
-  SocketChannelData,
-  SocketMessageData,
-  UseChannelsProps,
-} from "types/chat";
+import { SetStateAction, useContext, useEffect, useState } from "react";
+import { SocketChannelData, SocketMessageData } from "types/chat";
 import { SocketContext } from "context/SocketContext";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/store";
 import { setSendTo } from "../chatSlice";
 
-const useChannels = ({
-  selectedChannelId,
-  setSelectedChannelId,
-}: UseChannelsProps) => {
+const useChannels = (
+  selectedChannelId: number,
+  setSelectedChannelId: React.Dispatch<SetStateAction<number>>,
+) => {
   const socket = useContext(SocketContext).socket;
   const userId = useSelector((state: RootState) => state.user.id);
   const [channelsData, setChannelsData] = useState<SocketChannelData[]>([]);

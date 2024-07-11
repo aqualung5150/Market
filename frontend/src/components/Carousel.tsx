@@ -57,7 +57,7 @@ const Carousel = ({
           {slides.map((_, idx) => (
             <div
               key={idx}
-              className={`h-3 w-3 rounded-full bg-white transition-all ${
+              className={`h-3 w-3 rounded-full bg-white shadow transition-all ${
                 cur === idx ? "p-2" : "bg-opacity-50"
               }`}
             />

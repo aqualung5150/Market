@@ -8,7 +8,7 @@ import Footer from "./Footer";
 const Layout = ({ children }: LayoutProps) => {
   const dispatch = useDispatch();
   return (
-    <div className="flex h-screen flex-col overflow-y-auto">
+    <div className="flex h-screen w-screen flex-col overflow-y-auto">
       <Header />
       <div
         // className="flex flex-1 justify-center bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee]"

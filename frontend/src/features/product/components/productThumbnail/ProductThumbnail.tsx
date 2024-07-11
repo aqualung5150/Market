@@ -10,12 +10,13 @@ const ProductThumbnail = ({ product }: { product: ProductData }) => {
       to={`/product/${product.id}`}
       className="flex aspect-[3/5] w-full cursor-pointer flex-col rounded-lg border bg-white shadow-md lg:aspect-[2/3]"
     >
-      <div className="relative aspect-square rounded-t-lg">
+      <div className="relative aspect-square w-full rounded-t-lg">
         <img
-          className="aspect-square rounded-t-lg object-cover"
+          loading="lazy"
+          className="aspect-square w-full rounded-t-lg object-cover"
           src={`${process.env.REACT_APP_API_URL}/product/productImage/${
             product.images.find((e) => e.main)?.url
-          }`}
+          }?impolicy=thumb`}
         />
         {product.status === 1 && (
           <div className="absolute left-0 top-0 flex aspect-square w-full flex-col items-center justify-center gap-2 rounded-t-lg bg-black/50">

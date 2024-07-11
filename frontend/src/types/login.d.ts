@@ -21,3 +21,11 @@ interface SignUpValidation {
   pwdSeriesOfSameChar: number;
   confirmPassword: number;
 }
+
+interface LinkLoginProps {
+  className?: string;
+  onClick?: () => void;
+  to: string;
+  redirectAfterLogin?: string;
+  children: React.ReactNode;
+}

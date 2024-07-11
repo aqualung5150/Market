@@ -18,8 +18,8 @@ const ProductImage = ({ data }: ProductImageProps) => {
             onClick={() => setImageIndex(idx)}
           >
             <img
-              className="aspect-square rounded-2xl object-cover"
-              src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`}
+              className="aspect-square w-full rounded-2xl object-cover"
+              src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}?impolicy=main`}
             />
             {status === 1 && (
               <div className="absolute left-0 top-0 flex h-full w-full flex-col items-center justify-center gap-2 rounded-2xl bg-black/50">
@@ -45,7 +45,7 @@ const ProductImage = ({ data }: ProductImageProps) => {
               >
                 <img
                   className="h-full w-full object-contain"
-                  src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`}
+                  src={`${process.env.REACT_APP_API_URL}/product/productImage/${image.url}?impolicy=main`}
                 />
               </div>
             ))}

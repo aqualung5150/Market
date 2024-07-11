@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { ProductTitleProps } from "types/product";
 import SetStatusModal from "./SetStatusModal";
-import ConfirmDelete from "./ConfirmDelete";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
 
 const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
@@ -62,7 +62,7 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
         openSetStatus={openSetStatus}
         setOpenSetStatus={setOpenSetStatus}
       />
-      <ConfirmDelete
+      <ConfirmDeleteModal
         paramId={paramId}
         category={category}
         openConfirmDelete={openConfirmDelete}

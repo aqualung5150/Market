@@ -6,10 +6,7 @@ const Channels = ({
   selectedChannelId,
   setSelectedChannelId,
 }: ChannelsProps) => {
-  const channelsData = useChannels({
-    selectedChannelId,
-    setSelectedChannelId,
-  });
+  const channelsData = useChannels(selectedChannelId, setSelectedChannelId);
 
   return (
     <div className="flex h-full w-full select-none flex-col border-r">

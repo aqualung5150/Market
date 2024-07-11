@@ -1,14 +1,11 @@
-import imageCompression from "browser-image-compression";
 import { useState } from "react";
 
 const useSelectImages = () => {
-  const [disabled, setDisabled] = useState(false);
   const [files, setFiles] = useState<File[]>([]);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [existingFiles, setExistingFiles] = useState<string[]>([]);
 
   const handleFilesChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    setDisabled(true);
     if (e.target.files && e.target.files.length > 0) {
       let invalidFileLength = false;
       const selectedFiles: File[] = [];
@@ -21,21 +18,13 @@ const useSelectImages = () => {
         } else if (files.length + selectedFiles.length >= 5) {
           invalidFileLength = true;
           break;
-          // 파일 압축
+          // 사이즈 제한
+        } else if (file.size > 5 * 1024 * 1024) {
+          alert("5MB 미만의 이미지만 업로드가 가능합니다.");
         } else {
-          try {
-            const compressedFile = await imageCompression(file, {
-              maxSizeMB: 1,
-            });
-            selectedFiles.push(compressedFile);
-          } catch (err) {
-            setDisabled(false);
-            alert("이미지 선택에 실패했습니다.");
-            return;
-          }
+          selectedFiles.push(file);
         }
       }
-      setDisabled(false);
       setFiles((prev) => prev.concat(selectedFiles));
       setNewFiles((prev) => prev.concat(selectedFiles));
       e.target.value = "";
@@ -46,8 +35,6 @@ const useSelectImages = () => {
   };
 
   return {
-    disabled,
-    setDisabled,
     files,
     setFiles,
     newFiles,

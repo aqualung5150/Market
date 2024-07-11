@@ -6,8 +6,9 @@ interface ChannelsProps {
   setSelectedChannelId: React.Dispatch<SetStateAction<number>>;
 }
 
-interface InputFieldProps {
-  channelId: number;
+interface MessageInputProps {
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
 }
 
 interface SocketMessageData {
@@ -31,14 +32,3 @@ interface SocketChannelData {
 interface ChatRoomProps {
   selectedChannelId: number;
 }
-
-interface ChatProps {
-  initToUserId: number;
-}
-
-interface ChatBodyProps {
-  children: React.ReactNode;
-}
-
-interface UseChatRoomProps extends ChatRoomProps {}
-interface UseChannelsProps extends ChannelsProps {}

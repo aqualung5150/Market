@@ -44,7 +44,8 @@ const EditProfile = () => {
     >
       <div className="aspect-square h-96 w-96 p-9">
         <img
-          className="h-full max-w-full cursor-pointer rounded-full object-cover shadow"
+          loading="lazy"
+          className="aspect-square h-full max-w-full cursor-pointer rounded-full object-cover shadow"
           src={file.url}
           onClick={() => profileImage.current?.click()}
         />

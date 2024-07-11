@@ -34,10 +34,7 @@ const NavMobile = ({ toggle }: any) => {
         toggle ? "top-16" : "top-[-100%]"
       }`}
     >
-      <div className="flex w-full items-center gap-2">
-        <SearchIcon className="h-10 w-10" />
-        <SearchBar />
-      </div>
+      <SearchBar />
       <div>
         <ul className="flex flex-1 flex-col gap-1">
           <li className="flex items-center justify-between text-xl font-semibold">

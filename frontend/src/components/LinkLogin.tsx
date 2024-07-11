@@ -10,7 +10,7 @@ const LinkLogin = ({
   to,
   redirectAfterLogin = to,
   children,
-}: any) => {
+}: LinkLoginProps) => {
   const userId = useSelector((state: RootState) => state.user.id);
   const navigate = useNavigate();
   const dispatch = useDispatch();

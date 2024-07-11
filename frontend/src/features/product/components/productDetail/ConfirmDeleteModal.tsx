@@ -4,7 +4,7 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ConfirmDelteProps } from "types/product";
 
-const ConfirmDelete = ({
+const ConfirmDeleteModal = ({
   paramId,
   category,
   openConfirmDelete,
@@ -47,4 +47,4 @@ const ConfirmDelete = ({
   );
 };
 
-export default ConfirmDelete;
+export default ConfirmDeleteModal;

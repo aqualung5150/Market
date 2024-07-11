@@ -1,15 +1,17 @@
 import { ChatRoomProps, SocketMessageData } from "types/chat";
 import useChatRoom from "../hooks/useChatRoom";
 import Message from "./Message";
-import InputField from "./InputField";
+import MessageInput from "./MessageInput";
 
 const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
-  const { roomUsers, messagesData, loader } = useChatRoom({
-    selectedChannelId,
-  });
+  const { roomUsers, messagesData, loader, messageInput, handleSubmit } =
+    useChatRoom(selectedChannelId);
 
   return (
-    <div className="flex h-full w-full flex-1 flex-col">
+    <form
+      onSubmit={handleSubmit}
+      className="flex h-full w-full flex-1 flex-col"
+    >
       <div className="flex items-center gap-2 bg-gray-100 px-3 py-2">
         {roomUsers.map((user, idx) => (
           <div
@@ -33,8 +35,8 @@ const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
         ))}
         <div ref={loader} />
       </div>
-      <InputField channelId={selectedChannelId} />
-    </div>
+      <MessageInput {...messageInput} />
+    </form>
   );
 };
 

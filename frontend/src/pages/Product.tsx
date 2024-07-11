@@ -14,13 +14,7 @@ import NotFound from "components/NotFound";
 const Product = () => {
   const paramId = useParams().id;
   const userId = useSelector((state: RootState) => state.user.id);
-  const {
-    data,
-    error,
-    loading,
-  }: { data: ProductData; error: any; loading: boolean } = useAxios(
-    `product/${paramId}`,
-  );
+  const { data, error, loading } = useAxios<ProductData>(`product/${paramId}`);
   const [status, setStatus] = useState<number>(0);
 
   useEffect(() => {
@@ -33,12 +27,12 @@ const Product = () => {
       {error && <NotFound title="상품 정보를 불러올 수 없습니다." />}
       {data && (
         <div className="flex h-full w-full flex-col items-center gap-10 bg-white p-5 2xl:w-2/3">
-          <div className="flex grid-cols-2 flex-col gap-10 lg:grid">
+          <div className="flex w-full grid-cols-2 flex-col gap-10 lg:grid">
             <ProductStatusContext.Provider value={{ status, setStatus }}>
-              <div className="aspect-square select-none rounded-2xl shadow">
+              <div className="aspect-square w-full select-none rounded-2xl shadow">
                 <ProductImage data={data} />
               </div>
-              <div className="flex flex-1 flex-col gap-2 rounded-2xl">
+              <div className="flex w-full flex-1 flex-col gap-2 rounded-2xl">
                 <ProductTitle paramId={paramId} data={data} />
               </div>
             </ProductStatusContext.Provider>

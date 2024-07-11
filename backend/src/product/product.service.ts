@@ -262,7 +262,7 @@ export class ProductService {
           condition: 0,
           user: {
             connect: {
-              id: 8,
+              id: 1,
             },
           },
           category: {

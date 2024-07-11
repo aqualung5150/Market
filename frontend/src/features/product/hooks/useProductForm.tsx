@@ -48,7 +48,7 @@ const useProductForm = () => {
           data.images.map(async (image) => {
             // get image as Blob data
             const imageRes = await axiosInstance.get(
-              `${process.env.REACT_APP_API_URL}/product/productImage/${image.url}`,
+              `${process.env.REACT_APP_API_URL}/product/productImage/${image.url}?impolicy=main`,
               { responseType: "blob" },
             );
             const file = new File([imageRes.data], image.url, {
@@ -69,6 +69,18 @@ const useProductForm = () => {
     };
 
     getPrevData();
+
+    return () => {
+      setDisabled(false);
+      setTitle("");
+      setPrice("");
+      setDescription("");
+      setCategoryId(0);
+      setCondition(0);
+      images.setFiles([]);
+      images.setExistingFiles([]);
+      images.setNewFiles([]);
+    };
   }, [type]);
 
   const handleSubmitCreate = async (e: React.FormEvent<HTMLFormElement>) => {

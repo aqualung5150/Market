@@ -3,6 +3,7 @@ import React from "react";
 const FileToImage = ({ file }: { file: File }) => {
   return (
     <img
+      loading="lazy"
       className="h-24 w-24 max-w-24 rounded object-cover shadow"
       src={URL.createObjectURL(file)}
     />

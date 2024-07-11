@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { axiosInstance } from "data/axiosInstance";
+import { useLocation } from "react-router-dom";
 
-const useAxios = (url: string) => {
-  const [data, setData] = useState<any>(null);
+const useAxios = <T extends object>(url: string) => {
+  const location = useLocation();
+  const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -20,7 +22,11 @@ const useAxios = (url: string) => {
         setLoading(false);
       }
     })();
-  }, [url]);
+    return () => {
+      setData(null);
+      setError(null);
+    };
+  }, [url, location]);
 
   return { data, error, loading };
 };
