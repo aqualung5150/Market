@@ -24,17 +24,19 @@ import * as path from 'path';
 import { Prisma } from '@prisma/client';
 import { v4 } from 'uuid';
 import * as fs from 'fs';
+import { UserImagePipe } from 'src/user-image/user-image.pipe';
 
 const storage = {
-  storage: multer.diskStorage({
-    destination: './uploads/profileImages',
-    filename: (req, file, cb) => {
-      const origin = path.parse(file.originalname);
-      const filename: string = v4();
-      const extension: string = origin.ext;
-      cb(null, `${filename}${extension}`);
-    },
-  }),
+  // storage: multer.diskStorage({
+  //   destination: './uploads/profileImages',
+  //   filename: (req, file, cb) => {
+  //     const origin = path.parse(file.originalname);
+  //     const filename: string = v4();
+  //     const extension: string = origin.ext;
+  //     cb(null, `${filename}${extension}`);
+  //   },
+  // }),
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 5 * 1024 * 1024,
   },
@@ -70,8 +72,9 @@ export class UserController {
   async uploadFile(
     @Req() req: Request,
     @Param('id', ParseIntPipe) id: number,
-    @UploadedFile()
-    file: Express.Multer.File,
+    @UploadedFile(UserImagePipe)
+    file: string,
+    // file: Express.Multer.File,
     @Body() data: Prisma.UserUpdateInput,
   ) {
     if (req.user.id !== id)
@@ -81,9 +84,9 @@ export class UserController {
     }
 
     return await this.userService
-      .updateUser(req.user.id, data, file ? file.filename : undefined)
+      .updateUser(req.user.id, data, file ? file : undefined)
       .catch(() => {
-        fs.unlinkSync(`./uploads/profileImages/${file.filename}`);
+        fs.unlinkSync(`./uploads/profileImages/${file}`);
       });
   }
 

@@ -71,7 +71,9 @@ export class UserService {
         .then(() => {
           if (prevImage && prevImage !== 'default.png') {
             try {
-              fs.unlinkSync(`./uploads/profileImages/${prevImage}`);
+              // fs.unlinkSync(`./uploads/profileImages/${prevImage}`);
+              fs.unlink(`./uploads/profileImages/thumb/${prevImage}`, () => {});
+              fs.unlink(`./uploads/profileImages/main/${prevImage}`, () => {});
             } catch (err) {
               console.error(err);
             }

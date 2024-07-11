@@ -1,14 +1,15 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { unlinkSync } from 'fs';
+import { unlink, unlinkSync } from 'fs';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { UpdateProductDto } from './dto/product.dto';
+import { CreateProductDto, UpdateProductDto } from './dto/product.dto';
 
 @Injectable()
 export class ProductService {
   private readonly logger = new Logger(ProductService.name);
   constructor(private readonly prisma: PrismaService) {}
 
-  async createProduct(userId: number, data, files?: Express.Multer.File[]) {
+  // async createProduct(userId: number, data, files?: Express.Multer.File[]) {
+  async createProduct(userId: number, data: CreateProductDto, files: string[]) {
     return await this.prisma.$transaction(async (tx) => {
       // create product
       const product = await tx.product.create({
@@ -36,7 +37,7 @@ export class ProductService {
       const imagesData = [];
       files.map((file, idx) => {
         const image = {
-          url: file.filename,
+          url: file,
           order: idx,
           main: idx === 0 ? true : false,
           productId: product.id,
@@ -81,7 +82,7 @@ export class ProductService {
   async updateProduct(
     productId: number,
     data: UpdateProductDto,
-    files: Express.Multer.File[],
+    files: string[],
   ) {
     return await this.prisma.$transaction(async (tx) => {
       // DELETE
@@ -123,7 +124,7 @@ export class ProductService {
           // indexing after existing files
           const order = data.existingFiles.length + idx;
           const image = {
-            url: file.filename,
+            url: file,
             order: order,
             main: order === 0 ? true : false,
             productId: productId,
@@ -152,7 +153,8 @@ export class ProductService {
 
       // delete images from storage
       deletedImages.map((image) => {
-        unlinkSync(`./uploads/productImages/${image.url}`);
+        unlink(`./uploads/productImages/thumb/${image.url}`, () => {});
+        unlink(`./uploads/productImages/main/${image.url}`, () => {});
       });
     });
   }
@@ -230,7 +232,8 @@ export class ProductService {
       });
       // delete image files
       images.images.map((image) => {
-        unlinkSync(`./uploads/productImages/${image.url}`);
+        unlink(`./uploads/productImages/thumb/${image.url}`, () => {});
+        unlink(`./uploads/productImages/main/${image.url}`, () => {});
       });
     });
   }
@@ -238,11 +241,16 @@ export class ProductService {
   async createTestDummy() {
     const titles = ['노트북', '스마트폰', '세탁기', '티셔츠', '화장품'];
     const urls = [
-      '794f5e0d-349b-43a0-9bf0-464283583fc7.jpeg',
-      'a9b95a74-554e-4c9a-8d99-5772885b16f6.jpg',
-      '095512f9-3bf2-4d3d-b02a-2b17d5658b8a.jpg',
-      '519e1c27-59c0-438c-95e9-83323daef8ba.png',
-      '5e18eb63-9b18-4482-9f2c-500a2a3387a3.jpg',
+      ['dummy_laptop1.jpg', 'dummy_laptop2.jpg', 'dummy_laptop3.jpg'],
+      ['dummy_phone1.jpg', 'dummy_phone2.jpg', 'dummy_phone3.jpg'],
+      ['dummy_laundry1.jpg', 'dummy_laundry2.jpg', 'dummy_laundry3.jpg'],
+      [
+        'dummy_tshirts1.jpg',
+        'dummy_tshirts2.jpg',
+        'dummy_tshirts3.jpg',
+        'dummy_tshirts4.jpg',
+      ],
+      ['dummy_cosmetic1.jpg', 'dummy_cosmetic2.jpg'],
     ];
     for (let i = 0; i < 10000; ++i) {
       // create product
@@ -268,15 +276,19 @@ export class ProductService {
         },
       });
       //create image
-
-      const image = {
-        url: urls[i % 5],
-        order: 0,
-        main: true,
-        productId: res.id,
-      };
-      await this.prisma.productImage.create({
-        data: image,
+      const imagesData = [];
+      // indexing after existing files
+      for (let cur = 0; cur < urls[i % 5].length; ++cur) {
+        const image = {
+          url: urls[i % 5][cur],
+          order: cur,
+          main: cur === 0 ? true : false,
+          productId: res.id,
+        };
+        imagesData.push(image);
+      }
+      await this.prisma.productImage.createMany({
+        data: imagesData,
       });
     }
     return { message: 'success' };
@@ -284,7 +296,14 @@ export class ProductService {
   }
 
   async dummyStatus() {
-    for (let i = 1; i <= 20000; i += 7) {
+    const first = await this.prisma.product.findFirst({
+      select: {
+        id: true,
+      },
+    });
+    const count = await this.prisma.product.count();
+    console.log(first.id, count);
+    for (let i = first.id; i <= count + first.id; i += 7) {
       try {
         await this.prisma.product.update({
           where: {

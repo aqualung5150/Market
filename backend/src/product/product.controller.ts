@@ -35,17 +35,10 @@ import {
   DeleteParamDto,
 } from './dto/product.dto';
 import * as fs from 'fs';
+import { ProductImagePipe } from 'src/product-image/product-image.pipe';
 
 const storage = {
-  storage: multer.diskStorage({
-    destination: './uploads/productImages',
-    filename: (req, file, cb) => {
-      const origin = path.parse(file.originalname);
-      const filename: string = v4();
-      const extension: string = origin.ext;
-      cb(null, `${filename}${extension}`);
-    },
-  }),
+  storage: multer.memoryStorage(),
   limits: {
     fileSize: 5 * 1024 * 1024,
   },
@@ -58,6 +51,29 @@ const storage = {
     }
   },
 };
+
+// const storage = {
+//   storage: multer.diskStorage({
+//     destination: './uploads/productImages',
+//     filename: (req, file, cb) => {
+//       const origin = path.parse(file.originalname);
+//       const filename: string = v4();
+//       const extension: string = origin.ext;
+//       cb(null, `${filename}${extension}`);
+//     },
+//   }),
+//   limits: {
+//     fileSize: 5 * 1024 * 1024,
+//   },
+//   fileFilter: (req, file, cb) => {
+//     if (file.mimetype.match(/image\/(png|jpeg|gif)/)) {
+//       cb(null, true);
+//     } else {
+//       req.fileValidationError = `unsupported mime type: ${file.mimetype}`;
+//       cb(null, false);
+//     }
+//   },
+// };
 
 @Controller('product')
 export class ProductController {
@@ -78,7 +94,7 @@ export class ProductController {
   @Post('add')
   async postProduct(
     @Req() req: Request,
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles(ProductImagePipe) files: string[],
     @Body() data: CreateProductDto,
   ) {
     // file validation
@@ -93,8 +109,10 @@ export class ProductController {
     try {
       return await this.productService.createProduct(req.user.id, data, files);
     } catch (err) {
-      for (const file of files)
-        fs.unlink(`uploads/productImages/${file.filename}`, () => {});
+      for (const file of files) {
+        fs.unlink(`uploads/productImages/thumb/${file}`, () => {});
+        fs.unlink(`uploads/productImages/main/${file}`, () => {});
+      }
 
       throw new HttpException('failed to create', 409);
     }
@@ -106,7 +124,7 @@ export class ProductController {
   async updateProduct(
     @Req() req: Request,
     @Param() param: ModifyParamDto,
-    @UploadedFiles() files: Express.Multer.File[],
+    @UploadedFiles(ProductImagePipe) files: string[],
     @Body() data: UpdateProductDto,
   ) {
     const productId = param.id;
@@ -128,8 +146,10 @@ export class ProductController {
       return await this.productService.updateProduct(productId, data, files);
     } catch (err) {
       this.logger.error(err);
-      for (const file of files)
-        fs.unlink(`uploads/productImages/${file.filename}`, () => {});
+      for (const file of files) {
+        fs.unlink(`uploads/productImages/thumb/${file}`, () => {});
+        fs.unlink(`uploads/productImages/main/${file}`, () => {});
+      }
 
       throw new HttpException('failed to update', 409);
     }
@@ -159,9 +179,13 @@ export class ProductController {
   }
 
   @Get('productImage/:imageName')
-  getProductImage(@Param('imageName') imageName): StreamableFile {
+  getProductImage(
+    @Param('imageName') imageName,
+    @Query('impolicy') impolicy,
+  ): StreamableFile {
     const file = fs.createReadStream(
-      path.join('./uploads/productImages/' + imageName),
+      // path.join('./uploads/productImages/' + imageName),
+      `./uploads/productImages/${impolicy}/${imageName}`,
     );
 
     return new StreamableFile(file);
