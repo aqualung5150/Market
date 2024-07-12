@@ -10,7 +10,7 @@ import { setToggle } from "layouts/menuSlice";
 import { logout } from "features/user/userSlice";
 import SearchBar from "./SearchBar";
 import categoryData from "features/product/data/category.json";
-import { setOpenChat } from "features/chat/chatSlice";
+import { setNoti, setOpenChat } from "features/chat/chatSlice";
 
 const NavMobile = ({ toggle }: any) => {
   console.log("NavMobile");
@@ -100,15 +100,21 @@ const NavMobile = ({ toggle }: any) => {
             </ul>
           </div>
           <div
-            className="flex w-fit items-center gap-1 text-xl font-semibold"
+            className="flex w-fit items-center gap-2 text-xl font-semibold"
             onClick={() => {
               dispatch(setToggle(false));
               dispatch(setOpenChat(true));
+              dispatch(setNoti(false));
             }}
           >
-            {noti && <p className="mr-1 h-4 w-4 rounded-full bg-red-500" />}
             <span>채팅하기</span>
-            <SendIcon className="h-7 w-7 stroke-sky-300" />
+            {noti ? (
+              <span className="relative mr-1 h-3 w-3 rounded-full bg-red-500">
+                <span className="absolute h-full w-full animate-ping rounded-full bg-red-500" />
+              </span>
+            ) : (
+              <SendIcon className="h-7 w-7 stroke-sky-300" />
+            )}
           </div>
         </>
       )}

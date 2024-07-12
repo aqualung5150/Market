@@ -29,7 +29,11 @@ const ChatIcon = () => {
     >
       <img className="h-[70px] p-3" src={icon} />
       {noti && (
-        <p className="fixed bottom-28 right-16 h-6 w-6 rounded-full border-2 border-white border-opacity-100 bg-red-500" />
+        <div>
+          <p className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500">
+            <p className="h-full w-full animate-ping rounded-full bg-red-500" />
+          </p>
+        </div>
       )}
     </div>
   );

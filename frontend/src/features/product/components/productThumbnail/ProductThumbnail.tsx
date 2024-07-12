@@ -8,7 +8,7 @@ const ProductThumbnail = ({ product }: { product: ProductData }) => {
   return (
     <Link
       to={`/product/${product.id}`}
-      className="flex aspect-[3/5] w-full cursor-pointer flex-col rounded-lg border bg-white shadow-md lg:aspect-[2/3]"
+      className="flex aspect-[3/5] w-full cursor-pointer flex-col rounded-lg bg-white shadow lg:aspect-[2/3]"
     >
       <div className="relative aspect-square w-full rounded-t-lg">
         <img

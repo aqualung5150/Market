@@ -23,7 +23,7 @@ const ProductPagination = ({
   }
 
   return (
-    <ul className="flex w-full items-center justify-center py-5 text-lg font-semibold">
+    <ul className="flex w-full items-center justify-center pb-5 text-lg font-semibold">
       {page !== 1 && (
         <>
           <li>
