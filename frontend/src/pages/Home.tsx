@@ -31,6 +31,18 @@ const Home = () => {
   return (
     <div className="flex h-full w-full flex-col items-center gap-5 lg:gap-10">
       <div className="relative flex h-[320px] w-full justify-center overflow-hidden pt-5 lg:h-[800px] lg:pt-10">
+        <div
+          className={`absolute top-[180px] flex flex-col items-center gap-5 text-lg font-semibold text-black lg:top-[480px] lg:gap-10 lg:text-3xl`}
+        >
+          <AngleDoubleUpIcon
+            className={`${selected >= 0 ? "opacity-0" : "opacity-100"} h-12 w-12 animate-bounce fill-black transition-opacity duration-200 lg:h-24 lg:w-24`}
+          />
+          <span
+            className={`${selected >= 0 ? "opacity-0" : "opacity-100"} transition-opacity duration-200`}
+          >
+            새로 등록된 상품들을 확인해보세요.
+          </span>
+        </div>
         {data?.products
           .slice(0, 5)
           .reverse()
@@ -51,18 +63,6 @@ const Home = () => {
               </Link>
             </div>
           ))}
-        <div
-          className={`absolute top-[180px] flex flex-col items-center gap-5 text-lg font-semibold text-black lg:top-[480px] lg:gap-10 lg:text-3xl`}
-        >
-          <AngleDoubleUpIcon
-            className={`${selected >= 0 ? "opacity-0" : "opacity-100"} h-12 w-12 animate-bounce fill-black transition-opacity duration-200 lg:h-24 lg:w-24`}
-          />
-          <span
-            className={`${selected >= 0 ? "opacity-0" : "opacity-100"} transition-opacity duration-200`}
-          >
-            새로 등록된 상품들을 확인해보세요.
-          </span>
-        </div>
       </div>
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-5 bg-gray-50 p-10 px-10">
         <span className="text-lg font-semibold lg:text-2xl">
