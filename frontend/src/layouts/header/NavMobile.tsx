@@ -130,7 +130,7 @@ const NavMobile = ({ toggle }: any) => {
       ) : (
         <span
           onClick={() => dispatch(logout("/"))}
-          className="w-fit text-sm text-gray-600"
+          className="w-fit text-sm text-gray-500"
         >
           로그아웃
         </span>
