@@ -25,47 +25,46 @@ const Home = () => {
     if (!data) return;
     setTimeout(() => {
       setSpread(true);
-    }, 800);
+    }, 500);
   }, [data]);
 
   return (
     <div className="flex h-full w-full flex-col items-center gap-5 lg:gap-10">
-      {data && (
-        <div className="relative flex h-[320px] w-full justify-center overflow-hidden pt-5 lg:h-[800px] lg:pt-10">
-          {data.products
-            .slice(0, 5)
-            .reverse()
-            .map((e, idx) => (
-              <div
-                key={idx}
-                onClick={() => setSelected(idx)}
-                className={`${spread ? (selected !== idx ? `${translate[idx]} shadow` : "translate-y-40 shadow lg:translate-y-96") : "shadow-sm"} absolute h-28 w-28 rounded-xl bg-gray-100 p-2 duration-500 lg:h-80 lg:w-80 lg:p-5`}
+      <div className="relative flex h-[320px] w-full justify-center overflow-hidden pt-5 lg:h-[800px] lg:pt-10">
+        {data?.products
+          .slice(0, 5)
+          .reverse()
+          .map((e, idx) => (
+            <div
+              key={idx}
+              onClick={() => setSelected(idx)}
+              className={`${spread ? (selected !== idx ? `${translate[idx]} shadow` : "translate-y-40 shadow lg:translate-y-96") : "shadow-sm"} absolute h-28 w-28 cursor-pointer rounded-xl bg-gray-100 p-2 duration-700 lg:h-80 lg:w-80 lg:p-5`}
+            >
+              <Link
+                to={`/product/${e.id}`}
+                className={`${selected !== idx && "pointer-events-none"}`}
               >
-                <Link
-                  to={`/product/${e.id}`}
-                  className={`${selected !== idx && "pointer-events-none"}`}
-                >
-                  <img
-                    className="aspect-square rounded-xl object-cover"
-                    src={`${process.env.REACT_APP_API_URL}/product/productImage/${e.images[0].url}?impolicy=main`}
-                  />
-                </Link>
-              </div>
-            ))}
-          {selected < 0 && (
-            <div className="absolute top-[180px] flex flex-col items-center gap-5 text-lg font-semibold text-black lg:top-[480px] lg:gap-10 lg:text-3xl">
-              <AngleDoubleUpIcon className="h-12 w-12 animate-bounce fill-black lg:h-24 lg:w-24" />
-              <span>새로 등록된 상품들을 확인해보세요.</span>
+                <img
+                  className="aspect-square rounded-xl object-cover"
+                  src={`${process.env.REACT_APP_API_URL}/product/productImage/${e.images[0].url}?impolicy=main`}
+                />
+              </Link>
             </div>
-          )}
-        </div>
-      )}
+          ))}
+        {selected < 0 && (
+          <div className="absolute top-[180px] flex flex-col items-center gap-5 text-lg font-semibold text-black lg:top-[480px] lg:gap-10 lg:text-3xl">
+            <AngleDoubleUpIcon className="h-12 w-12 animate-bounce fill-black lg:h-24 lg:w-24" />
+            <span>새로 등록된 상품들을 확인해보세요.</span>
+          </div>
+        )}
+      </div>
+
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-5 bg-gray-50 p-10 px-10">
-        <span className="text-md font-semibold lg:text-xl">
+        <span className="text-lg font-semibold lg:text-2xl">
           더 많은 상품을 구경해보세요.
         </span>
         <Link to="/search?page=1">
-          <button className="h-14 w-28 rounded bg-green-500 text-white">
+          <button className="h-14 w-28 rounded bg-green-500 font-semibold text-white">
             보러가기
           </button>
         </Link>

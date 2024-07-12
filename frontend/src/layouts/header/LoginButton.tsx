@@ -15,7 +15,7 @@ const LoginButton = () => {
         <Mybutton />
       ) : (
         <LinkLogin
-          className="flex h-10 w-[100px] flex-col items-center justify-center rounded bg-green-500 text-base font-semibold text-white"
+          className="flex h-10 w-[100px] flex-col items-center justify-center rounded border-2 border-green-500 text-base font-bold text-green-500"
           to={pathname}
         >
           로그인

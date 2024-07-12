@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/store";
 import { setOpenLogin } from "features/auth/loginSlice";
 import { setNoti, setOpenChat } from "../chatSlice";
+import { ReactComponent as ChatSvg } from "assets/chat.svg";
 
 const ChatIcon = () => {
   const { pathname } = useLocation();
@@ -25,9 +26,9 @@ const ChatIcon = () => {
   return (
     <div
       onClick={handleClick}
-      className="fixed bottom-[5%] right-[5%] hidden cursor-pointer rounded-full bg-blue-300 shadow-lg hover:bg-blue-400 lg:block"
+      className="fixed bottom-[5%] right-[5%] hidden h-16 w-16 cursor-pointer rounded-full bg-green-500 shadow-md hover:bg-green-400 lg:block"
     >
-      <img className="h-[70px] p-3" src={icon} />
+      <ChatSvg className="h-16 w-16 stroke-white p-3" />
       {noti && (
         <div>
           <p className="absolute right-0 top-0 flex h-5 w-5 items-center justify-center rounded-full bg-red-500">

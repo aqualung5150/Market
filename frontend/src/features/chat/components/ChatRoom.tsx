@@ -23,12 +23,13 @@ const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
               src={`${process.env.REACT_APP_API_URL}/users/profileImage/${user.image}`}
             />
             <span className="font-bold">{user.nickname}</span>
+            <span className="text-gray-500">#{user.id}</span>
           </div>
         ))}
       </div>
       <div
         style={{ overflowAnchor: "none" }}
-        className="sticky flex flex-1 flex-col-reverse gap-2 overflow-auto bg-stone-200 px-3 py-2"
+        className="sticky flex flex-1 flex-col-reverse gap-2 overflow-auto bg-stone-200 px-3 py-2 shadow-inner"
       >
         {messagesData.map((messageData: SocketMessageData) => (
           <Message key={messageData.id} {...messageData} />

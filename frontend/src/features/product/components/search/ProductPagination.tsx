@@ -23,7 +23,7 @@ const ProductPagination = ({
   }
 
   return (
-    <ul className="flex w-full items-center justify-center pb-5 text-lg font-semibold">
+    <ul className="flex h-14 w-full items-center justify-center gap-1 pb-5 text-lg font-semibold">
       {page !== 1 && (
         <>
           <li>
@@ -33,7 +33,7 @@ const ProductPagination = ({
                 `page=${left === 1 ? 1 : left - interval}`,
               )}
             >
-              <AngleDoubleLeft className="h-8 w-8" />
+              <AngleDoubleLeft className="h-8 w-8 hover:rounded-md hover:bg-gray-100" />
             </Link>
           </li>
           <li>
@@ -43,7 +43,7 @@ const ProductPagination = ({
                 `page=${page === 1 ? page : page - 1}`,
               )}
             >
-              <AngleLeft className="h-8 w-8" />
+              <AngleLeft className="h-8 w-8 hover:rounded-md hover:bg-gray-100" />
             </Link>
           </li>
         </>
@@ -52,7 +52,7 @@ const ProductPagination = ({
       {pageNumbers.map((e) => (
         <li
           key={e}
-          className={`h-8 w-fit min-w-8 ${page === e && "rounded-md bg-green-500 text-white"}`}
+          className={`h-8 w-fit min-w-8 rounded-md ${page === e ? "bg-green-500 text-white" : "hover:bg-gray-100"}`}
         >
           <Link
             className="flex h-full w-full items-center justify-center p-1"
@@ -71,7 +71,7 @@ const ProductPagination = ({
                 `page=${page === lastPage ? page : page + 1}`,
               )}
             >
-              <AngleRight className="h-8 w-8" />
+              <AngleRight className="h-8 w-8 hover:rounded-md hover:bg-gray-100" />
             </Link>
           </li>
           <li>
@@ -81,7 +81,7 @@ const ProductPagination = ({
                 `page=${right + 1 > lastPage ? Math.min(lastPage, right) : right + 1}`,
               )}
             >
-              <AngleDoubleRight className="h-8 w-8" />
+              <AngleDoubleRight className="h-8 w-8 hover:rounded-md hover:bg-gray-100" />
             </Link>
           </li>
         </>

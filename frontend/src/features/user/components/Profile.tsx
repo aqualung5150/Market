@@ -17,25 +17,27 @@ const Profile = () => {
       {loading && <Loading text="로딩중..." />}
       {error && <NotFound title="존재하지 않는 회원입니다." />}
       {data && (
-        <div className="flex w-full flex-col items-center p-10">
-          <div className="aspect-square h-96 w-96 p-9">
+        <div className="flex w-full flex-col items-center gap-10 p-10">
+          <div className="aspect-square h-96 w-96">
             <img
-              loading="lazy"
               className="aspect-square h-full max-w-full rounded-full object-cover"
               src={`${process.env.REACT_APP_API_URL}/users/profileImage/${data.image}`}
             />
           </div>
-          <div className="flex w-full flex-col rounded-2xl bg-white p-5 md:w-2/3">
-            <span className="text-3xl font-bold">{data.nickname}</span>
-            <p className="mt-2 flex-1">
+          <div className="flex w-full flex-col gap-5 rounded-2xl bg-white md:w-2/3">
+            <div className="flex items-end gap-2">
+              <span className="text-3xl font-bold">{data.nickname}</span>
+              <span className="text-xl text-gray-500">#{data.id}</span>
+            </div>
+            <p className="flex-1">
               {
                 "이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n이것은 소개글입니다. 이것은 소개글입니다. 이것은 소개글입니다.\n"
               }
             </p>
             {me.id !== data.id && (
-              <div className="mt-2 self-end">
+              <div className="self-end">
                 <SendButton
-                  className="h-10 w-20 rounded bg-green-300"
+                  className="h-10 w-20 rounded bg-green-500 font-bold text-white"
                   text="채팅하기"
                   sendTo={data.id}
                 />

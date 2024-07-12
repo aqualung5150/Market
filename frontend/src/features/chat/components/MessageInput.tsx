@@ -3,7 +3,7 @@ import { MessageInputProps } from "types/chat";
 
 const MessageInput = ({ value, onChange }: MessageInputProps) => {
   return (
-    <div className="flex w-full items-center gap-3 border-t bg-gray-100 p-3">
+    <div className="flex w-full items-center gap-3 bg-gray-100 p-3">
       <input
         className="w-full rounded border p-2"
         placeholder="메세지를 입력하세요."

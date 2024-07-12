@@ -6,6 +6,7 @@ import ProductThumbnail from "../features/product/components/productThumbnail/Pr
 import { useEffect, useState } from "react";
 import ProductPagination from "features/product/components/search/ProductPagination";
 import NotFound from "components/NotFound";
+import ProductsHeader from "features/product/components/search/ProductsHeader";
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,12 +37,18 @@ const Products = () => {
       {data ? (
         data.products && data.products.length > 0 ? (
           <div className="flex h-full w-full flex-col items-center">
+            <div>
+              <ProductsHeader
+                title={title}
+                categoryId={categoryId ? parseInt(categoryId) : undefined}
+              />
+            </div>
             <div className="grid h-full w-full auto-rows-min grid-cols-2 gap-5 p-5 sm:grid-cols-3 xl:grid-cols-4 2xl:w-2/3">
               {data.products.map((product: ProductData) => (
                 <ProductThumbnail key={product.id} product={product} />
               ))}
             </div>
-            <div className="lg:hidden">
+            <div className="h-14 w-full lg:hidden">
               <ProductPagination
                 totalSize={data.totalSize}
                 displaySize={data.products.length}
@@ -49,7 +56,7 @@ const Products = () => {
                 page={page ? parseInt(page) : 1}
               />
             </div>
-            <div className="hidden lg:block">
+            <div className="hidden h-14 w-full lg:block">
               <ProductPagination
                 totalSize={data.totalSize}
                 displaySize={data.products.length}

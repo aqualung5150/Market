@@ -22,7 +22,7 @@ const EmptyRoom = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex h-full w-full flex-col">
-      <div className="flex flex-1 flex-col items-center justify-center gap-8 text-2xl font-bold">
+      <div className="flex flex-1 flex-col items-center justify-center gap-8 text-2xl font-bold shadow-inner">
         <CommunityIcon className="h-32 w-32" />
         <div>판매자와 대화를 시작하세요.</div>
       </div>
