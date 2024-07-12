@@ -51,14 +51,19 @@ const Home = () => {
               </Link>
             </div>
           ))}
-        {selected < 0 && (
-          <div className="absolute top-[180px] flex flex-col items-center gap-5 text-lg font-semibold text-black lg:top-[480px] lg:gap-10 lg:text-3xl">
-            <AngleDoubleUpIcon className="h-12 w-12 animate-bounce fill-black lg:h-24 lg:w-24" />
-            <span>새로 등록된 상품들을 확인해보세요.</span>
-          </div>
-        )}
+        <div
+          className={`absolute top-[180px] flex flex-col items-center gap-5 text-lg font-semibold text-black lg:top-[480px] lg:gap-10 lg:text-3xl`}
+        >
+          <AngleDoubleUpIcon
+            className={`${selected >= 0 ? "opacity-0" : "opacity-100"} h-12 w-12 animate-bounce fill-black transition-opacity duration-200 lg:h-24 lg:w-24`}
+          />
+          <span
+            className={`${selected >= 0 ? "opacity-0" : "opacity-100"} transition-opacity duration-200`}
+          >
+            새로 등록된 상품들을 확인해보세요.
+          </span>
+        </div>
       </div>
-
       <div className="flex w-full flex-1 flex-col items-center justify-center gap-5 bg-gray-50 p-10 px-10">
         <span className="text-lg font-semibold lg:text-2xl">
           더 많은 상품을 구경해보세요.
