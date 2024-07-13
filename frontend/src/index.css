@@ -15,3 +15,40 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  h1 {
+    @apply text-2xl;
+  }
+  h2 {
+    @apply text-xl;
+  }
+  h3 {
+    @apply text-lg;
+  }
+}
+
+@layer components {
+  ul.breadcrumb li {
+    @apply inline;
+  }
+  ul.breadcrumb li + li:before {
+    @apply px-2 content-['>'];
+  }
+
+  .filter-table {
+    @apply border-y-2 border-black;
+  }
+  .filter-table tr td {
+    @apply p-6;
+  }
+  .filter-table td {
+    @apply border-t;
+  }
+  .filter-table td:first-child {
+    @apply w-44 bg-gray-100;
+  }
+  /* .filter-table ul.breadcrumb li + li:before {
+    @apply p-2 content-['>'];
+  } */
+}

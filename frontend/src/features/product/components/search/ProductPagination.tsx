@@ -23,7 +23,7 @@ const ProductPagination = ({
   }
 
   return (
-    <ul className="flex h-14 w-full items-center justify-center gap-1 pb-5 text-lg font-semibold">
+    <ul className="flex h-14 w-full items-center justify-center gap-1 text-lg font-semibold">
       {page !== 1 && (
         <>
           <li>

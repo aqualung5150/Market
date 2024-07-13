@@ -18,13 +18,19 @@ const ProductTitle = ({ paramId, data }: ProductTitleProps) => {
   return (
     <div className="flex h-full flex-col justify-between gap-10">
       <div className="flex-1 space-y-3 text-lg text-gray-700">
-        <span>{"카테고리 > "}</span>
-        <Link
-          className="cursor-pointer"
-          to={`/search?category=${category?.id}&page=1`}
-        >
-          {category?.label}
-        </Link>
+        {/* <span>{"카테고리 > "}</span> */}
+        <ul className="breadcrumb">
+          <li>카테고리</li>
+          <li>
+            <Link
+              className="cursor-pointer"
+              to={`/search?category=${category?.id}&page=1`}
+            >
+              {category?.label}
+            </Link>
+          </li>
+        </ul>
+
         <div className="flex w-[100px] flex-col items-center rounded-lg bg-gray-200 shadow-sm">
           <span className="w-full border-b border-gray-300 p-2 text-center text-xs text-gray-500">
             제품상태
