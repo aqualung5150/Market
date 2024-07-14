@@ -21,6 +21,7 @@ export class SearchQueryDto {
   @IsNumber()
   page: number;
 
+  // TODO - 옵션 검증
   @IsOptional()
   // @IsArray()
   // @ArrayNotEmpty()
@@ -28,4 +29,12 @@ export class SearchQueryDto {
   @Type(() => String)
   @IsString({ each: true })
   filter: string[] | string;
+
+  @IsOptional()
+  @IsNumber()
+  minPrice: number;
+
+  @IsOptional()
+  @IsNumber()
+  maxPrice: number;
 }
