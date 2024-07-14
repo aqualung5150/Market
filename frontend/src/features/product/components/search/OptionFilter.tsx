@@ -1,24 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { ReactComponent as CheckIcon } from "assets/check.svg";
 import { useSearchParams } from "react-router-dom";
+import { SearchParamsProps } from "types/product";
 
-const OptionFilter = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+const OptionFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
+  const filters: string[] = searchParams.getAll("filter");
 
-  const [soldFilter, setSoldFilter] = useState(false);
-  const [newFilter, setNewFilter] = useState(false);
-  const [usedFilter, setUsedFilter] = useState(false);
-
-  useEffect(() => {
-    const filters: string[] = searchParams.getAll("filter");
-    setSoldFilter(filters.find((e) => e === "sold") ? true : false);
-    setUsedFilter(filters.find((e) => e === "used") ? true : false);
-    setNewFilter(filters.find((e) => e === "new") ? true : false);
-  }, [searchParams]);
-
-  const setFilter = (value: string, set: boolean) => {
-    if (set) searchParams.append("filter", value);
-    else searchParams.delete("filter", value);
+  const navFilter = (option: string) => {
+    if (filters.find((e) => e === option))
+      searchParams.delete("filter", option);
+    else searchParams.append("filter", option);
     setSearchParams(searchParams);
   };
 
@@ -26,28 +17,28 @@ const OptionFilter = () => {
     <div className="flex gap-4">
       <div
         className="flex cursor-pointer gap-1 font-semibold"
-        onClick={() => setFilter("sold", !soldFilter)}
+        onClick={() => navFilter("sold")}
       >
         <CheckIcon
-          className={`h-6 w-6 ${soldFilter ? "stroke-gray-300" : "stroke-green-500"}`}
+          className={`h-6 w-6 ${filters.find((e) => e === "sold") ? "stroke-gray-300" : "stroke-green-500"}`}
         />
         <span>판매완료</span>
       </div>
       <div
         className="flex cursor-pointer gap-1 font-semibold"
-        onClick={() => setFilter("used", !usedFilter)}
+        onClick={() => navFilter("used")}
       >
         <CheckIcon
-          className={`h-6 w-6 ${usedFilter ? "stroke-gray-300" : "stroke-green-500"}`}
+          className={`h-6 w-6 ${filters.find((e) => e === "used") ? "stroke-gray-300" : "stroke-green-500"}`}
         />
         <span>중고상품</span>
       </div>
       <div
         className="flex cursor-pointer gap-1 font-semibold"
-        onClick={() => setFilter("new", !newFilter)}
+        onClick={() => navFilter("new")}
       >
         <CheckIcon
-          className={`h-6 w-6 ${newFilter ? "stroke-gray-300" : "stroke-green-500"}`}
+          className={`h-6 w-6 ${filters.find((e) => e === "new") ? "stroke-gray-300" : "stroke-green-500"}`}
         />
         <span>새상품</span>
       </div>

@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { ReactComponent as PlusIcon } from "assets/plus.svg";
 import { ReactComponent as MinusIcon } from "assets/minus.svg";
-import categoryData from "../../data/category.json";
-import { Link } from "react-router-dom";
 import PriceFilter from "./PriceFilter";
 import OptionFilter from "./OptionFilter";
+import { ProductFilterProps } from "types/product";
+import BreadcrumbFilter from "./BreadcrumbFilter";
+import CategoryFilter from "./CategoryFilter";
 
 // const 카테고리형식 = {
 //   "139": {
@@ -21,9 +22,12 @@ import OptionFilter from "./OptionFilter";
 //   },
 // };
 
-const ProductsFilter = ({ categoryId, keyword }: any) => {
+const ProductsFilter = ({
+  keyword,
+  searchParams,
+  setSearchParams,
+}: ProductFilterProps) => {
   const [spread, setSpread] = useState(false);
-  const category = Object.values(categoryData).find((e) => e.id === categoryId);
 
   return (
     <div className="w-full">
@@ -53,42 +57,25 @@ const ProductsFilter = ({ categoryId, keyword }: any) => {
               )}
             </td>
             <td>
-              <ul className="breadcrumb">
-                <li>
-                  <Link to={`/search?page=1`}>전체</Link>
-                </li>
-                {category && (
-                  <li>
-                    <Link to={`/search?category=${categoryId}&page=1`}>
-                      {category.label}
-                    </Link>
-                  </li>
-                )}
-              </ul>
+              <BreadcrumbFilter {...{ searchParams, setSearchParams }} />
             </td>
           </tr>
           <tr className={`${!spread && "hidden"}`}>
             <td className="border-none" />
             <td>
-              <div className="grid grid-cols-3 gap-3 text-sm">
-                {Object.values(categoryData).map((e) => (
-                  <Link key={e.id} to={`/search?category=${e.id}&page=1`}>
-                    {e.label}
-                  </Link>
-                ))}
-              </div>
+              <CategoryFilter {...{ searchParams, setSearchParams }} />
             </td>
           </tr>
           <tr>
             <td>가격</td>
             <td>
-              <PriceFilter />
+              <PriceFilter {...{ searchParams, setSearchParams }} />
             </td>
           </tr>
           <tr>
             <td>옵션</td>
             <td>
-              <OptionFilter />
+              <OptionFilter {...{ searchParams, setSearchParams }} />
             </td>
           </tr>
         </tbody>

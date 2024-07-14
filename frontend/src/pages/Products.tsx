@@ -19,8 +19,10 @@ const Products = () => {
   }, []);
 
   const reqParams = new URLSearchParams();
+  // searching keyword
   const keyword = useParams().keyword;
   if (keyword) reqParams.append("keyword", keyword);
+  // append queries
   searchParams.forEach((value, key) => {
     reqParams.append(key, value);
   });
@@ -28,21 +30,22 @@ const Products = () => {
 
   const { data, error, loading } = useAxios<ProductsData>(url);
 
+  if (error)
+    return (
+      <NotFound
+        title="상품 정보를 불러오지 못했습니다."
+        description="다시 시도해주세요."
+      />
+    );
+
   return (
-    <>
-      {loading && <Loading text="로딩중..." />}
-      {error && (
-        <NotFound
-          title="상품 정보를 불러오지 못했습니다."
-          description="다시 시도해주세요."
-        />
-      )}
-      {data && (
-        <div className="flex h-full w-full flex-col items-center gap-5 p-5 2xl:w-2/3">
-          <ProductsFilter
-            categoryId={categoryId ? parseInt(categoryId) : undefined}
-            keyword={keyword}
-          />
+    <div className="flex h-full w-full flex-col items-center gap-5 p-5 2xl:w-2/3">
+      <ProductsFilter
+        keyword={keyword}
+        {...{ searchParams, setSearchParams }}
+      />
+      {data ? (
+        <>
           {data.products && data.products.length > 0 ? (
             <>
               <div className="grid h-full w-full auto-rows-min grid-cols-2 gap-5 sm:grid-cols-3 xl:grid-cols-4">
@@ -55,7 +58,8 @@ const Products = () => {
                   totalSize={data.totalSize}
                   displaySize={data.products.length}
                   interval={5}
-                  page={page ? parseInt(page) : 1}
+                  {...{ searchParams, setSearchParams }}
+                  // page={page ? parseInt(page) : 1}
                 />
               </div>
               <div className="hidden w-full lg:block">
@@ -63,7 +67,8 @@ const Products = () => {
                   totalSize={data.totalSize}
                   displaySize={data.products.length}
                   interval={10}
-                  page={page ? parseInt(page) : 1}
+                  {...{ searchParams, setSearchParams }}
+                  // page={page ? parseInt(page) : 1}
                 />
               </div>
             </>
@@ -73,9 +78,11 @@ const Products = () => {
               description="다른 상품을 검색해주세요."
             />
           )}
-        </div>
+        </>
+      ) : (
+        <Loading text="로딩중..." />
       )}
-    </>
+    </div>
   );
 };
 

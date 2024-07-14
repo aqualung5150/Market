@@ -12,10 +12,11 @@ const Profile = () => {
   const me = useSelector((state: RootState) => state.user);
   const { data, error, loading } = useAxios<PublicUser>(`users/${paramId}`);
 
+  if (error) return <NotFound title="존재하지 않는 회원입니다." />;
+  if (loading) return <Loading text="로딩중..." />;
+
   return (
     <>
-      {loading && <Loading text="로딩중..." />}
-      {error && <NotFound title="존재하지 않는 회원입니다." />}
       {data && (
         <div className="flex w-full flex-col items-center gap-10 p-10">
           <div className="aspect-square h-96 w-96">

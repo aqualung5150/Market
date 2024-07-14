@@ -14,9 +14,7 @@ const useAxios = <T extends object>(url: string) => {
         setLoading(true);
         const res = await axiosInstance.get(url);
         setData(res.data);
-        setError(null);
       } catch (err) {
-        setData(null);
         setError(err);
       } finally {
         setLoading(false);

@@ -76,3 +76,12 @@ interface PaginationProps {
   interval: number;
   page: number;
 }
+
+interface SearchParamsProps {
+  searchParams: URLSearchParams;
+  setSearchParams: SetURLSearchParams;
+}
+
+interface ProductFilterProps extends SearchParamsProps {
+  keyword: string | undefined;
+}

@@ -1,16 +1,23 @@
 import useFormInput from "hooks/useFormInput";
-import { useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import React, { useCallback, useEffect } from "react";
+import { SearchParamsProps } from "types/product";
 
-const PriceFilter = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { inputProps: minPrice } = useFormInput("");
-  const { inputProps: maxPrice } = useFormInput("");
+const PriceFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
+  console.log("PriceFilter rerender");
+  const { inputProps: minPrice, setValue: setMinPrice } = useFormInput("");
+  const { inputProps: maxPrice, setValue: setMaxPrice } = useFormInput("");
 
   const isNumeric = useCallback(
     (string: string) => /^[+-]?\d+(\.\d+)?$/.test(string),
     [],
   );
+
+  useEffect(() => {
+    const minPriceParam = searchParams.get("minPrice");
+    const maxPriceParam = searchParams.get("maxPrice");
+    setMinPrice(minPriceParam ? minPriceParam : "");
+    setMaxPrice(maxPriceParam ? maxPriceParam : "");
+  }, [searchParams]);
 
   const handleClick = () => {
     if (!minPrice.value && !maxPrice.value) return;
@@ -43,4 +50,4 @@ const PriceFilter = () => {
   );
 };
 
-export default PriceFilter;
+export default React.memo(PriceFilter);
