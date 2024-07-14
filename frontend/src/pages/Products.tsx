@@ -3,26 +3,28 @@ import useAxios from "../hooks/useAxios";
 import Loading from "../components/Loading";
 import { ProductData, ProductsData } from "../types/product";
 import ProductThumbnail from "../features/product/components/productThumbnail/ProductThumbnail";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import ProductPagination from "features/product/components/search/ProductPagination";
 import NotFound from "components/NotFound";
-import ProductsHeader from "features/product/components/search/ProductsHeader";
 import ProductsFilter from "features/product/components/search/ProductsFilter";
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categoryId = searchParams.get("category");
   const page = searchParams.get("page");
-  if (!page) {
-    searchParams.append("page", "1");
+  useEffect(() => {
+    if (page) return;
+    searchParams.set("page", "1");
     setSearchParams(searchParams);
-  }
-  const title = useParams().title;
-  const params = new URLSearchParams();
-  if (title) params.append("keyword", title);
-  if (categoryId) params.append("categoryId", categoryId);
-  params.append("page", page ? page : "1");
-  const url = `search?${params.toString()}`;
+  }, []);
+
+  const reqParams = new URLSearchParams();
+  const keyword = useParams().keyword;
+  if (keyword) reqParams.append("keyword", keyword);
+  searchParams.forEach((value, key) => {
+    reqParams.append(key, value);
+  });
+  const url = "search?" + reqParams.toString();
 
   const { data, error, loading } = useAxios<ProductsData>(url);
 
@@ -35,12 +37,11 @@ const Products = () => {
           description="다시 시도해주세요."
         />
       )}
-
       {data && (
         <div className="flex h-full w-full flex-col items-center gap-5 p-5 2xl:w-2/3">
           <ProductsFilter
             categoryId={categoryId ? parseInt(categoryId) : undefined}
-            title={title}
+            keyword={keyword}
           />
           {data.products && data.products.length > 0 ? (
             <>

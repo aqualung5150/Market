@@ -1,4 +1,12 @@
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  ArrayMinSize,
+  ArrayNotEmpty,
+  IsArray,
+  IsNumber,
+  IsOptional,
+  IsString,
+} from 'class-validator';
 
 export class SearchQueryDto {
   @IsOptional()
@@ -7,9 +15,17 @@ export class SearchQueryDto {
 
   @IsOptional()
   @IsNumber()
-  categoryId: number;
+  category: number;
 
   @IsOptional()
   @IsNumber()
   page: number;
+
+  @IsOptional()
+  // @IsArray()
+  // @ArrayNotEmpty()
+  // @ArrayMinSize(1)
+  @Type(() => String)
+  @IsString({ each: true })
+  filter: string[] | string;
 }

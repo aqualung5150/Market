@@ -1,8 +1,10 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { ReactComponent as PlusIcon } from "assets/plus.svg";
 import { ReactComponent as MinusIcon } from "assets/minus.svg";
 import categoryData from "../../data/category.json";
 import { Link } from "react-router-dom";
+import PriceFilter from "./PriceFilter";
+import OptionFilter from "./OptionFilter";
 
 // const 카테고리형식 = {
 //   "139": {
@@ -19,16 +21,16 @@ import { Link } from "react-router-dom";
 //   },
 // };
 
-const ProductsFilter = ({ categoryId, title }: any) => {
+const ProductsFilter = ({ categoryId, keyword }: any) => {
   const [spread, setSpread] = useState(false);
   const category = Object.values(categoryData).find((e) => e.id === categoryId);
 
   return (
     <div className="w-full">
       <div className="flex w-full gap-2 pb-2 pl-2">
-        {title && (
+        {keyword && (
           <h1>
-            <strong>"{title}"</strong>
+            <strong>"{keyword}"</strong>
           </h1>
         )}
         <h1>검색결과</h1>
@@ -52,10 +54,12 @@ const ProductsFilter = ({ categoryId, title }: any) => {
             </td>
             <td>
               <ul className="breadcrumb">
-                <li>전체</li>
+                <li>
+                  <Link to={`/search?page=1`}>전체</Link>
+                </li>
                 {category && (
                   <li>
-                    <Link to={`/search?category=${categoryId}`}>
+                    <Link to={`/search?category=${categoryId}&page=1`}>
                       {category.label}
                     </Link>
                   </li>
@@ -68,7 +72,7 @@ const ProductsFilter = ({ categoryId, title }: any) => {
             <td>
               <div className="grid grid-cols-3 gap-3 text-sm">
                 {Object.values(categoryData).map((e) => (
-                  <Link key={e.id} to={`/search?category=${e.id}`}>
+                  <Link key={e.id} to={`/search?category=${e.id}&page=1`}>
                     {e.label}
                   </Link>
                 ))}
@@ -77,11 +81,15 @@ const ProductsFilter = ({ categoryId, title }: any) => {
           </tr>
           <tr>
             <td>가격</td>
-            <td>test</td>
+            <td>
+              <PriceFilter />
+            </td>
           </tr>
           <tr>
             <td>옵션</td>
-            <td>test</td>
+            <td>
+              <OptionFilter />
+            </td>
           </tr>
         </tbody>
       </table>
@@ -89,4 +97,4 @@ const ProductsFilter = ({ categoryId, title }: any) => {
   );
 };
 
-export default ProductsFilter;
+export default React.memo(ProductsFilter);
