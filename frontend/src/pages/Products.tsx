@@ -4,19 +4,19 @@ import Loading from "../components/Loading";
 import { ProductData, ProductsData } from "../types/product";
 import ProductThumbnail from "../features/product/components/productThumbnail/ProductThumbnail";
 import { useEffect } from "react";
-import ProductPagination from "features/product/components/search/ProductPagination";
 import NotFound from "components/NotFound";
 import ProductsFilter from "features/product/components/search/ProductsFilter";
+import ProductsPagination from "features/product/components/search/ProductsPagination";
+import ProductsFilterMobile from "features/product/components/search/ProductsFilterMobile";
 
 const Products = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const categoryId = searchParams.get("category");
   const page = searchParams.get("page");
   useEffect(() => {
     if (page) return;
     searchParams.set("page", "1");
     setSearchParams(searchParams);
-  }, []);
+  }, [page]);
 
   const reqParams = new URLSearchParams();
   // searching keyword
@@ -40,6 +40,7 @@ const Products = () => {
 
   return (
     <div className="flex h-full w-full flex-col items-center gap-5 p-5 2xl:w-2/3">
+      <ProductsFilterMobile {...{ searchParams, setSearchParams }} />
       <ProductsFilter
         keyword={keyword}
         {...{ searchParams, setSearchParams }}
@@ -54,21 +55,19 @@ const Products = () => {
                 ))}
               </div>
               <div className="w-full lg:hidden">
-                <ProductPagination
+                <ProductsPagination
                   totalSize={data.totalSize}
                   displaySize={data.products.length}
                   interval={5}
                   {...{ searchParams, setSearchParams }}
-                  // page={page ? parseInt(page) : 1}
                 />
               </div>
               <div className="hidden w-full lg:block">
-                <ProductPagination
+                <ProductsPagination
                   totalSize={data.totalSize}
                   displaySize={data.products.length}
                   interval={10}
                   {...{ searchParams, setSearchParams }}
-                  // page={page ? parseInt(page) : 1}
                 />
               </div>
             </>

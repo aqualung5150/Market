@@ -2,7 +2,10 @@ import useFormInput from "hooks/useFormInput";
 import React, { useCallback, useEffect } from "react";
 import { SearchParamsProps } from "types/product";
 
-const PriceFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
+const PriceFilterMobile = ({
+  searchParams,
+  setSearchParams,
+}: SearchParamsProps) => {
   console.log("PriceFilter rerender");
   const { inputProps: minPrice, setValue: setMinPrice } = useFormInput("");
   const { inputProps: maxPrice, setValue: setMaxPrice } = useFormInput("");
@@ -21,31 +24,34 @@ const PriceFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
   }, [searchParams]);
 
   const handleClick = () => {
-    // if (!minPrice.value && !maxPrice.value) return;
+    //     if (!minPrice.value && !maxPrice.value) return;
     if (!isNumeric(minPrice.value) || !isNumeric(maxPrice.value)) return;
-    // if (minPrice.value || !isNumeric(minPrice.value)) return;
+    // if (!minPrice.value || !isNumeric(minPrice.value)) return;
     // if (maxPrice.value && !isNumeric(maxPrice.value)) return;
     searchParams.set("minPrice", minPrice.value ? minPrice.value : "0");
     if (maxPrice.value) searchParams.set("maxPrice", maxPrice.value);
+    else searchParams.delete("maxPrice");
     setSearchParams(searchParams);
   };
 
   return (
-    <div className="flex items-center gap-2">
-      <input
-        className="rounded border p-2 outline-none"
-        placeholder="최소 가격"
-        {...minPrice}
-      />
-      <span>~</span>
-      <input
-        className="rounded border p-2 outline-none"
-        placeholder="최대 가격"
-        {...maxPrice}
-      />
+    <div className="w-full">
+      <div className="flex items-center justify-between">
+        <input
+          className="w-36 rounded border p-2 outline-none"
+          placeholder="최소 가격"
+          {...minPrice}
+        />
+        <span>~</span>
+        <input
+          className="w-36 rounded border p-2 outline-none"
+          placeholder="최대 가격"
+          {...maxPrice}
+        />
+      </div>
       <button
         onClick={handleClick}
-        className="h-10 w-14 rounded bg-black text-white"
+        className="mt-2 h-10 w-full rounded bg-black text-white"
       >
         적용
       </button>
@@ -53,4 +59,4 @@ const PriceFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
   );
 };
 
-export default React.memo(PriceFilter);
+export default React.memo(PriceFilterMobile);

@@ -14,7 +14,7 @@ const OptionFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
   };
 
   return (
-    <div className="flex gap-4">
+    <div className="flex flex-col gap-4 lg:flex-row">
       <div
         className="flex cursor-pointer gap-1 font-semibold"
         onClick={() => navFilter("sold")}
@@ -42,7 +42,6 @@ const OptionFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
         />
         <span>새상품</span>
       </div>
-      {/* </p> */}
     </div>
   );
 };

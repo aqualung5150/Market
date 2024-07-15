@@ -6,6 +6,7 @@ import OptionFilter from "./OptionFilter";
 import { ProductFilterProps } from "types/product";
 import BreadcrumbFilter from "./BreadcrumbFilter";
 import CategoryFilter from "./CategoryFilter";
+import SelectedFilters from "./SelectedFilters";
 
 // const 카테고리형식 = {
 //   "139": {
@@ -30,7 +31,7 @@ const ProductsFilter = ({
   const [spread, setSpread] = useState(false);
 
   return (
-    <div className="w-full">
+    <div className="hidden w-full lg:block">
       <div className="flex w-full gap-2 pb-2 pl-2">
         {keyword && (
           <h1>
@@ -76,6 +77,12 @@ const ProductsFilter = ({
             <td>옵션</td>
             <td>
               <OptionFilter {...{ searchParams, setSearchParams }} />
+            </td>
+          </tr>
+          <tr>
+            <td>필터</td>
+            <td>
+              <SelectedFilters {...{ searchParams, setSearchParams }} />
             </td>
           </tr>
         </tbody>

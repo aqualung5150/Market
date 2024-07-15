@@ -70,16 +70,15 @@ interface SetStatusModalProps {
   setOpenSetStatus: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface PaginationProps {
-  totalSize: number;
-  displaySize: number;
-  interval: number;
-  page: number;
-}
-
 interface SearchParamsProps {
   searchParams: URLSearchParams;
   setSearchParams: SetURLSearchParams;
+}
+
+interface PaginationProps extends SearchParamsProps {
+  totalSize: number;
+  displaySize: number;
+  interval: number;
 }
 
 interface ProductFilterProps extends SearchParamsProps {
