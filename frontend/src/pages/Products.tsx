@@ -40,7 +40,10 @@ const Products = () => {
 
   return (
     <div className="flex h-full w-full flex-col items-center gap-5 p-5 2xl:w-2/3">
-      <ProductsFilterMobile {...{ searchParams, setSearchParams }} />
+      <ProductsFilterMobile
+        keyword={keyword}
+        {...{ searchParams, setSearchParams }}
+      />
       <ProductsFilter
         keyword={keyword}
         {...{ searchParams, setSearchParams }}
