@@ -24,12 +24,12 @@ const ProductsFilterMobile = ({
             <BreadcrumbFilter {...{ searchParams, setSearchParams }} />
             {openCategory ? (
               <AngleUpIcon
-                onClick={() => setOpenCategory(!openCategory)}
+                onClick={() => setOpenCategory(false)}
                 className="h-10 w-10"
               />
             ) : (
               <AngleDownIcon
-                onClick={() => setOpenCategory(!openCategory)}
+                onClick={() => setOpenCategory(true)}
                 className="h-10 w-10"
               />
             )}
@@ -43,12 +43,12 @@ const ProductsFilterMobile = ({
             <span>가격</span>
             {openPrice ? (
               <AngleUpIcon
-                onClick={() => setOpenPrice(!openPrice)}
+                onClick={() => setOpenPrice(false)}
                 className="h-10 w-10"
               />
             ) : (
               <AngleDownIcon
-                onClick={() => setOpenPrice(!openPrice)}
+                onClick={() => setOpenPrice(true)}
                 className="h-10 w-10"
               />
             )}
@@ -63,12 +63,12 @@ const ProductsFilterMobile = ({
             <span>옵션</span>
             {openOption ? (
               <AngleUpIcon
-                onClick={() => setOpenOption(!openOption)}
+                onClick={() => setOpenOption(false)}
                 className="h-10 w-10"
               />
             ) : (
               <AngleDownIcon
-                onClick={() => setOpenOption(!openOption)}
+                onClick={() => setOpenOption(true)}
                 className="h-10 w-10"
               />
             )}

@@ -1,5 +1,5 @@
-import { ReactComponent as SearchIcon } from "assets/search.svg";
 import { ReactComponent as AngleDownIcon } from "assets/angleDown.svg";
+import { ReactComponent as AngleUpIcon } from "assets/angleUp.svg";
 import { ReactComponent as SendIcon } from "assets/send.svg";
 import { Link, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,10 +44,17 @@ const NavMobile = ({ toggle }: any) => {
             >
               구매하기
             </Link>
-            <AngleDownIcon
-              onClick={() => setOpenCategory(!openCategory)}
-              className="h-7 w-7"
-            />
+            {openCategory ? (
+              <AngleUpIcon
+                onClick={() => setOpenCategory(false)}
+                className="h-7 w-7"
+              />
+            ) : (
+              <AngleDownIcon
+                onClick={() => setOpenCategory(true)}
+                className="h-7 w-7"
+              />
+            )}
           </li>
           {openCategory && (
             <ul>
@@ -83,10 +90,17 @@ const NavMobile = ({ toggle }: any) => {
                 >
                   마이페이지
                 </Link>
-                <AngleDownIcon
-                  onClick={() => setOpenMypage(!openMypage)}
-                  className="h-7 w-7"
-                />
+                {openMypage ? (
+                  <AngleUpIcon
+                    onClick={() => setOpenMypage(false)}
+                    className="h-7 w-7"
+                  />
+                ) : (
+                  <AngleDownIcon
+                    onClick={() => setOpenMypage(true)}
+                    className="h-7 w-7"
+                  />
+                )}
               </li>
               {openMypage && (
                 <ul>
