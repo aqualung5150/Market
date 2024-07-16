@@ -5,7 +5,15 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class SearchService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async getProducts({ keyword, categoryId, page = 1 }) {
+  async getProducts({
+    keyword,
+    categoryId,
+    page = 1,
+    minPrice,
+    maxPrice,
+    status,
+    condition,
+  }) {
     return await this.prisma.$transaction(async (tx) => {
       const totalSize = await tx.product.count({
         where: {
@@ -18,6 +26,12 @@ export class SearchService {
         where: {
           title: keyword ? { contains: keyword } : undefined,
           categoryId: categoryId ? categoryId : undefined,
+          price: {
+            gte: minPrice ? minPrice : undefined,
+            lte: maxPrice ? maxPrice : undefined,
+          },
+          status: status,
+          condition: condition,
         },
         orderBy: {
           createdAt: 'desc',

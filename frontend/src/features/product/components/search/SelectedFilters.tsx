@@ -1,24 +1,28 @@
 import { useEffect, useState } from "react";
-import { SearchParamsProps } from "types/product";
+import { SearchParamsProps, SelectedFilter } from "types/product";
 import { ReactComponent as CloseIcon } from "assets/close.svg";
 
 const SelectedFilters = ({
   searchParams,
   setSearchParams,
 }: SearchParamsProps) => {
-  const [selected, setSelected] = useState<any[]>([]);
+  const [selected, setSelected] = useState<SelectedFilter[]>([]);
 
-  const removeOption = (option: any) => {
-    if (option.name === "price") {
-      searchParams.delete("minPrice");
-      searchParams.delete("maxPrice");
-      setSelected((prev) => prev.filter((e) => e.name !== "price"));
-      setSearchParams(searchParams);
-    } else {
-      searchParams.append("filter", option.name);
-      setSelected((prev) => prev.filter((e) => e.name !== option.name));
-      setSearchParams(searchParams);
+  const removeOption = (option: SelectedFilter) => {
+    switch (option.name) {
+      case "price":
+        searchParams.delete("minPrice");
+        searchParams.delete("maxPrice");
+        break;
+      case "condition":
+        searchParams.delete("condition");
+        break;
+      case "status":
+        searchParams.append("status", "0");
+        break;
     }
+    setSelected((prev) => prev.filter((e) => e.name !== option.name));
+    setSearchParams(searchParams);
   };
 
   const resetOption = () => {
@@ -29,28 +33,16 @@ const SelectedFilters = ({
   };
 
   useEffect(() => {
-    const options: object[] = [];
-    const filters = searchParams.getAll("filter");
+    const options: SelectedFilter[] = [];
+    const status = searchParams.get("status");
+    const condition = searchParams.get("condition");
     const minPrice = searchParams.get("minPrice");
     const maxPrice = searchParams.get("maxPrice");
 
-    // const appendFilter = (filter: string) => {
-    //   searchParams.append("filter", filter);
-    //   setSearchParams(searchParams);
-    // };
-
-    // const deletePrice = () => {
-    //   searchParams.delete("minPrice");
-    //   searchParams.delete("maxPrice");
-    //   setSearchParams(searchParams);
-    // };
-
-    if (!filters.find((e) => e === "sold"))
-      options.push({ name: "sold", text: "판매완료 상품 포함" });
-    if (!filters.find((e) => e === "used"))
-      options.push({ name: "used", text: "중고상품 포함" });
-    if (!filters.find((e) => e === "new"))
-      options.push({ name: "new", text: "새상품 포함" });
+    if (!status && status !== "0")
+      options.push({ name: "status", text: "판매완료 상품 포함" });
+    if (condition && condition === "1")
+      options.push({ name: "condition", text: "새상품만 보기" });
 
     const minPriceWon =
       (minPrice ? parseInt(minPrice).toLocaleString() : "0") + "원";
@@ -60,7 +52,6 @@ const SelectedFilters = ({
     const price = `${minPriceWon} ~ ${maxPriceWon}`;
     if (minPrice || maxPrice) options.push({ name: "price", text: price });
 
-    // console.log(options);
     setSelected(options);
   }, [searchParams]);
 

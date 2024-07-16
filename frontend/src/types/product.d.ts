@@ -84,3 +84,8 @@ interface PaginationProps extends SearchParamsProps {
 interface ProductFilterProps extends SearchParamsProps {
   keyword: string | undefined;
 }
+
+interface SelectedFilter {
+  name: string;
+  text: string;
+}

@@ -1,12 +1,4 @@
-import { Type } from 'class-transformer';
-import {
-  ArrayMinSize,
-  ArrayNotEmpty,
-  IsArray,
-  IsNumber,
-  IsOptional,
-  IsString,
-} from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class SearchQueryDto {
   @IsOptional()
@@ -22,13 +14,14 @@ export class SearchQueryDto {
   page: number;
 
   // TODO - 옵션 검증
-  @IsOptional()
+  // @IsOptional()
   // @IsArray()
   // @ArrayNotEmpty()
   // @ArrayMinSize(1)
-  @Type(() => String)
-  @IsString({ each: true })
-  filter: string[] | string;
+  // @IsString({ each: true })
+  // @Type(() => String)
+  // @Transform(({ value }) => (typeof value === 'string' ? [value] : value))
+  // filter: string[];
 
   @IsOptional()
   @IsNumber()
@@ -37,4 +30,12 @@ export class SearchQueryDto {
   @IsOptional()
   @IsNumber()
   maxPrice: number;
+
+  @IsOptional()
+  @IsNumber()
+  status: number;
+
+  @IsOptional()
+  @IsNumber()
+  condition: number;
 }
