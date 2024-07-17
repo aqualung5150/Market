@@ -20,7 +20,6 @@ const AdminProducts = () => {
   const { inputProps: title, setValue: setTitle } = useFormInput();
   const { inputProps: id, setValue: setId } = useFormInput();
 
-  //TODO id로 검색
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -107,7 +106,7 @@ const AdminProducts = () => {
               <tr
                 className="cursor-pointer"
                 key={product.id}
-                onClick={() => navigate(`${product.id}`)}
+                onClick={() => navigate(`/product/${product.id}`)}
               >
                 <th
                   className="cursor-default"

@@ -2,6 +2,10 @@ import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class SearchQueryDto {
   @IsOptional()
+  @IsNumber()
+  id: number; // for admin
+
+  @IsOptional()
   @IsString()
   keyword: string;
 

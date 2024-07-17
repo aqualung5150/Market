@@ -10,6 +10,7 @@ export class SearchController {
   @Get()
   async getProducts(@Query() query: SearchQueryDto) {
     return await this.searchService.getProducts({
+      id: query.id,
       keyword: query.keyword,
       categoryId: query.category,
       page: query.page,
@@ -19,4 +20,9 @@ export class SearchController {
       condition: query.condition,
     });
   }
+
+  // @Get('list')
+  // async getProductsList() {
+
+  // }
 }

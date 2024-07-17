@@ -58,8 +58,8 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getAll(@Query() query: UserQueryDto) {
-    return await this.userService.getAll({
+  async getMany(@Query() query: UserQueryDto) {
+    return await this.userService.getMany({
       id: query.id,
       email: query.email,
       nickname: query.nickname,

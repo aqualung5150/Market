@@ -113,7 +113,7 @@ export class UserService {
     }
   }
 
-  async getAll({ id, email, nickname }) {
+  async getMany({ id, email, nickname }) {
     return await this.prisma.$transaction(async (tx) => {
       const totalSize = await tx.user.count({
         where: {
