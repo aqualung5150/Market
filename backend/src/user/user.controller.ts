@@ -55,11 +55,16 @@ export class UserController {
   private readonly logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
 
-  @UseGuards(JwtGuard)
-  @Get('me')
-  async getMe(@Req() req: Request) {
-    return await this.userService.getUserById(req.user.id);
+  @Get()
+  async getAll() {
+    return await this.userService.getAll();
   }
+
+  // @UseGuards(JwtGuard)
+  // @Get('me')
+  // async getMe(@Req() req: Request) {
+  //   return await this.userService.getUserById(req.user.id);
+  // }
 
   @Get(':id')
   async getOneUser(@Param('id', ParseIntPipe) id: number) {

@@ -48,7 +48,22 @@ code {
   .filter-table td:first-child {
     @apply w-44 bg-gray-100;
   }
-  /* .filter-table ul.breadcrumb li + li:before {
-    @apply p-2 content-['>'];
+
+  .data-grid {
+    @apply border-l border-t bg-white;
+  }
+
+  /* .data-grid tr td th {
+    @apply;
   } */
+  .data-grid tr {
+    @apply border-b border-r p-2;
+  }
+  .data-grid td {
+    @apply border-b border-r p-2;
+  }
+
+  .data-grid th {
+    @apply border-b border-r bg-gray-100 p-2;
+  }
 }

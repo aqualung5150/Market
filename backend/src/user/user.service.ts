@@ -112,6 +112,17 @@ export class UserService {
     }
   }
 
+  async getAll() {
+    return await this.prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        nickname: true,
+        image: true,
+      },
+    });
+  }
+
   // async getUserByEmail(email: string) {
   //   try {
   //     const user = await this.prisma.user.findUniqueOrThrow({
