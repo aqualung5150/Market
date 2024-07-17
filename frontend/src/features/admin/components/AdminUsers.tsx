@@ -1,9 +1,11 @@
 import NotFound from "components/NotFound";
+import { axiosInstance } from "data/axiosInstance";
+import ProductsPagination from "features/product/components/search/ProductsPagination";
 import useAxios from "hooks/useAxios";
 import useFormInput from "hooks/useFormInput";
 import { useCallback, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { PublicUser } from "types/user";
+import { PublicUser, UsersData } from "types/user";
 
 const AdminUsers = () => {
   const navigate = useNavigate();
@@ -12,19 +14,34 @@ const AdminUsers = () => {
   //fetch
   const url =
     "users" + (searchParams.size ? "?" + searchParams.toString() : "");
-  const { data, error, loading } = useAxios<PublicUser[]>(url);
+  const { data, error, loading } = useAxios<UsersData>(url);
   const [selected, setSelected] = useState<number[]>([]);
 
-  const { inputProps: email } = useFormInput();
-  const { inputProps: id } = useFormInput();
-  const { inputProps: nickname } = useFormInput();
+  const { inputProps: email, setValue: setEmail } = useFormInput();
+  const { inputProps: id, setValue: setId } = useFormInput();
+  const { inputProps: nickname, setValue: setNickname } = useFormInput();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     if (email.value) searchParams.set("email", email.value);
+    else searchParams.delete("email");
     if (id.value) searchParams.set("id", id.value);
+    else searchParams.delete("id");
     if (nickname.value) searchParams.set("nickname", nickname.value);
+    else searchParams.delete("nickname");
+
+    setSearchParams(searchParams);
+  };
+
+  const reset = () => {
+    searchParams.delete("email");
+    searchParams.delete("id");
+    searchParams.delete("nickname");
+
+    setEmail("");
+    setId("");
+    setNickname("");
 
     setSearchParams(searchParams);
   };
@@ -39,8 +56,19 @@ const AdminUsers = () => {
 
   const checkAll = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!data) return;
-    if (e.target.checked) setSelected(data?.map((user) => user.id));
+    if (e.target.checked) setSelected(data?.users.map((user) => user.id));
     else setSelected([]);
+  };
+
+  const deleteUsers = async () => {
+    // TODO - Soft Delete
+    // try {
+    //   await axiosInstance.post("users/deleteMany", {
+    //     users: selected,
+    //   });
+    // } catch (err) {
+    //   alert(err);
+    // }
   };
 
   console.log(selected);
@@ -67,48 +95,75 @@ const AdminUsers = () => {
             {...nickname}
           />
         </div>
-        <button className="h-[50px] w-[200px] rounded bg-black font-semibold text-white">
-          검색
-        </button>
+        <div className="flex gap-5">
+          <button className="h-[50px] w-[180px] rounded bg-black font-semibold text-white">
+            검색
+          </button>
+          <button
+            onClick={() => reset()}
+            type="button"
+            className="h-[50px] w-[180px] rounded border font-semibold"
+          >
+            초기화
+          </button>
+        </div>
       </form>
-      {data && (
-        <table className="data-grid w-full">
-          <tbody>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={selected.length === data.length}
-                  onChange={(e) => checkAll(e)}
-                />
-              </th>
-              {Object.keys(data[0]).map((e, idx) => (
-                <th key={idx}>{e}</th>
-              ))}
-            </tr>
-            {data.map((user) => (
-              <tr
-                className="cursor-pointer"
-                key={user.id}
-                onClick={() => navigate(`${user.id}`)}
-              >
-                <th
-                  className="cursor-default"
-                  onClick={(e) => e.stopPropagation()}
-                >
+      <div className="flex items-center justify-end gap-10">
+        <button
+          onClick={deleteUsers}
+          className="h-14 w-32 rounded bg-red-500 font-semibold text-white"
+        >
+          삭제
+        </button>
+      </div>
+      {data && data.users.length > 0 ? (
+        <>
+          <table className="data-grid w-full">
+            <tbody>
+              <tr>
+                <th>
                   <input
                     type="checkbox"
-                    checked={selected.includes(user.id)}
-                    onChange={(e) => checkSelected(e, user.id)}
+                    checked={selected.length === data.users.length}
+                    onChange={(e) => checkAll(e)}
                   />
                 </th>
-                {Object.values(user).map((e, idx) => (
-                  <td key={idx}>{e}</td>
+                {Object.keys(data.users[0]).map((e, idx) => (
+                  <th key={idx}>{e}</th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+              {data.users.map((user) => (
+                <tr
+                  className="cursor-pointer"
+                  key={user.id}
+                  onClick={() => navigate(`${user.id}`)}
+                >
+                  <th
+                    className="cursor-default"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selected.includes(user.id)}
+                      onChange={(e) => checkSelected(e, user.id)}
+                    />
+                  </th>
+                  {Object.values(user).map((e, idx) => (
+                    <td key={idx}>{e}</td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <ProductsPagination
+            totalSize={data?.totalSize}
+            displaySize={10}
+            interval={10}
+            {...{ searchParams, setSearchParams }}
+          />
+        </>
+      ) : (
+        <NotFound title="유저 정보를 찾을 수 없습니다." />
       )}
     </div>
   );

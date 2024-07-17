@@ -2,6 +2,7 @@ import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as fs from 'fs';
+import { contains } from 'class-validator';
 
 @Injectable()
 export class UserService {
@@ -112,16 +113,42 @@ export class UserService {
     }
   }
 
-  async getAll() {
-    return await this.prisma.user.findMany({
-      select: {
-        id: true,
-        email: true,
-        nickname: true,
-        image: true,
-      },
+  async getAll({ id, email, nickname }) {
+    return await this.prisma.$transaction(async (tx) => {
+      const totalSize = await tx.user.count({
+        where: {
+          id: id,
+          email: { contains: email },
+          nickname: { contains: nickname },
+        },
+      });
+
+      const users = await tx.user.findMany({
+        where: {
+          id: id,
+          email: { contains: email },
+          nickname: { contains: nickname },
+        },
+        select: {
+          id: true,
+          email: true,
+          nickname: true,
+        },
+      });
+
+      return { totalSize, users };
     });
   }
+
+  // async deleteMany(data) {
+  //   return await this.prisma.user.deleteMany({
+  //     where: {
+  //       id: {
+  //         in: data.users,
+  //       },
+  //     },
+  //   });
+  // }
 
   // async getUserByEmail(email: string) {
   //   try {

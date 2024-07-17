@@ -9,6 +9,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Query,
   Req,
   StreamableFile,
   UploadedFile,
@@ -25,6 +26,7 @@ import { Prisma } from '@prisma/client';
 import { v4 } from 'uuid';
 import * as fs from 'fs';
 import { UserImagePipe } from 'src/user-image/user-image.pipe';
+import { UserQueryDto } from './dto/userQuery.dto';
 
 const storage = {
   // storage: multer.diskStorage({
@@ -56,8 +58,12 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  async getAll() {
-    return await this.userService.getAll();
+  async getAll(@Query() query: UserQueryDto) {
+    return await this.userService.getAll({
+      id: query.id,
+      email: query.email,
+      nickname: query.nickname,
+    });
   }
 
   // @UseGuards(JwtGuard)
@@ -70,6 +76,13 @@ export class UserController {
   async getOneUser(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.getUserById(id);
   }
+
+  // Soft Delete가 더 좋아보임
+  // @Post('deleteMany')
+  // async deleteMany(@Body() data) {
+  //   console.log(data);
+  //   return await this.userService.deleteMany(data);
+  // }
 
   @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('image', storage))

@@ -36,3 +36,8 @@ interface PublicUser {
   nickname: string;
   image: string;
 }
+
+interface UsersData {
+  totalSize: number;
+  users: PublicUser[];
+}
