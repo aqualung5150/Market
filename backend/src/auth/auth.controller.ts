@@ -34,10 +34,12 @@ export class AuthController {
     const accessToken = await this.authService.jwtAccessToken({
       id: user.id,
       email: user.email,
+      role: user.id === 1 ? 'admin' : 'user',
     });
     const refreshToken = await this.authService.jwtRefreshToken({
       id: user.id,
       email: user.email,
+      role: user.id === 1 ? 'admin' : 'user',
     });
     res.cookie('access_token', accessToken, {
       httpOnly: true,
@@ -98,11 +100,13 @@ export class AuthController {
     const accessToken = await this.authService.jwtAccessToken({
       id: user.id,
       email: user.email,
+      role: 'user',
     });
 
     const refreshToken = await this.authService.jwtRefreshToken({
       id: user.id,
       email: user.email,
+      role: 'user',
     });
 
     // const hashedRefreshToken =
@@ -155,6 +159,7 @@ export class AuthController {
     const accessToken = await this.authService.jwtAccessToken({
       id: req.user.id,
       email: req.user.email,
+      role: req.user.role,
     });
 
     // res.setHeader('Authorization', 'Bearer ' + accessToken);

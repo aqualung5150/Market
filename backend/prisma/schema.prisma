@@ -23,6 +23,7 @@ model User {
   password     String?
   image        String         @default("default.png")
   createdAt    DateTime       @default(now())
+  isDeleted    Boolean      @default(false)
   messages Message[]
   products Product[]
   channels ChannelsOnUsers[]

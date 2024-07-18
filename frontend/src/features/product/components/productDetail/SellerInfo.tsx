@@ -1,6 +1,7 @@
 import SendButton from "features/chat/components/SendButton";
+import { SellerInfoProps } from "types/product";
 
-const SellerInfo = ({ seller }: any) => {
+const SellerInfo = ({ seller }: SellerInfoProps) => {
   return (
     <div className="min-h-[200px] w-full flex-1">
       <div className="border-b pb-2 text-3xl">판매자</div>

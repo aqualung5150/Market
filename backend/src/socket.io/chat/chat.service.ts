@@ -18,6 +18,7 @@ export class ChatService {
                   id: true,
                   nickname: true,
                   image: true,
+                  isDeleted: true,
                 },
               },
             },
@@ -57,6 +58,7 @@ export class ChatService {
               id: true,
               nickname: true,
               image: true,
+              isDeleted: true,
             },
           },
         },
@@ -94,6 +96,7 @@ export class ChatService {
               id: true,
               nickname: true,
               image: true,
+              isDeleted: true,
             },
           },
         },
@@ -159,6 +162,7 @@ export class ChatService {
                 id: true,
                 nickname: true,
                 image: true,
+                isDeleted: true,
               },
             },
           },
@@ -204,6 +208,7 @@ export class ChatService {
                 id: true,
                 nickname: true,
                 image: true,
+                isDeleted: true,
               },
             },
           },
@@ -223,6 +228,7 @@ export class ChatService {
         id: true,
         nickname: true,
         image: true,
+        isDeleted: true,
       },
       where: {
         channels: {
@@ -269,6 +275,7 @@ export class ChatService {
               id: true,
               nickname: true,
               image: true,
+              isDeleted: true,
             },
           },
         },
@@ -303,6 +310,7 @@ export class ChatService {
           id: true,
           nickname: true,
           image: true,
+          isDeleted: true,
         },
         where: {
           channels: {

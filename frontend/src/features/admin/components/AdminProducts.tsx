@@ -1,7 +1,7 @@
 import NotFound from "components/NotFound";
 import useAxios from "hooks/useAxios";
 import { useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { ProductData, ProductsData } from "types/product";
 import categoryData from "../../product/data/category.json";
 import useFormInput from "hooks/useFormInput";
@@ -10,6 +10,7 @@ import { axiosInstance } from "data/axiosInstance";
 
 const AdminProducts = () => {
   const navigate = useNavigate();
+  const { pathname, search } = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const categories = Object.values(categoryData);
 
@@ -63,10 +64,13 @@ const AdminProducts = () => {
   };
 
   const deleteProducts = async () => {
+    if (selected.length < 1) return;
+
     try {
       await axiosInstance.post("product/deleteMany", {
         products: selected,
       });
+      navigate(pathname + search);
     } catch (err) {
       alert(err);
     }

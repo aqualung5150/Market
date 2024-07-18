@@ -1,6 +1,7 @@
 interface JwtClaim {
   id: number;
   email: string;
+  role: string;
 }
 
 interface JwtPayload extends JwtClaim {

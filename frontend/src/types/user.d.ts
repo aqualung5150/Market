@@ -35,6 +35,7 @@ interface PublicUser {
   id: number;
   nickname: string;
   image: string;
+  isDeleted: boolean;
 }
 
 interface UsersData {

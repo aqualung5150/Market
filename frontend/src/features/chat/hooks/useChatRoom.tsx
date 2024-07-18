@@ -11,6 +11,7 @@ const useChatRoom = (selectedChannelId: number) => {
   const userId = useSelector((state: RootState) => state.user.id);
   const [messagesData, setMessagesData] = useState<SocketMessageData[]>([]);
   const [roomUsers, setRoomUsers] = useState<PublicUser[]>([]);
+  const [activated, setActivated] = useState(true);
   const [cursor, setCursor] = useState(0);
   // const [value, setValue] = useState("");
   const { inputProps: messageInput, setValue: setMessageInput } =
@@ -69,6 +70,7 @@ const useChatRoom = (selectedChannelId: number) => {
     };
 
     const getRoomUsers = (users: PublicUser[]) => {
+      if (users.find((user) => user.isDeleted)) setActivated(false);
       setRoomUsers(users.filter((user) => user.id !== userId));
     };
 
@@ -123,7 +125,14 @@ const useChatRoom = (selectedChannelId: number) => {
     };
   }, [cursor]);
 
-  return { roomUsers, messagesData, loader, messageInput, handleSubmit };
+  return {
+    activated,
+    roomUsers,
+    messagesData,
+    loader,
+    messageInput,
+    handleSubmit,
+  };
 };
 
 export default useChatRoom;

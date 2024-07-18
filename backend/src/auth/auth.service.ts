@@ -46,6 +46,7 @@ export class AuthService {
     return await this.jwtService.signAsync({
       id: payload.id,
       email: payload.email,
+      role: payload.role,
     });
   }
 
@@ -54,6 +55,7 @@ export class AuthService {
       {
         id: payload.id,
         email: payload.email,
+        role: payload.role,
       },
       {
         secret: process.env.JWT_REFRESH_TOKEN_SECRET,

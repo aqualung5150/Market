@@ -4,7 +4,7 @@ import ProductsPagination from "features/product/components/search/ProductsPagin
 import useAxios from "hooks/useAxios";
 import useFormInput from "hooks/useFormInput";
 import { useCallback, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { PublicUser, UsersData } from "types/user";
 
 const AdminUsers = () => {
@@ -14,6 +14,7 @@ const AdminUsers = () => {
   //fetch
   const url =
     "users" + (searchParams.size ? "?" + searchParams.toString() : "");
+  const { pathname, search } = useLocation();
   const { data, error, loading } = useAxios<UsersData>(url);
   const [selected, setSelected] = useState<number[]>([]);
 
@@ -61,14 +62,16 @@ const AdminUsers = () => {
   };
 
   const deleteUsers = async () => {
-    // TODO - Soft Delete
-    // try {
-    //   await axiosInstance.post("users/deleteMany", {
-    //     users: selected,
-    //   });
-    // } catch (err) {
-    //   alert(err);
-    // }
+    if (selected.length < 1) return;
+
+    try {
+      await axiosInstance.post("users/deleteMany", {
+        users: selected,
+      });
+      navigate(pathname + search);
+    } catch (err) {
+      alert(err);
+    }
   };
 
   console.log(selected);
@@ -148,9 +151,10 @@ const AdminUsers = () => {
                       onChange={(e) => checkSelected(e, user.id)}
                     />
                   </th>
-                  {Object.values(user).map((e, idx) => (
-                    <td key={idx}>{e}</td>
-                  ))}
+                  {Object.values(user).map((e, idx) => {
+                    if (typeof e === "boolean") return <td>{e.toString()}</td>;
+                    return <td key={idx}>{e}</td>;
+                  })}
                 </tr>
               ))}
             </tbody>

@@ -27,6 +27,8 @@ import { v4 } from 'uuid';
 import * as fs from 'fs';
 import { UserImagePipe } from 'src/user-image/user-image.pipe';
 import { UserQueryDto } from './dto/userQuery.dto';
+import { Roles } from 'src/roles/roles.decorator';
+import { RolesGuard } from 'src/roles/roles.guard';
 
 const storage = {
   // storage: multer.diskStorage({
@@ -83,6 +85,13 @@ export class UserController {
   //   console.log(data);
   //   return await this.userService.deleteMany(data);
   // }
+
+  @Roles('admin')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Post('deleteMany')
+  async deleteUsers(@Body() data) {
+    return await this.userService.deleteUsers(data);
+  }
 
   @UseGuards(JwtGuard)
   @UseInterceptors(FileInterceptor('image', storage))

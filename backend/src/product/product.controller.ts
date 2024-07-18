@@ -36,6 +36,8 @@ import {
 } from './dto/product.dto';
 import * as fs from 'fs';
 import { ProductImagePipe } from 'src/product-image/product-image.pipe';
+import { Roles } from 'src/roles/roles.decorator';
+import { RolesGuard } from 'src/roles/roles.guard';
 
 const storage = {
   storage: multer.memoryStorage(),
@@ -191,7 +193,8 @@ export class ProductController {
     return new StreamableFile(file);
   }
 
-  // TODO role guard
+  @Roles('admin')
+  @UseGuards(JwtGuard, RolesGuard)
   @Post('deleteMany')
   async deleteProducts(@Body() data) {
     console.log(data);

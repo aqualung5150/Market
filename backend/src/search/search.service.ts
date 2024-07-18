@@ -29,6 +29,11 @@ export class SearchService {
           },
           status: status,
           condition: condition,
+          NOT: {
+            user: {
+              isDeleted: true,
+            },
+          },
         },
       });
 
@@ -44,6 +49,11 @@ export class SearchService {
           },
           status: status,
           condition: condition,
+          NOT: {
+            user: {
+              isDeleted: true,
+            },
+          },
         },
         orderBy: {
           createdAt: 'desc',
@@ -61,6 +71,7 @@ export class SearchService {
               id: true,
               nickname: true,
               image: true,
+              isDeleted: true,
             },
           },
         },
@@ -98,6 +109,7 @@ export class SearchService {
               id: true,
               nickname: true,
               image: true,
+              isDeleted: true,
             },
           },
         },

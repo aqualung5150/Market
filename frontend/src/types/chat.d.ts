@@ -7,6 +7,7 @@ interface ChannelsProps {
 }
 
 interface MessageInputProps {
+  disabled?: boolean;
   value: string;
   onChange: React.ChangeEventHandler<HTMLInputElement>;
 }

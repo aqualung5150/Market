@@ -2,10 +2,17 @@ import { ChatRoomProps, SocketMessageData } from "types/chat";
 import useChatRoom from "../hooks/useChatRoom";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
+import { useState } from "react";
 
 const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
-  const { roomUsers, messagesData, loader, messageInput, handleSubmit } =
-    useChatRoom(selectedChannelId);
+  const {
+    activated,
+    roomUsers,
+    messagesData,
+    loader,
+    messageInput,
+    handleSubmit,
+  } = useChatRoom(selectedChannelId);
 
   return (
     <form
@@ -36,7 +43,7 @@ const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
         ))}
         <div ref={loader} />
       </div>
-      <MessageInput {...messageInput} />
+      <MessageInput disabled={!activated} {...messageInput} />
     </form>
   );
 };

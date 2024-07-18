@@ -25,6 +25,7 @@ export class UserService {
         email: true,
         nickname: true,
         image: true,
+        isDeleted: true,
       },
     });
   }
@@ -86,8 +87,10 @@ export class UserService {
           id: id,
         },
         select: {
+          id: true,
           nickname: true,
           image: true,
+          isDeleted: true,
         },
       });
 
@@ -105,6 +108,7 @@ export class UserService {
           email: true,
           image: true,
           createdAt: true,
+          isDeleted: true,
         },
       });
       return res;
@@ -133,6 +137,7 @@ export class UserService {
           id: true,
           email: true,
           nickname: true,
+          isDeleted: true,
         },
       });
 
@@ -140,15 +145,36 @@ export class UserService {
     });
   }
 
-  // async deleteMany(data) {
-  //   return await this.prisma.user.deleteMany({
-  //     where: {
-  //       id: {
-  //         in: data.users,
-  //       },
-  //     },
-  //   });
-  // }
+  async deleteUsers(data) {
+    // return await this.prisma.user.updateMany({
+    //   where: {
+    //     id: {
+    //       in: data.users,
+    //     },
+    //   },
+    //   data: {
+    //     nickname: {append}
+    //     // isDeleted: true,
+    //   }
+    // });
+
+    return this.prisma.$transaction(async (tx) => {
+      for (const userId of data.users) {
+        const prevNickname = await tx.user.findUnique({
+          where: { id: userId },
+          select: { nickname: true },
+        });
+
+        await tx.user.update({
+          where: { id: userId },
+          data: {
+            nickname: prevNickname.nickname + '(탈퇴)',
+            isDeleted: true,
+          },
+        });
+      }
+    });
+  }
 
   // async getUserByEmail(email: string) {
   //   try {

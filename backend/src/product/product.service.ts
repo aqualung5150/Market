@@ -57,6 +57,11 @@ export class ProductService {
       const res = await this.prisma.product.findUniqueOrThrow({
         where: {
           id: id,
+          NOT: {
+            user: {
+              isDeleted: true,
+            },
+          },
         },
         include: {
           images: {
@@ -69,6 +74,7 @@ export class ProductService {
               id: true,
               nickname: true,
               image: true,
+              isDeleted: true,
             },
           },
         },

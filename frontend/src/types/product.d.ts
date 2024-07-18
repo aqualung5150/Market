@@ -89,3 +89,7 @@ interface SelectedFilter {
   name: string;
   text: string;
 }
+
+interface SellerInfoProps {
+  seller: PublicUser;
+}

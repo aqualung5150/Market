@@ -8,6 +8,7 @@ interface SocketUserData {
   id: number;
   nickname: string;
   image: string;
+  isDeleted: boolean;
 }
 
 interface SocketMessageData {
