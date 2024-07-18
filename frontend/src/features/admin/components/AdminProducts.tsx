@@ -5,6 +5,8 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { ProductData, ProductsData } from "types/product";
 import categoryData from "../../product/data/category.json";
 import useFormInput from "hooks/useFormInput";
+import ProductsPagination from "features/product/components/search/ProductsPagination";
+import { axiosInstance } from "data/axiosInstance";
 
 const AdminProducts = () => {
   const navigate = useNavigate();
@@ -19,6 +21,7 @@ const AdminProducts = () => {
 
   const { inputProps: title, setValue: setTitle } = useFormInput();
   const { inputProps: id, setValue: setId } = useFormInput();
+  const { inputProps: userId, setValue: setUserId } = useFormInput();
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -27,6 +30,8 @@ const AdminProducts = () => {
     else searchParams.delete("keyword");
     if (id.value) searchParams.set("id", id.value);
     else searchParams.delete("id");
+    if (userId.value) searchParams.set("userId", userId.value);
+    else searchParams.delete("userId");
 
     setSearchParams(searchParams);
   };
@@ -52,8 +57,19 @@ const AdminProducts = () => {
 
     setTitle("");
     setId("");
+    setUserId("");
 
     setSearchParams(searchParams);
+  };
+
+  const deleteProducts = async () => {
+    try {
+      await axiosInstance.post("product/deleteMany", {
+        products: selected,
+      });
+    } catch (err) {
+      alert(err);
+    }
   };
 
   console.log(selected);
@@ -71,6 +87,10 @@ const AdminProducts = () => {
           <label htmlFor="id">ID</label>
           <input className="w-72 rounded border p-2" id="id" {...id} />
         </div>
+        <div className="flex w-96 items-center justify-between">
+          <label htmlFor="userId">User ID</label>
+          <input className="w-72 rounded border p-2" id="userId" {...userId} />
+        </div>
         <div className="flex gap-5">
           <button className="h-[50px] w-[180px] rounded bg-black font-semibold text-white">
             검색
@@ -84,52 +104,70 @@ const AdminProducts = () => {
           </button>
         </div>
       </form>
-      {data && (
-        <table className="data-grid w-full">
-          <tbody>
-            <tr>
-              <th>
-                <input
-                  type="checkbox"
-                  checked={selected.length === data.products.length}
-                  onChange={(e) => checkAll(e)}
-                />
-              </th>
-              <th>ID</th>
-              <th>Title</th>
-              <th>Price</th>
-              <th>Category</th>
-              <th>Status</th>
-              <th>User ID</th>
-            </tr>
-            {data.products.map((product) => (
-              <tr
-                className="cursor-pointer"
-                key={product.id}
-                onClick={() => navigate(`/product/${product.id}`)}
-              >
-                <th
-                  className="cursor-default"
-                  onClick={(e) => e.stopPropagation()}
-                >
+      <div className="flex items-center justify-end gap-10">
+        <button
+          onClick={deleteProducts}
+          className="h-14 w-32 rounded bg-red-500 font-semibold text-white"
+        >
+          삭제
+        </button>
+      </div>
+      {data && data.products.length > 0 ? (
+        <>
+          <table className="data-grid w-full">
+            <tbody>
+              <tr>
+                <th>
                   <input
                     type="checkbox"
-                    checked={selected.includes(product.id)}
-                    onChange={(e) => checkSelected(e, product.id)}
+                    checked={selected.length === data.products.length}
+                    onChange={(e) => checkAll(e)}
                   />
                 </th>
-                <td>{product.id}</td>
-                <td>{product.title}</td>
-                <td>{product.price}</td>
-                <td>
-                  {categories.find((e) => e.id === product.categoryId)?.label}
-                </td>
-                <td>{product.status === 1 ? "판매완료" : "판매중"}</td>
-                <td>{product.userId}</td>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Price</th>
+                <th>Category</th>
+                <th>Status</th>
+                <th>User ID</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+              {data.products.map((product) => (
+                <tr
+                  className="cursor-pointer"
+                  key={product.id}
+                  onClick={() => navigate(`/product/${product.id}`)}
+                >
+                  <th
+                    className="cursor-default"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selected.includes(product.id)}
+                      onChange={(e) => checkSelected(e, product.id)}
+                    />
+                  </th>
+                  <td>{product.id}</td>
+                  <td>{product.title}</td>
+                  <td>{product.price}</td>
+                  <td>
+                    {categories.find((e) => e.id === product.categoryId)?.label}
+                  </td>
+                  <td>{product.status === 1 ? "판매완료" : "판매중"}</td>
+                  <td>{product.userId}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          <ProductsPagination
+            totalSize={data?.totalSize}
+            displaySize={10}
+            interval={10}
+            {...{ searchParams, setSearchParams }}
+          />
+        </>
+      ) : (
+        <NotFound title="상품 정보를 찾을 수 없습니다." />
       )}
     </div>
   );

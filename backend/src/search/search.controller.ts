@@ -11,6 +11,7 @@ export class SearchController {
   async getProducts(@Query() query: SearchQueryDto) {
     return await this.searchService.getProducts({
       id: query.id,
+      userId: query.userId,
       keyword: query.keyword,
       categoryId: query.category,
       page: query.page,

@@ -191,6 +191,13 @@ export class ProductController {
     return new StreamableFile(file);
   }
 
+  // TODO role guard
+  @Post('deleteMany')
+  async deleteProducts(@Body() data) {
+    console.log(data);
+    return await this.productService.deleteProducts(data);
+  }
+
   @UseGuards(JwtGuard)
   @Delete(':id')
   async deleteProduct(@Req() req: Request, @Param() param: DeleteParamDto) {

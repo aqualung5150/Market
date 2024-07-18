@@ -6,6 +6,10 @@ export class SearchQueryDto {
   id: number; // for admin
 
   @IsOptional()
+  @IsNumber()
+  userId: number; // for admin
+
+  @IsOptional()
   @IsString()
   keyword: string;
 

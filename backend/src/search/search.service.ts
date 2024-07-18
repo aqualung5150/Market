@@ -14,11 +14,13 @@ export class SearchService {
     maxPrice,
     status,
     condition,
+    userId,
   }) {
     return await this.prisma.$transaction(async (tx) => {
       const totalSize = await tx.product.count({
         where: {
           id: id,
+          userId: userId,
           title: keyword ? { contains: keyword } : undefined,
           categoryId: categoryId ? categoryId : undefined,
           price: {
@@ -30,9 +32,10 @@ export class SearchService {
         },
       });
 
-      const products = await this.prisma.product.findMany({
+      const products = await tx.product.findMany({
         where: {
           id: id,
+          userId: userId,
           title: keyword ? { contains: keyword } : undefined,
           categoryId: categoryId ? categoryId : undefined,
           price: {
@@ -67,33 +70,17 @@ export class SearchService {
     });
   }
 
-  async getProductsList({
-    keyword,
-    categoryId,
-    page = 1,
-    minPrice,
-    maxPrice,
-    status,
-    condition,
-  }) {
+  async getProductsByUserId({ userId, page }) {
     return await this.prisma.$transaction(async (tx) => {
-      const totalSize = await tx.product.count({
+      const totalSize = tx.product.count({
         where: {
-          title: keyword ? { contains: keyword } : undefined,
-          categoryId: categoryId ? categoryId : undefined,
+          userId: userId,
         },
       });
 
-      const products = await this.prisma.product.findMany({
+      const products = await tx.product.findMany({
         where: {
-          title: keyword ? { contains: keyword } : undefined,
-          categoryId: categoryId ? categoryId : undefined,
-          price: {
-            gte: minPrice ? minPrice : undefined,
-            lte: maxPrice ? maxPrice : undefined,
-          },
-          status: status,
-          condition: condition,
+          userId: userId,
         },
         orderBy: {
           createdAt: 'desc',
@@ -101,16 +88,16 @@ export class SearchService {
         skip: (page - 1) * 20,
         take: 20,
         include: {
-          // images: {
-          //   orderBy: {
-          //     order: 'asc',
-          //   },
-          // },
+          images: {
+            orderBy: {
+              order: 'asc',
+            },
+          },
           user: {
             select: {
               id: true,
-              // nickname: true,
-              // image: true,
+              nickname: true,
+              image: true,
             },
           },
         },
@@ -119,4 +106,57 @@ export class SearchService {
       return { totalSize, products };
     });
   }
+
+  // async getProductsList({
+  //   keyword,
+  //   categoryId,
+  //   page = 1,
+  //   minPrice,
+  //   maxPrice,
+  //   status,
+  //   condition,
+  // }) {
+  //   return await this.prisma.$transaction(async (tx) => {
+  //     const totalSize = await tx.product.count({
+  //       where: {
+  //         title: keyword ? { contains: keyword } : undefined,
+  //         categoryId: categoryId ? categoryId : undefined,
+  //       },
+  //     });
+
+  //     const products = await this.prisma.product.findMany({
+  //       where: {
+  //         title: keyword ? { contains: keyword } : undefined,
+  //         categoryId: categoryId ? categoryId : undefined,
+  //         price: {
+  //           gte: minPrice ? minPrice : undefined,
+  //           lte: maxPrice ? maxPrice : undefined,
+  //         },
+  //         status: status,
+  //         condition: condition,
+  //       },
+  //       orderBy: {
+  //         createdAt: 'desc',
+  //       },
+  //       skip: (page - 1) * 20,
+  //       take: 20,
+  //       include: {
+  //         // images: {
+  //         //   orderBy: {
+  //         //     order: 'asc',
+  //         //   },
+  //         // },
+  //         user: {
+  //           select: {
+  //             id: true,
+  //             // nickname: true,
+  //             // image: true,
+  //           },
+  //         },
+  //       },
+  //     });
+
+  //     return { totalSize, products };
+  //   });
+  // }
 }

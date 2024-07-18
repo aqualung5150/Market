@@ -136,7 +136,7 @@ const AdminUsers = () => {
                 <tr
                   className="cursor-pointer"
                   key={user.id}
-                  onClick={() => navigate(`${user.id}`)}
+                  onClick={() => navigate(`/users/${user.id}`)}
                 >
                   <th
                     className="cursor-default"

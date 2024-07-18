@@ -1,5 +1,6 @@
 import NotFound from "components/NotFound";
 import { axiosInstance } from "data/axiosInstance";
+import AdminHome from "features/admin/components/AdminHome";
 import AdminProducts from "features/admin/components/AdminProducts";
 import AdminUsers from "features/admin/components/AdminUsers";
 import EditProfile from "features/user/components/EditProfile";
@@ -43,6 +44,7 @@ const App = () => {
         </Route>
         <Route path="callback" element={<Callback />} />
         <Route path="admin" element={<Admin />}>
+          <Route path="" element={<AdminHome />} />
           <Route path="users" element={<AdminUsers />} />
           <Route path="products" element={<AdminProducts />} />
         </Route>

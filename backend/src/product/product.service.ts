@@ -238,6 +238,38 @@ export class ProductService {
     });
   }
 
+  async deleteProducts(data) {
+    return await this.prisma.$transaction(async (tx) => {
+      const images = await tx.product.findMany({
+        where: {
+          id: {
+            in: data.products,
+          },
+        },
+        select: {
+          images: {
+            select: {
+              url: true,
+            },
+          },
+        },
+      });
+
+      await tx.product.deleteMany({
+        where: {
+          id: { in: data.products },
+        },
+      });
+
+      images.forEach((imageSet) => {
+        imageSet.images.forEach((image) => {
+          unlink(`./uploads/productImages/thumb/${image.url}`, () => {});
+          unlink(`./uploads/productImages/main/${image.url}`, () => {});
+        });
+      });
+    });
+  }
+
   async createTestDummy() {
     const titles = ['노트북', '스마트폰', '세탁기', '티셔츠', '화장품'];
     const urls = [

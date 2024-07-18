@@ -35,10 +35,10 @@ const ProductsPagination = ({
       {page !== 1 && (
         <>
           <li onClick={() => navPage(left === 1 ? 1 : left - interval)}>
-            <AngleDoubleLeft className="h-8 w-8 hover:rounded-md hover:bg-gray-100" />
+            <AngleDoubleLeft className="h-8 w-8 cursor-pointer hover:rounded-md hover:bg-gray-100" />
           </li>
           <li onClick={() => navPage(page === 1 ? page : page - 1)}>
-            <AngleLeft className="h-8 w-8 hover:rounded-md hover:bg-gray-100" />
+            <AngleLeft className="h-8 w-8 cursor-pointer hover:rounded-md hover:bg-gray-100" />
           </li>
         </>
       )}
@@ -57,7 +57,7 @@ const ProductsPagination = ({
       {page !== lastPage && (
         <>
           <li onClick={() => navPage(page === lastPage ? page : page + 1)}>
-            <AngleRight className="h-8 w-8 hover:rounded-md hover:bg-gray-100" />
+            <AngleRight className="h-8 w-8 cursor-pointer hover:rounded-md hover:bg-gray-100" />
           </li>
           <li
             onClick={() =>
@@ -66,7 +66,7 @@ const ProductsPagination = ({
               )
             }
           >
-            <AngleDoubleRight className="h-8 w-8 hover:rounded-md hover:bg-gray-100" />
+            <AngleDoubleRight className="h-8 w-8 cursor-pointer hover:rounded-md hover:bg-gray-100" />
           </li>
         </>
       )}
