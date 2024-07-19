@@ -27,8 +27,8 @@ import { ChatService } from './chat.service';
 )
 @WebSocketGateway({
   namespace: 'chat',
-  // pingTimeout: 2000, // default 20000ms
-  // pingInterval: 5000,// default 25000ms
+  // pingTimeout: 20000, // default 20000ms
+  // pingInterval: 25000,// default 25000ms
 })
 export class ChatGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect

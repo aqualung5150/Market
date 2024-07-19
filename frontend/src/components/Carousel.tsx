@@ -28,7 +28,6 @@ const Carousel = ({
       >
         {slides}
       </div>
-      {/* <div className="absolute inset-0 flex items-center justify-between p-4"> */}
       <div
         className="absolute left-4 top-1/2 translate-y-[-50%] rounded-full bg-white bg-opacity-50 text-gray-800 shadow hover:bg-white hover:bg-opacity-90"
         onClick={(e) => {
@@ -39,7 +38,6 @@ const Carousel = ({
       >
         <AngleLeft width="40px" height="40px" />
       </div>
-
       <div
         className="absolute right-4 top-1/2 translate-y-[-50%] rounded-full bg-white bg-opacity-50 text-gray-800 shadow hover:bg-white hover:bg-opacity-90"
         onClick={(e) => {
@@ -50,8 +48,6 @@ const Carousel = ({
       >
         <AngleRight width="40px" height="40px" />
       </div>
-      {/* </div> */}
-
       <div className="absolute inset-x-0 bottom-4">
         <div className="flex items-center justify-center gap-2">
           {slides.map((_, idx) => (

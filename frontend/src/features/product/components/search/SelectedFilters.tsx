@@ -57,8 +57,9 @@ const SelectedFilters = ({
 
   return (
     <div className="flex w-full flex-wrap items-center gap-2">
-      {selected.map((e: any) => (
+      {selected.map((e: SelectedFilter) => (
         <div
+          key={e.name}
           className="flex cursor-pointer items-center rounded border bg-white p-1"
           onClick={() => removeOption(e)}
         >

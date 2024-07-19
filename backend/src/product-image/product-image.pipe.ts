@@ -8,6 +8,7 @@ const THUMB_SIZE = 300;
 
 @Injectable()
 export class ProductImagePipe implements PipeTransform {
+  // RESIZE
   async resize(value: Express.Multer.File) {
     const metadata = await sharp(value.buffer).metadata();
     const width = metadata.width;
@@ -39,6 +40,7 @@ export class ProductImagePipe implements PipeTransform {
   }
 
   async transform(value: Express.Multer.File[]) {
+    if (!value) return;
     const filenames: string[] = [];
     for (const file of value) {
       filenames.push(await this.resize(file));

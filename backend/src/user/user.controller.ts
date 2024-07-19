@@ -31,15 +31,6 @@ import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
 
 const storage = {
-  // storage: multer.diskStorage({
-  //   destination: './uploads/profileImages',
-  //   filename: (req, file, cb) => {
-  //     const origin = path.parse(file.originalname);
-  //     const filename: string = v4();
-  //     const extension: string = origin.ext;
-  //     cb(null, `${filename}${extension}`);
-  //   },
-  // }),
   storage: multer.memoryStorage(),
   limits: {
     fileSize: 5 * 1024 * 1024,
@@ -59,6 +50,7 @@ export class UserController {
   private readonly logger = new Logger(UserController.name);
   constructor(private readonly userService: UserService) {}
 
+  // GET
   @Get()
   async getMany(@Query() query: UserQueryDto) {
     return await this.userService.getMany({
@@ -68,28 +60,25 @@ export class UserController {
     });
   }
 
-  // @UseGuards(JwtGuard)
-  // @Get('me')
-  // async getMe(@Req() req: Request) {
-  //   return await this.userService.getUserById(req.user.id);
-  // }
-
   @Get(':id')
   async getOneUser(@Param('id', ParseIntPipe) id: number) {
     return await this.userService.getUserById(id);
   }
 
-  // Soft Delete가 더 좋아보임
-  // @Post('deleteMany')
-  // async deleteMany(@Body() data) {
-  //   console.log(data);
-  //   return await this.userService.deleteMany(data);
-  // }
+  @Get('profileImage/:imageName')
+  getProfileImage(@Param('imageName') imageName: string): StreamableFile {
+    const file = fs.createReadStream(
+      path.join('./uploads/profileImages/' + imageName),
+    );
 
+    return new StreamableFile(file);
+  }
+
+  // POST
   @Roles('admin')
   @UseGuards(JwtGuard, RolesGuard)
   @Post('deleteMany')
-  async deleteUsers(@Body() data) {
+  async deleteUsers(@Body() data: { users: number[] }) {
     return await this.userService.deleteUsers(data);
   }
 
@@ -100,8 +89,7 @@ export class UserController {
     @Req() req: Request,
     @Param('id', ParseIntPipe) id: number,
     @UploadedFile(UserImagePipe)
-    file: string,
-    // file: Express.Multer.File,
+    filename: string,
     @Body() data: Prisma.UserUpdateInput,
   ) {
     if (req.user.id !== id)
@@ -111,18 +99,9 @@ export class UserController {
     }
 
     return await this.userService
-      .updateUser(req.user.id, data, file ? file : undefined)
+      .updateUser(req.user.id, data, filename ? filename : undefined)
       .catch(() => {
-        fs.unlinkSync(`./uploads/profileImages/${file}`);
+        fs.unlinkSync(`./uploads/profileImages/${filename}`);
       });
-  }
-
-  @Get('profileImage/:imageName')
-  getProfileImage(@Param('imageName') imageName): StreamableFile {
-    const file = fs.createReadStream(
-      path.join('./uploads/profileImages/' + imageName),
-    );
-
-    return new StreamableFile(file);
   }
 }

@@ -4,11 +4,7 @@ import ProductStatusContext from "features/product/context/ProductStatusContext"
 import { useContext } from "react";
 import { SetStatusModalProps } from "types/product";
 
-const SetStatusModal = ({
-  data,
-  openSetStatus,
-  setOpenSetStatus,
-}: SetStatusModalProps) => {
+const SetStatusModal = ({ data, open, setOpen }: SetStatusModalProps) => {
   const status = useContext(ProductStatusContext);
 
   const updateStatus = async (newStatus: number) => {
@@ -22,12 +18,12 @@ const SetStatusModal = ({
     } catch (err) {
       alert(err);
     } finally {
-      setOpenSetStatus(false);
+      setOpen(false);
     }
   };
 
   return (
-    <Modal open={openSetStatus} onClose={() => setOpenSetStatus(false)}>
+    <Modal open={open} onClose={() => setOpen(false)}>
       <div className="flex h-full w-full items-center justify-evenly">
         <button
           onClick={() => updateStatus(0)}

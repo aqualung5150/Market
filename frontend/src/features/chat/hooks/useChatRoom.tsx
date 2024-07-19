@@ -13,7 +13,6 @@ const useChatRoom = (selectedChannelId: number) => {
   const [roomUsers, setRoomUsers] = useState<PublicUser[]>([]);
   const [activated, setActivated] = useState(true);
   const [cursor, setCursor] = useState(0);
-  // const [value, setValue] = useState("");
   const { inputProps: messageInput, setValue: setMessageInput } =
     useFormInput();
 

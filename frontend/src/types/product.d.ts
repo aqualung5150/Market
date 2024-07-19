@@ -5,8 +5,6 @@ interface ImageSelectorProps {
   setFiles: React.Dispatch<React.SetStateAction<File[]>>;
   newFiles: File[];
   setNewFiles: React.Dispatch<React.SetStateAction<File[]>>;
-  // prevToDelete: string[];
-  // setPrevToDelete: React.Dispatch<React.SetStateAction<string[]>>;
   existingFiles: string[];
   setExistingFiles: React.Dispatch<React.SetStateAction<string[]>>;
   handleFilesChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -50,7 +48,6 @@ interface ProductDescriptionProps {
 
 interface ProductTitleProps {
   data: ProductData;
-  paramId: string | undefined;
 }
 
 interface ProductImageProps {
@@ -58,17 +55,12 @@ interface ProductImageProps {
 }
 
 interface ConfirmDelteProps {
-  paramId: string | undefined;
-  category: CategoryData | undefined;
-  openConfirmDelete: boolean;
-  setOpenConfirmDelete: React.Dispatch<React.SetStateAction<boolean>>;
+  data: ProductData;
+  open: boolean;
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-interface SetStatusModalProps {
-  data: ProductData;
-  openSetStatus: boolean;
-  setOpenSetStatus: React.Dispatch<React.SetStateAction<boolean>>;
-}
+interface SetStatusModalProps extends ConfirmDelteProps {}
 
 interface SearchParamsProps {
   searchParams: URLSearchParams;

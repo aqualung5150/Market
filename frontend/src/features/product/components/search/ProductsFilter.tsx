@@ -70,7 +70,7 @@ const ProductsFilter = ({
           <tr>
             <td>가격</td>
             <td>
-              <PriceFilter {...{ searchParams, setSearchParams }} />
+              <PriceFilter />
             </td>
           </tr>
           <tr>

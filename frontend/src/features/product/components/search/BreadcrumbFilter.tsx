@@ -12,17 +12,19 @@ const BreadcrumbFilter = ({
     categoryId &&
     Object.values(categoryData).find((e) => e.id === parseInt(categoryId));
 
-  const navCategory = (categoryId: string) => {
-    searchParams.set("category", categoryId);
-    setSearchParams(searchParams);
-  };
   return (
     <ul className="breadcrumb">
       <li>
         <Link to={`/search?page=1`}>전체</Link>
       </li>
       {category && (
-        <li onClick={() => navCategory(categoryId)}>{category.label}</li>
+        <li>
+          <Link
+            to={`?${searchParams.toString().replace(/category=\d+/, `category=${categoryId}`)}`}
+          >
+            {category.label}
+          </Link>
+        </li>
       )}
     </ul>
   );

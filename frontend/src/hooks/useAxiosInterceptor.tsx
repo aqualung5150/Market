@@ -29,7 +29,7 @@ const useAxiosInterceptor = (instance: AxiosInstance) => {
           dispatch(setUser(res.data));
           return error.config && axios(error.config);
         } catch (err) {
-          console.log("refresh token expired");
+          alert("로그인 정보가 만료되었습니다.");
           dispatch(logout(window.location.href));
         }
       }

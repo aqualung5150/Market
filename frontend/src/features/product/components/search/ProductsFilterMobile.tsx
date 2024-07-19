@@ -63,9 +63,7 @@ const ProductsFilterMobile = ({
                 />
               )}
             </div>
-            {openPrice && (
-              <PriceFilterMobile {...{ searchParams, setSearchParams }} />
-            )}
+            {openPrice && <PriceFilterMobile />}
           </li>
 
           <li className="flex min-h-14 w-full flex-col gap-2 border-b p-2">

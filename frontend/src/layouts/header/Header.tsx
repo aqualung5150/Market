@@ -14,7 +14,6 @@ import { setToggle } from "layouts/menuSlice";
 import React from "react";
 
 const Header = () => {
-  console.log("header");
   const socket = useConnect();
   const openChat = useSelector((state: RootState) => state.chat.open);
   const openLogin = useSelector((state: RootState) => state.login.openLogin);

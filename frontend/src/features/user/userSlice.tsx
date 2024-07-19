@@ -1,15 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// interface UserState {
-//   id: number | null;
-//   email: string;
-//   name: string;
-//   nickname: string;
-//   iat: number | null;
-//   exp: number | null;
-// }
-
 const initialState = {
   id: null,
   email: "",
@@ -24,7 +15,6 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser: (state, action) => {
-      //   state = { ...action.payload };
       state.id = action.payload.id;
       state.email = action.payload.email;
       state.nickname = action.payload.nickname;

@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as CloseIcon } from "assets/close.svg";
 
-const EmailField = ({ email, validations }: any) => {
+const EmailField = ({ input, validations }: SignUpFieldProps) => {
   return (
     <div className="w-80">
       <label className="m-1 block" htmlFor="email">
@@ -12,7 +12,7 @@ const EmailField = ({ email, validations }: any) => {
         // type="email"
         placeholder="Email"
         className={`h-14 w-full rounded border p-4 shadow focus:outline-none ${(validations.emailForm === -1 || validations.emailUnique === -1) && "border-red-500"}`}
-        {...email}
+        {...input}
       />
       <div className="m-1">
         {validations.emailForm === -1 && (

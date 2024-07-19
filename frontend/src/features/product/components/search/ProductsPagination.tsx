@@ -14,8 +14,6 @@ const ProductsPagination = ({
 }: PaginationProps) => {
   const pageParam = searchParams.get("page");
   const page = pageParam ? parseInt(pageParam) : 1;
-  const { pathname, search } = useLocation();
-  const path = pathname + search;
 
   const lastPage = Math.ceil(totalSize / displaySize);
   const left = Math.floor((page - 1) / interval) * interval + 1;

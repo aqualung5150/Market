@@ -12,7 +12,6 @@ interface ProtecedRouteProps {
 }
 
 interface SignUpValidation {
-  // username: number;
   nickname: number;
   emailForm: number;
   emailUnique: number;
@@ -28,4 +27,9 @@ interface LinkLoginProps {
   to: string;
   redirectAfterLogin?: string;
   children: React.ReactNode;
+}
+
+interface SignUpFieldProps {
+  input: InputProps;
+  validations: SignUpValidation;
 }

@@ -31,7 +31,6 @@ const LoginModal = () => {
       dispatch(setUser(res.data));
       dispatch(setOpenLogin(false));
     } catch (err: any) {
-      // alert(err.response.data.message);
       setError("일치하는 계정이 없습니다.");
     }
   };
@@ -51,7 +50,7 @@ const LoginModal = () => {
       >
         <div className="text-2xl">로그인</div>
         <input
-          // type="email"
+          // type="email // -> 'admin'으로 로그인하려 하면 브라우저에서 계속 email형식 검사함.
           className={`h-12 w-56 rounded border p-2 outline-none ${error && "border-red-500"}`}
           {...email}
           placeholder="Email"

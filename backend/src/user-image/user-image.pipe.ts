@@ -28,6 +28,7 @@ export class UserImagePipe implements PipeTransform {
   }
 
   async transform(value: Express.Multer.File) {
+    if (!value) return;
     return await this.resize(value);
   }
 }

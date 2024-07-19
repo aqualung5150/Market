@@ -1,7 +1,7 @@
 import { ReactComponent as CloseIcon } from "assets/close.svg";
 import React from "react";
 
-const NicknameField = ({ nickname, validations }: any) => {
+const NicknameField = ({ input, validations }: SignUpFieldProps) => {
   return (
     <div className="w-80">
       <label className="m-1 block" htmlFor="nickname">
@@ -12,7 +12,7 @@ const NicknameField = ({ nickname, validations }: any) => {
         type="text"
         placeholder="Nickname"
         className={`h-14 w-full rounded border p-4 shadow focus:outline-none ${validations.nickname === -1 && "border-red-500"}`}
-        {...nickname}
+        {...input}
       />
       {validations.nickname === -1 && (
         <div className="m-1 flex items-center gap-1 stroke-red-500 text-sm text-red-500">

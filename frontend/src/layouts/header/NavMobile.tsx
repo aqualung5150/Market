@@ -13,7 +13,6 @@ import categoryData from "features/product/data/category.json";
 import { setNoti, setOpenChat } from "features/chat/chatSlice";
 
 const NavMobile = ({ toggle }: any) => {
-  console.log("NavMobile");
   const { pathname } = useLocation();
   const userId = useSelector((state: RootState) => state.user.id);
   const [openCategory, setOpenCategory] = useState(false);
@@ -36,7 +35,7 @@ const NavMobile = ({ toggle }: any) => {
     >
       <SearchBar />
       <div>
-        <ul className="flex flex-1 flex-col gap-1">
+        <ul className="flex flex-col gap-2">
           <li className="flex items-center justify-between text-xl font-semibold">
             <Link
               onClick={() => dispatch(setToggle(false))}
@@ -57,7 +56,7 @@ const NavMobile = ({ toggle }: any) => {
             )}
           </li>
           {openCategory && (
-            <ul>
+            <>
               {Object.values(categoryData).map((category) => (
                 <li
                   key={category.id}
@@ -68,21 +67,19 @@ const NavMobile = ({ toggle }: any) => {
                   </Link>
                 </li>
               ))}
-            </ul>
+            </>
           )}
-        </ul>
-      </div>
-      <LinkLogin
-        className="w-fit text-xl font-semibold"
-        to="/product/form?type=regist"
-        onClick={() => dispatch(setToggle(false))}
-      >
-        <span>판매하기</span>
-      </LinkLogin>
-      {userId && (
-        <>
-          <div>
-            <ul className="flex flex-1 flex-col gap-1">
+          <li>
+            <LinkLogin
+              className="text-xl font-semibold"
+              to="/product/form?type=regist"
+              onClick={() => dispatch(setToggle(false))}
+            >
+              <span>판매하기</span>
+            </LinkLogin>
+          </li>
+          {userId && (
+            <>
               <li className="flex items-center justify-between text-xl font-semibold">
                 <Link
                   onClick={() => dispatch(setToggle(false))}
@@ -103,36 +100,35 @@ const NavMobile = ({ toggle }: any) => {
                 )}
               </li>
               {openMypage && (
-                <ul>
+                <>
                   <li>- 판매내역</li>
                   <li>- 찜한 상품</li>
                   <li onClick={() => dispatch(setToggle(false))}>
                     <Link to={`/users/${userId}/edit`}>- 정보 수정</Link>
                   </li>
-                </ul>
+                </>
               )}
-            </ul>
-          </div>
-          <div
-            className="flex w-fit items-center gap-2 text-xl font-semibold"
-            onClick={() => {
-              dispatch(setToggle(false));
-              dispatch(setOpenChat(true));
-              dispatch(setNoti(false));
-            }}
-          >
-            <span>채팅하기</span>
-            {noti ? (
-              <span className="relative mr-1 h-3 w-3 rounded-full bg-red-500">
-                <span className="absolute h-full w-full animate-ping rounded-full bg-red-500" />
-              </span>
-            ) : (
-              <SendIcon className="h-7 w-7 stroke-sky-300" />
-            )}
-          </div>
-        </>
-      )}
-
+              <li
+                className="flex w-fit items-center gap-2 text-xl font-semibold"
+                onClick={() => {
+                  dispatch(setToggle(false));
+                  dispatch(setOpenChat(true));
+                  dispatch(setNoti(false));
+                }}
+              >
+                <span>채팅하기</span>
+                {noti ? (
+                  <span className="relative mr-1 h-3 w-3 rounded-full bg-red-500">
+                    <span className="absolute h-full w-full animate-ping rounded-full bg-red-500" />
+                  </span>
+                ) : (
+                  <SendIcon className="h-7 w-7 stroke-sky-300" />
+                )}
+              </li>
+            </>
+          )}
+        </ul>
+      </div>
       {!userId ? (
         <LinkLogin
           to={pathname}

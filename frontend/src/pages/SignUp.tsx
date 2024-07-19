@@ -19,13 +19,10 @@ const SignUp = () => {
       className="flex h-full w-full flex-col items-center gap-10 bg-white p-10"
       onSubmit={handleSubmit}
     >
-      <EmailField email={email} validations={validations} />
-      <PasswordField password={password} validations={validations} />
-      <ConfirmPasswordField
-        confirmPassword={confirmPassword}
-        validations={validations}
-      />
-      <NicknameField nickname={nickname} validations={validations} />
+      <EmailField input={email} validations={validations} />
+      <PasswordField input={password} validations={validations} />
+      <ConfirmPasswordField input={confirmPassword} validations={validations} />
+      <NicknameField input={nickname} validations={validations} />
       <button
         className="mb-2 h-14 w-[120px] rounded-md bg-green-500 text-base font-semibold text-white"
         type="submit"

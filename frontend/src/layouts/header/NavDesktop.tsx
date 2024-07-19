@@ -6,7 +6,6 @@ import SearchBar from "./SearchBar";
 import LoginButton from "./LoginButton";
 
 const NavDesktop = () => {
-  console.log("NavLarge");
   const [openCategory, setOpenCategory] = useState(false);
   return (
     <div className="hidden w-full flex-row items-center bg-white lg:flex">

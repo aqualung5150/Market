@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as CheckIcon } from "assets/check.svg";
 
-const PasswordField = ({ password, validations }: any) => {
+const PasswordField = ({ input, validations }: SignUpFieldProps) => {
   return (
     <div className="w-80">
       <label className="m-1 block" htmlFor="password">
@@ -12,7 +12,7 @@ const PasswordField = ({ password, validations }: any) => {
         type="password"
         placeholder="Password"
         className={`h-14 w-full rounded border p-4 shadow focus:outline-none ${(validations.pwdCharSet === -1 || validations.pwdLength === -1 || validations.pwdSeriesOfSameChar === -1) && "border-red-500"}`}
-        {...password}
+        {...input}
       />
       <div className="m-1 flex flex-col gap-1 stroke-gray-400 text-sm text-gray-400">
         <div

@@ -17,7 +17,6 @@ const useOauthCallback = () => {
     axios
       .post(url)
       .then((res) => {
-        console.log("useOauthCallback");
         dispatch(setUser(res.data));
         const redirect = sessionStorage.getItem("redirect");
         if (redirect) {

@@ -21,9 +21,4 @@ export class SearchController {
       condition: query.condition,
     });
   }
-
-  // @Get('list')
-  // async getProductsList() {
-
-  // }
 }

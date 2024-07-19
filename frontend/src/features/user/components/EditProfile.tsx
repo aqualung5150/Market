@@ -5,7 +5,6 @@ import useSelectImage from "hooks/useSelectImage";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../userSlice";
-import Input from "components/Input";
 
 const EditProfile = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -42,7 +41,7 @@ const EditProfile = () => {
       onSubmit={handleSubmit}
       className="flex w-full flex-1 flex-col items-center gap-10 p-10"
     >
-      <div className="aspect-square h-96 w-96 p-9">
+      <div className="aspect-square w-full max-w-96">
         <img
           loading="lazy"
           className="aspect-square h-full max-w-full cursor-pointer rounded-full object-cover shadow"
@@ -57,17 +56,28 @@ const EditProfile = () => {
           ref={profileImage}
         />
       </div>
-      <div className="w-full space-y-2 rounded-lg bg-white p-3 shadow">
+      <div className="w-full space-y-2 rounded-lg border bg-white p-3">
         <label htmlFor="nickname">닉네임</label>
-        <Input id="nickname" type="text" {...nickname} />
+        <input
+          className="w-full rounded border p-2"
+          id="nickname"
+          type="text"
+          {...nickname}
+        />
       </div>
-      <div className="w-full space-y-2 rounded-lg bg-white p-3 shadow">
+      <div className="w-full space-y-2 rounded-lg border bg-white p-3">
         <label htmlFor="email">이메일</label>
-        <Input id="email" type="text" value={user.email} disabled={true} />
+        <input
+          className="w-full rounded border p-2"
+          id="email"
+          type="text"
+          value={user.email}
+          disabled={true}
+        />
       </div>
 
       <button
-        className="h-[50px] w-[100px] rounded-lg bg-green-400 text-lg font-bold"
+        className="button-green h-[50px] w-[100px]"
         type="submit"
         disabled={disabled}
       >

@@ -1,8 +1,4 @@
-import { useDispatch } from "react-redux";
-import { setOpenChat, setSendTo } from "../features/chat/chatSlice";
-import throttle from "../utils/throttle";
-import { useCallback, useEffect, useState } from "react";
-import Carousel from "components/Carousel";
+import { useEffect, useState } from "react";
 import useAxios from "hooks/useAxios";
 import { ProductsData } from "types/product";
 import { Link } from "react-router-dom";

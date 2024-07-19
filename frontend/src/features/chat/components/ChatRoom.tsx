@@ -2,7 +2,6 @@ import { ChatRoomProps, SocketMessageData } from "types/chat";
 import useChatRoom from "../hooks/useChatRoom";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
-import { useState } from "react";
 
 const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
   const {

@@ -29,13 +29,18 @@ code {
 }
 
 @layer components {
+  /* breadcrumb */
   ul.breadcrumb li {
     @apply inline;
   }
   ul.breadcrumb li + li:before {
     @apply px-2 content-['>'];
   }
+  ul.breadcrumb a {
+    @apply cursor-pointer;
+  }
 
+  /* filter-table */
   .filter-table {
     @apply border-y-2 border-black;
   }
@@ -49,21 +54,31 @@ code {
     @apply w-44 bg-gray-100;
   }
 
+  /* data-grid */
   .data-grid {
     @apply border-l border-t bg-white;
   }
-
-  /* .data-grid tr td th {
-    @apply;
-  } */
   .data-grid tr {
     @apply border-b border-r p-2;
   }
   .data-grid td {
     @apply border-b border-r p-2;
   }
-
   .data-grid th {
     @apply border-b border-r bg-gray-100 p-2;
+  }
+
+  /* button */
+  .button-green {
+    @apply mb-2 rounded-md bg-green-500 text-base font-semibold text-white;
+  }
+  .button-red {
+    @apply mb-2 rounded-md bg-red-500 text-base font-semibold text-white;
+  }
+  .button-white {
+    @apply mb-2 rounded-md border bg-white text-base font-semibold text-black;
+  }
+  .button-black {
+    @apply mb-2 rounded-md bg-black text-base font-semibold text-white;
   }
 }

@@ -8,8 +8,11 @@ export class ProductService {
   private readonly logger = new Logger(ProductService.name);
   constructor(private readonly prisma: PrismaService) {}
 
-  // async createProduct(userId: number, data, files?: Express.Multer.File[]) {
-  async createProduct(userId: number, data: CreateProductDto, files: string[]) {
+  async createProduct(
+    userId: number,
+    data: CreateProductDto,
+    filenames: string[],
+  ) {
     return await this.prisma.$transaction(async (tx) => {
       // create product
       const product = await tx.product.create({
@@ -35,9 +38,9 @@ export class ProductService {
       });
       // create images
       const imagesData = [];
-      files.map((file, idx) => {
+      filenames.map((filename, idx) => {
         const image = {
-          url: file,
+          url: filename,
           order: idx,
           main: idx === 0 ? true : false,
           productId: product.id,
@@ -88,7 +91,7 @@ export class ProductService {
   async updateProduct(
     productId: number,
     data: UpdateProductDto,
-    files: string[],
+    filenames: string[],
   ) {
     return await this.prisma.$transaction(async (tx) => {
       // DELETE
@@ -123,14 +126,14 @@ export class ProductService {
         });
       });
 
-      // CREAT new images
-      if (files) {
+      // CREATE new images
+      if (filenames) {
         const imagesData = [];
-        files.map((file, idx) => {
+        filenames.map((filename, idx) => {
           // indexing after existing files
           const order = data.existingFiles.length + idx;
           const image = {
-            url: file,
+            url: filename,
             order: order,
             main: order === 0 ? true : false,
             productId: productId,
@@ -165,30 +168,6 @@ export class ProductService {
     });
   }
 
-  // Move to search Controller
-  // async getProductMany({ title, categoryId, page = 1 }) {
-  //   return await this.prisma.product.findMany({
-  //     where: {
-  //       title: title ? title : undefined,
-  //       categoryId: categoryId ? categoryId : undefined,
-  //     },
-  //     include: {
-  //       images: {
-  //         orderBy: {
-  //           order: 'asc',
-  //         },
-  //       },
-  //       user: {
-  //         select: {
-  //           id: true,
-  //           nickname: true,
-  //           image: true,
-  //         },
-  //       },
-  //     },
-  //   });
-  // }
-
   async changeProductStatus(productId: number, status: number) {
     return await this.prisma.product.update({
       where: {
@@ -200,7 +179,7 @@ export class ProductService {
     });
   }
 
-  async getUserIdByProductId(productId) {
+  async getUserIdByProductId(productId: number) {
     return await this.prisma.product.findUnique({
       where: {
         id: productId,
@@ -215,7 +194,7 @@ export class ProductService {
     });
   }
 
-  async deleteProduct(productId) {
+  async deleteProduct(productId: number) {
     return await this.prisma.$transaction(async (tx) => {
       // get url of images
       const images = await tx.product.findUnique({
@@ -244,7 +223,7 @@ export class ProductService {
     });
   }
 
-  async deleteProducts(data) {
+  async deleteProducts(data: { products: number[] }) {
     return await this.prisma.$transaction(async (tx) => {
       const images = await tx.product.findMany({
         where: {
@@ -276,6 +255,7 @@ export class ProductService {
     });
   }
 
+  // TEST
   async createTestDummy() {
     const titles = ['노트북', '스마트폰', '세탁기', '티셔츠', '화장품'];
     const urls = [

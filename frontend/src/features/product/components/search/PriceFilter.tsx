@@ -1,34 +1,8 @@
-import useFormInput from "hooks/useFormInput";
-import React, { useCallback, useEffect } from "react";
-import { SearchParamsProps } from "types/product";
+import usePriceFilter from "features/product/hooks/usePriceFilter";
+import React from "react";
 
-const PriceFilter = ({ searchParams, setSearchParams }: SearchParamsProps) => {
-  console.log("PriceFilter rerender");
-  const { inputProps: minPrice, setValue: setMinPrice } = useFormInput("");
-  const { inputProps: maxPrice, setValue: setMaxPrice } = useFormInput("");
-
-  const isNumeric = useCallback(
-    // (string: string) => /^[+-]?\d+(\.\d+)?$/.test(string),
-    (string: string) => /^\d*$/.test(string),
-    [],
-  );
-
-  useEffect(() => {
-    const minPriceParam = searchParams.get("minPrice");
-    const maxPriceParam = searchParams.get("maxPrice");
-    setMinPrice(minPriceParam ? minPriceParam : "");
-    setMaxPrice(maxPriceParam ? maxPriceParam : "");
-  }, [searchParams]);
-
-  const handleClick = () => {
-    // if (!minPrice.value && !maxPrice.value) return;
-    if (!isNumeric(minPrice.value) || !isNumeric(maxPrice.value)) return;
-    // if (minPrice.value || !isNumeric(minPrice.value)) return;
-    // if (maxPrice.value && !isNumeric(maxPrice.value)) return;
-    searchParams.set("minPrice", minPrice.value ? minPrice.value : "0");
-    if (maxPrice.value) searchParams.set("maxPrice", maxPrice.value);
-    setSearchParams(searchParams);
-  };
+const PriceFilter = () => {
+  const { minPrice, maxPrice, handleClick } = usePriceFilter();
 
   return (
     <div className="flex items-center gap-2">

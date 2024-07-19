@@ -1,5 +1,4 @@
 import React from "react";
-import icon from "assets/chatIcon.png";
 import { useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "app/store";

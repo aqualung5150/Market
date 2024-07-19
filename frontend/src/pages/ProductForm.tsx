@@ -16,16 +16,7 @@ const ProductForm = () => {
     handleSubmitCreate,
     handleSubmitUpdate,
   } = useProductForm();
-  const categories: CategoryData[] = [];
-  Object.values(categoryData).map((category) => categories.push(category));
-
-  const buttonSmall = "h-10 w-[80px]";
-  const buttonLarge = "h-14 w-[120px]";
-  const buttonOn =
-    "rounded-md font-semibold text-base mb-2 text-white bg-green-500";
-  const buttonOff =
-    "rounded-md font-semibold text-base mb-2 border text-black bg-white";
-
+  const categories: CategoryData[] = Object.values(categoryData);
   return (
     <form
       className="flex h-full w-full flex-col items-center gap-10 p-5 xl:w-2/3"
@@ -51,8 +42,8 @@ const ProductForm = () => {
         <button
           type="button"
           onClick={() => condition.setCondition(0)}
-          className={`${buttonSmall} ${
-            !condition.condition ? buttonOn : buttonOff
+          className={`h-10 w-[80px] ${
+            !condition.condition ? "button-green" : "button-white"
           }`}
         >
           중고
@@ -60,8 +51,8 @@ const ProductForm = () => {
         <button
           type="button"
           onClick={() => condition.setCondition(1)}
-          className={`${buttonSmall} ${
-            condition.condition ? buttonOn : buttonOff
+          className={`h-10 w-[80px] ${
+            condition.condition ? "button-green" : "button-white"
           }`}
         >
           새상품
@@ -81,7 +72,7 @@ const ProductForm = () => {
         ></textarea>
       </div>
       <button
-        className={`${buttonLarge} ${disabled.disabled ? buttonOff : buttonOn}`}
+        className={`h-14 w-[120px] ${disabled.disabled ? "button-white" : "button-green"}`}
         type="submit"
         disabled={disabled.disabled && true}
       >

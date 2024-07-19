@@ -21,16 +21,6 @@ export class SearchQueryDto {
   @IsNumber()
   page: number;
 
-  // TODO - 옵션 검증
-  // @IsOptional()
-  // @IsArray()
-  // @ArrayNotEmpty()
-  // @ArrayMinSize(1)
-  // @IsString({ each: true })
-  // @Type(() => String)
-  // @Transform(({ value }) => (typeof value === 'string' ? [value] : value))
-  // filter: string[];
-
   @IsOptional()
   @IsNumber()
   minPrice: number;

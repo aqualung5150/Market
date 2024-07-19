@@ -23,8 +23,6 @@ import { ProductService } from './product.service';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import * as multer from 'multer';
-import * as path from 'path';
-import { v4 } from 'uuid';
 import { Request } from 'express';
 import {
   CreateProductDto,
@@ -54,66 +52,58 @@ const storage = {
   },
 };
 
-// const storage = {
-//   storage: multer.diskStorage({
-//     destination: './uploads/productImages',
-//     filename: (req, file, cb) => {
-//       const origin = path.parse(file.originalname);
-//       const filename: string = v4();
-//       const extension: string = origin.ext;
-//       cb(null, `${filename}${extension}`);
-//     },
-//   }),
-//   limits: {
-//     fileSize: 5 * 1024 * 1024,
-//   },
-//   fileFilter: (req, file, cb) => {
-//     if (file.mimetype.match(/image\/(png|jpeg|gif)/)) {
-//       cb(null, true);
-//     } else {
-//       req.fileValidationError = `unsupported mime type: ${file.mimetype}`;
-//       cb(null, false);
-//     }
-//   },
-// };
-
 @Controller('product')
 export class ProductController {
   private readonly logger = new Logger(ProductController.name);
   constructor(private readonly productService: ProductService) {}
 
-  // @Get()
-  // async getProducts(@Query() query) {
-  //   return await this.productService.getProductMany({
-  //     title: query.title,
-  //     categoryId: parseInt(query.category),
-  //     page: query.page,
-  //   });
-  // }
+  // GET
+  @Get(':id')
+  async getProduct(@Param('id', ParseIntPipe) id: number) {
+    return await this.productService.getProduct(id);
+  }
+
+  @Get('productImage/:imageName')
+  getProductImage(
+    @Param('imageName') imageName: string,
+    @Query('impolicy') impolicy: string,
+  ): StreamableFile {
+    const file = fs.createReadStream(
+      `./uploads/productImages/${impolicy}/${imageName}`,
+    );
+
+    return new StreamableFile(file);
+  }
+
+  // POST
 
   @UseGuards(JwtGuard)
   @UseInterceptors(FilesInterceptor('image', 5, storage))
   @Post('add')
   async postProduct(
     @Req() req: Request,
-    @UploadedFiles(ProductImagePipe) files: string[],
+    @UploadedFiles(ProductImagePipe) filenames: string[],
     @Body() data: CreateProductDto,
   ) {
     // file validation
     if (req.fileValidationError) {
       throw new UnsupportedMediaTypeException(req.fileValidationError);
     }
-    if (files.length < 1) {
+    if (filenames.length < 1) {
       throw new BadRequestException('at least one image is required');
     }
 
     // create product
     try {
-      return await this.productService.createProduct(req.user.id, data, files);
+      return await this.productService.createProduct(
+        req.user.id,
+        data,
+        filenames,
+      );
     } catch (err) {
-      for (const file of files) {
-        fs.unlink(`uploads/productImages/thumb/${file}`, () => {});
-        fs.unlink(`uploads/productImages/main/${file}`, () => {});
+      for (const filename of filenames) {
+        fs.unlink(`uploads/productImages/thumb/${filename}`, () => {});
+        fs.unlink(`uploads/productImages/main/${filename}`, () => {});
       }
 
       throw new HttpException('failed to create', 409);
@@ -126,11 +116,11 @@ export class ProductController {
   async updateProduct(
     @Req() req: Request,
     @Param() param: ModifyParamDto,
-    @UploadedFiles(ProductImagePipe) files: string[],
+    @UploadedFiles(ProductImagePipe) filenames: string[],
     @Body() data: UpdateProductDto,
   ) {
     const productId = param.id;
-    if (!data.existingFiles && files.length <= 0) {
+    if (!data.existingFiles && filenames.length <= 0) {
       throw new BadRequestException('at least one image is required');
     }
     if (!data.existingFiles) data.existingFiles = [];
@@ -145,18 +135,30 @@ export class ProductController {
     }
     // update product
     try {
-      return await this.productService.updateProduct(productId, data, files);
+      return await this.productService.updateProduct(
+        productId,
+        data,
+        filenames,
+      );
     } catch (err) {
       this.logger.error(err);
-      for (const file of files) {
-        fs.unlink(`uploads/productImages/thumb/${file}`, () => {});
-        fs.unlink(`uploads/productImages/main/${file}`, () => {});
+      for (const filename of filenames) {
+        fs.unlink(`uploads/productImages/thumb/${filename}`, () => {});
+        fs.unlink(`uploads/productImages/main/${filename}`, () => {});
       }
 
       throw new HttpException('failed to update', 409);
     }
   }
 
+  @Roles('admin')
+  @UseGuards(JwtGuard, RolesGuard)
+  @Post('deleteMany')
+  async deleteProducts(@Body() data) {
+    return await this.productService.deleteProducts(data);
+  }
+
+  // PATCH
   @UseGuards(JwtGuard)
   @Patch('status/:id')
   async updateProductStatus(
@@ -175,32 +177,7 @@ export class ProductController {
     return await this.productService.changeProductStatus(productId, status);
   }
 
-  @Get(':id')
-  async getProduct(@Param('id', ParseIntPipe) id: number) {
-    return await this.productService.getProduct(id);
-  }
-
-  @Get('productImage/:imageName')
-  getProductImage(
-    @Param('imageName') imageName,
-    @Query('impolicy') impolicy,
-  ): StreamableFile {
-    const file = fs.createReadStream(
-      // path.join('./uploads/productImages/' + imageName),
-      `./uploads/productImages/${impolicy}/${imageName}`,
-    );
-
-    return new StreamableFile(file);
-  }
-
-  @Roles('admin')
-  @UseGuards(JwtGuard, RolesGuard)
-  @Post('deleteMany')
-  async deleteProducts(@Body() data) {
-    console.log(data);
-    return await this.productService.deleteProducts(data);
-  }
-
+  // DELETE
   @UseGuards(JwtGuard)
   @Delete(':id')
   async deleteProduct(@Req() req: Request, @Param() param: DeleteParamDto) {
@@ -218,12 +195,10 @@ export class ProductController {
   async createDummy() {
     return await this.productService.createTestDummy();
   }
-
   @Post('deleteAll5150')
   async deleteAll() {
     return await this.productService.deleteAll();
   }
-
   @Post('dummyUpdate5150')
   async updateDummy() {
     return await this.productService.dummyStatus();

@@ -1,11 +1,13 @@
 import { RootState } from "app/store";
 import { axiosInstance } from "data/axiosInstance";
 import { setNoti } from "features/chat/chatSlice";
-import { resetUser } from "features/user/userSlice";
+import { resetUser, setUser } from "features/user/userSlice";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Socket, io } from "socket.io-client";
 import { SocketChannelData, SocketMessageData } from "types/chat";
+import isTokenExpired from "utils/isTokenExpired";
+import refreshToken from "utils/refreshToken";
 
 const useConnect = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
@@ -14,33 +16,38 @@ const useConnect = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    // 로그아웃하지 않고 브라우저를 종료한 유저
     if (!user.id) {
       console.log("no user id");
       return;
     }
 
     const initialConnect = async () => {
-      try {
-        // 스토리지에 userId가 있다면 연결시도
-        await axiosInstance.post("auth/check");
-        console.log("연결시도: " + user.id);
-
-        const connection = io(`${process.env.REACT_APP_BASE_URL}/chat`, {
-          query: { nickname: user.nickname },
-          transports: ["websocket"],
-        });
-
-        setSocket(connection);
-      } catch (err) {
-        // userId는 있지만 실제 연결되어 있지는 않은 상황
-        dispatch(resetUser());
+      // 쿠키에 남아있는 액세스토큰 만료되었다면 리프레시
+      if (isTokenExpired()) {
+        try {
+          const res = await refreshToken();
+          console.log("new token generated");
+          dispatch(setUser(res.data));
+        } catch (err) {
+          // 리프레시토큰까지 만료된 경우
+          console.log("refresh token expired");
+          dispatch(resetUser());
+        }
       }
+
+      // connect socket
+      const connection = io(`${process.env.REACT_APP_BASE_URL}/chat`, {
+        query: { nickname: user.nickname },
+        transports: ["websocket"],
+      });
+
+      setSocket(connection);
     };
 
     initialConnect();
 
     return () => {
-      // chatSocket.disconnectSocket();
       socket?.disconnect();
     };
   }, [user.id]);
@@ -60,7 +67,7 @@ const useConnect = () => {
       socket?.off("sendMessageRes", messageNoti);
       socket?.on("getChannelRes", channelNoti);
     };
-  }, [socket, openChat, dispatch]);
+  }, [socket, openChat]);
 
   return { socket };
 };

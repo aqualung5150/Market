@@ -1,7 +1,7 @@
 import React from "react";
 import { ReactComponent as CloseIcon } from "assets/close.svg";
 
-const ConfirmPasswordField = ({ confirmPassword, validations }: any) => {
+const ConfirmPasswordField = ({ input, validations }: SignUpFieldProps) => {
   return (
     <div className="w-80">
       <label className="m-1 block" htmlFor="confirmPassword">
@@ -12,7 +12,7 @@ const ConfirmPasswordField = ({ confirmPassword, validations }: any) => {
         type="password"
         placeholder="Confirm Password"
         className={`h-14 w-full rounded border p-4 shadow focus:outline-none ${validations.confirmPassword === -1 && "border-red-500"}`}
-        {...confirmPassword}
+        {...input}
       />
       {validations.confirmPassword === -1 && (
         <div className="m-1 flex items-center gap-1 stroke-red-500 text-sm text-red-500">

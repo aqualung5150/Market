@@ -1,6 +1,5 @@
 import {
   Controller,
-  Get,
   Logger,
   Query,
   Res,
@@ -81,10 +80,6 @@ export class AuthController {
 
   @Post('signUp/available')
   async emailAvailable(@Body() data: { email: string }) {
-    // if (await this.authService.isUniqueEmail(data.email))
-    //   return { message: 'unique' };
-    // else return { message: 'not unique' };
-
     return { success: await this.authService.isUniqueEmail(data.email) };
   }
 
@@ -109,13 +104,6 @@ export class AuthController {
       role: 'user',
     });
 
-    // const hashedRefreshToken =
-    //   await this.authService.hashJwtToken(refreshToken);
-
-    // this.userService.updateUserById(user.id, {
-    //   refreshToken: hashedRefreshToken,
-    // });
-
     // res.setHeader('Authorization', 'Bearer ' + [accessToken, refreshToken]);
     res.cookie('access_token', accessToken, {
       httpOnly: true,
@@ -136,11 +124,6 @@ export class AuthController {
       iat: decode.iat,
       exp: decode.exp,
     });
-
-    // res.send({
-    //   message: 'login - success',
-    //   access_token: accessToken,
-    // });
   }
 
   @UseGuards(JwtGuard)
@@ -179,20 +162,14 @@ export class AuthController {
     });
   }
 
-  // @UseGuards(JwtRefreshGuard)
   @Post('logout')
-  async logout(@Req() req: Request, @Res() res: Response) {
-    // await this.userService.updateUserById(req.user.id, {
-    //   refreshToken: null,
-    // });
-
+  async logout(@Res() res: Response) {
     res.clearCookie('access_token', {
       httpOnly: true,
     });
     res.clearCookie('refresh_token', {
       httpOnly: true,
     });
-    // this.chatGateway.logout(req.user.id);
     return res.send({
       message: 'logout - success',
     });

@@ -4,40 +4,33 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { ConfirmDelteProps } from "types/product";
 
-const ConfirmDeleteModal = ({
-  paramId,
-  category,
-  openConfirmDelete,
-  setOpenConfirmDelete,
-}: ConfirmDelteProps) => {
+const ConfirmDeleteModal = ({ data, open, setOpen }: ConfirmDelteProps) => {
   const navigate = useNavigate();
 
   const deleteProduct = useCallback(async () => {
     try {
-      await axiosInstance.delete(`/product/${paramId}`);
+      await axiosInstance.delete(`/product/${data.id}`);
       alert("상품을 삭제했습니다.");
-      navigate(`/search?category=${category?.id}&page=1`);
+      navigate(`/search?category=${data.categoryId}&page=1`);
     } catch (err: any) {
       alert(`상품 삭제에 실패했습니다. - ${err.message}`);
     }
-  }, [paramId]);
+  }, [data]);
 
   return (
-    <Modal open={openConfirmDelete} onClose={() => setOpenConfirmDelete(false)}>
-      <div className="relative flex h-full w-full flex-col items-center">
-        <div className="absolute top-16 text-center text-2xl">
-          삭제하시겠습니까?
-        </div>
-        <div className="absolute top-40 flex w-full justify-evenly text-xl">
+    <Modal open={open} onClose={() => setOpen(false)}>
+      <div className="flex h-full w-full flex-col items-center justify-center gap-14">
+        <h1 className="">삭제하시겠습니까?</h1>
+        <div className="flex w-full items-center justify-center gap-14 text-xl">
           <button
             onClick={() => deleteProduct()}
-            className="mb-2 h-14 w-28 rounded-md bg-green-500 text-base font-semibold text-white"
+            className="button-green h-14 w-28"
           >
             예
           </button>
           <button
-            onClick={() => setOpenConfirmDelete(false)}
-            className="mb-2 h-14 w-28 rounded-md bg-red-500 text-base font-semibold text-white"
+            onClick={() => setOpen(false)}
+            className="button-red h-14 w-28"
           >
             아니오
           </button>

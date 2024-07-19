@@ -60,7 +60,7 @@ const Products = () => {
               <div className="w-full lg:hidden">
                 <ProductsPagination
                   totalSize={data.totalSize}
-                  displaySize={data.products.length}
+                  displaySize={20}
                   interval={5}
                   {...{ searchParams, setSearchParams }}
                 />
@@ -68,7 +68,7 @@ const Products = () => {
               <div className="hidden w-full lg:block">
                 <ProductsPagination
                   totalSize={data.totalSize}
-                  displaySize={data.products.length}
+                  displaySize={20}
                   interval={10}
                   {...{ searchParams, setSearchParams }}
                 />

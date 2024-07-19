@@ -8,7 +8,6 @@ import { Link } from "react-router-dom";
 const Mybutton = () => {
   const userId = useSelector((state: RootState) => state.user.id);
   const userImage = useSelector((state: RootState) => state.user.image);
-  // const userNickname = useSelector((state: RootState) => state.user.nickname);
   const dispatch = useDispatch();
   const [open, setOpen] = useState(false);
   const wrapper = useRef<HTMLDivElement>(null);
