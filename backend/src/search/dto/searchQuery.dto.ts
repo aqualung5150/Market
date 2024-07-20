@@ -7,7 +7,7 @@ export class SearchQueryDto {
 
   @IsOptional()
   @IsNumber()
-  userId: number; // for admin
+  userId: number;
 
   @IsOptional()
   @IsString()
