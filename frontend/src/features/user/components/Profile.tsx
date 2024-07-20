@@ -6,6 +6,7 @@ import useAxios from "hooks/useAxios";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { PublicUser } from "types/user";
+import ProfileProducts from "./ProfileProducts";
 
 const Profile = () => {
   const paramId = useParams().id;
@@ -23,8 +24,8 @@ const Profile = () => {
             src={`${process.env.REACT_APP_API_URL}/users/profileImage/${data.image}`}
           />
         </div>
-        <div className="flex w-full flex-col gap-5 rounded-2xl bg-white md:w-2/3">
-          <div className="flex items-end justify-center gap-2">
+        <div className="flex w-full items-center justify-center gap-10 rounded-2xl bg-white md:w-2/3">
+          <div className="flex items-end gap-2">
             <span className="text-3xl font-bold">{data.nickname}</span>
             <span className="text-xl text-gray-500">#{data.id}</span>
           </div>
@@ -38,6 +39,7 @@ const Profile = () => {
             </div>
           )}
         </div>
+        <ProfileProducts paramId={paramId} />
       </div>
     );
   return null;
