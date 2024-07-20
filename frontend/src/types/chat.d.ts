@@ -5,6 +5,7 @@ interface ChannelsProps {
   selectedChannelId: number;
   setSelectedChannelId: React.Dispatch<SetStateAction<number>>;
 }
+interface ChatHeaderProps extends ChannelsProps {}
 
 interface MessageInputProps {
   disabled?: boolean;

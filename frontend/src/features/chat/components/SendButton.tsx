@@ -4,7 +4,15 @@ import { RootState } from "app/store";
 import { setOpenLogin } from "features/auth/loginSlice";
 import { setOpenChat, setSendTo } from "../chatSlice";
 
-const SendButton = ({ className, text, sendTo }: any) => {
+const SendButton = ({
+  className,
+  text,
+  sendTo,
+}: {
+  className: string;
+  text: string;
+  sendTo: number;
+}) => {
   const { pathname } = useLocation();
   const userId = useSelector((state: RootState) => state.user.id);
   const dispatch = useDispatch();

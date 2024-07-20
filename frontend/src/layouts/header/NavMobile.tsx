@@ -12,7 +12,7 @@ import SearchBar from "./SearchBar";
 import categoryData from "features/product/data/category.json";
 import { setNoti, setOpenChat } from "features/chat/chatSlice";
 
-const NavMobile = ({ toggle }: any) => {
+const NavMobile = ({ toggle }: { toggle: boolean }) => {
   const { pathname } = useLocation();
   const userId = useSelector((state: RootState) => state.user.id);
   const [openCategory, setOpenCategory] = useState(false);

@@ -4,7 +4,7 @@ import ProductThumbnail from "features/product/components/productThumbnail/Produ
 import { useEffect, useState } from "react";
 import { ProductData } from "types/product";
 
-const ProfileProducts = ({ paramId }: any) => {
+const ProfileProducts = ({ paramId }: { paramId: string | undefined }) => {
   const [status, setStatus] = useState(0); // 0: 전체, 1: 판매중, 2: 판매완료
   const [page, setPage] = useState(1);
   const [products, setProducts] = useState<ProductData[]>([]);

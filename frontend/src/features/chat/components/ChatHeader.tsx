@@ -4,8 +4,12 @@ import { setOpenChat, setSendTo } from "../chatSlice";
 import { RootState } from "app/store";
 import { ReactComponent as CloseIcon } from "assets/close.svg";
 import { ReactComponent as BackIcon } from "assets/back.svg";
+import { ChatHeaderProps } from "types/chat";
 
-const ChatHeader = ({ selectedChannelId, setSelectedChannelId }: any) => {
+const ChatHeader = ({
+  selectedChannelId,
+  setSelectedChannelId,
+}: ChatHeaderProps) => {
   const nickname = useSelector((state: RootState) => state.user.nickname);
   const image = useSelector((state: RootState) => state.user.image);
   const dispatch = useDispatch();
