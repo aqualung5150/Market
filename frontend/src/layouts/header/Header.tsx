@@ -23,14 +23,14 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-10 border-b bg-white font-[D2Coding]">
       <nav className="mx-auto flex h-16 w-[92%] items-center justify-between">
-        <div className="flex items-center">
-          <Link
-            to="/"
-            className="w-14 cursor-pointer text-2xl font-bold text-green-500"
-          >
-            Logo
-          </Link>
-        </div>
+        {/* <div className="flex items-center"> */}
+        <Link
+          to="/"
+          className="cursor-pointer text-2xl font-bold text-green-500"
+        >
+          Market
+        </Link>
+        {/* </div> */}
         <NavDesktop />
         <NavMobile toggle={toggle} />
         {toggle ? (

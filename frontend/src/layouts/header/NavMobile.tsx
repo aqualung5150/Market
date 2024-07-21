@@ -101,8 +101,6 @@ const NavMobile = ({ toggle }: { toggle: boolean }) => {
               </li>
               {openMypage && (
                 <>
-                  <li>- 판매내역</li>
-                  <li>- 찜한 상품</li>
                   <li onClick={() => dispatch(setToggle(false))}>
                     <Link to={`/users/${userId}/edit`}>- 정보 수정</Link>
                   </li>
