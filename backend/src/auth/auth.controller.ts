@@ -8,6 +8,7 @@ import {
   Post,
   Body,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Request, Response } from 'express';
@@ -91,6 +92,10 @@ export class AuthController {
       nickname:
         userData.name.length < 2 ? 'default' : userData.name.substring(0, 18),
     });
+
+    // deleted account
+    if (user.isDeleted)
+      throw new NotFoundException('this account has been removed.');
 
     const accessToken = await this.authService.jwtAccessToken({
       id: user.id,
