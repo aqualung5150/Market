@@ -26,7 +26,6 @@ async function main() {
       },
       update: {},
       create: {
-        id: 1,
         email: 'admin',
         nickname: 'admin',
         password: hashedPassword,
