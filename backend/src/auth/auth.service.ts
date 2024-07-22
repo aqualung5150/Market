@@ -7,7 +7,8 @@ import {
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { lastValueFrom } from 'rxjs';
-import * as bcrypt from 'bcrypt';
+// import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { SignInDto } from './dto/auth.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
 

@@ -76,7 +76,6 @@ export class ProductController {
   }
 
   // POST
-
   @UseGuards(JwtGuard)
   @UseInterceptors(FilesInterceptor('image', 5, storage))
   @Post('add')
@@ -95,6 +94,7 @@ export class ProductController {
 
     // create product
     try {
+      console.log(req.user.id, data, filenames);
       return await this.productService.createProduct(
         req.user.id,
         data,
@@ -106,6 +106,7 @@ export class ProductController {
         fs.unlink(`uploads/productImages/main/${filename}`, () => {});
       }
 
+      this.logger.error(err);
       throw new HttpException('failed to create', 409);
     }
   }
