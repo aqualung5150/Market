@@ -6,9 +6,9 @@ FROM node:lts-alpine AS builder
 
 WORKDIR /app
 
-COPY package.json .
+COPY package*.json .
 
-RUN npm install
+RUN npm ci --only=production && npm cache clean --force
 
 COPY . .
 

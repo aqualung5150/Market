@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-import * as bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 /*
 To resolve json file
 -> tsconfig.json
@@ -18,7 +18,7 @@ async function hash(text: string) {
 
 async function main() {
   return prisma.$transaction(async (tx) => {
-    // create admin user
+    // seed admin user
     const hashedPassword = await hash(process.env.ADMIN_PASSWORD);
     await tx.user.upsert({
       where: {
@@ -33,6 +33,7 @@ async function main() {
       },
     });
 
+    // seed categories
     const categories = Object.values(categoryData);
     for (const category of categories) {
       await tx.category.upsert({

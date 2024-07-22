@@ -22,7 +22,7 @@ import {
 import { ProductService } from './product.service';
 import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import * as multer from 'multer';
+import multer from 'multer';
 import { Request } from 'express';
 import {
   CreateProductDto,
@@ -32,7 +32,7 @@ import {
   ModifyParamDto,
   DeleteParamDto,
 } from './dto/product.dto';
-import * as fs from 'fs';
+import fs from 'fs';
 import { ProductImagePipe } from 'src/product-image/product-image.pipe';
 import { Roles } from 'src/roles/roles.decorator';
 import { RolesGuard } from 'src/roles/roles.guard';
@@ -94,7 +94,6 @@ export class ProductController {
 
     // create product
     try {
-      console.log(req.user.id, data, filenames);
       return await this.productService.createProduct(
         req.user.id,
         data,

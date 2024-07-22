@@ -1,6 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as cookieParser from 'cookie-parser';
+import cookieParser from 'cookie-parser';
 import { SocketIOAdapter } from './socket.io/socket-io-adapter';
 import { ValidationPipe } from '@nestjs/common';
 

@@ -6,21 +6,16 @@ FROM node:lts-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
+COPY --chown=node:node package*.json .
+COPY --chown=node:node ./prisma ./prisma
 
-# test
-COPY ./prisma ./prisma
+RUN npm ci --only=production && npm cache clean --force
 
-RUN npm install
-
-COPY . .
-# COPY /uploads/profileImages/default.png /uploads/profileImages/default.png
-
-## prisma
-# test
-# RUN npx prisma generate
+COPY --chown=node:node . .
 
 RUN npm run build
+
+USER node
 
 ####################
 # production stage
@@ -30,21 +25,17 @@ FROM node:lts-alpine
 
 WORKDIR /app
 
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
+ENV NODE_ENV production
 
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package*.json .
-COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/uploads ./uploads
-# test
-COPY ./prisma ./prisma
+COPY --chown=node:node --from=builder /app/node_modules ./node_modules
+COPY --chown=node:node --from=builder /app/package*.json .
+COPY --chown=node:node --from=builder /app/dist ./dist
+COPY --chown=node:node ./uploads ./uploads
+COPY --chown=node:node ./data ./data
+COPY --chown=node:node ./prisma ./prisma
+COPY --chown=node:node run.sh .
+COPY --chown=node:node tsconfig.json .
 
-RUN npm install
+USER node
 
-# prisma
-# COPY ./prisma ./prisma
-# EXPOSE 3001
-
-# CMD ["npx", "prisma", "migrate", "reset", "&&", "db", "push", "&&", "npx", "prisma", "migrate", "deploy", "&&", "node", "dist/main"]
-CMD ["npm", "run", "start:migrate:prod"]
+CMD ["sh", "run.sh"];

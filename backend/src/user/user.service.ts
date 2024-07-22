@@ -1,7 +1,7 @@
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
-import * as fs from 'fs';
+import fs from 'fs';
 import { contains } from 'class-validator';
 
 @Injectable()
