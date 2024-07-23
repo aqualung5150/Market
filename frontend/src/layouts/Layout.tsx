@@ -8,7 +8,7 @@ import Footer from "./Footer";
 const Layout = () => {
   const dispatch = useDispatch();
   return (
-    <div className="flex h-screen w-screen flex-col overflow-y-auto">
+    <div className="flex h-dvh w-dvw flex-col overflow-y-auto">
       <Header />
       <main
         className="flex flex-1 justify-center bg-white"

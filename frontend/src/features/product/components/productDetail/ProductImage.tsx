@@ -34,14 +34,14 @@ const ProductImage = ({ data }: ProductImageProps) => {
       </Carousel>
       {imageIndex > -1 && (
         <div
-          className="fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center bg-black bg-opacity-85"
+          className="fixed left-0 top-0 z-10 flex h-dvh w-dvw items-center justify-center bg-black bg-opacity-85"
           onClick={() => setImageIndex(-1)}
         >
           <Carousel initialIndex={imageIndex}>
             {data.images.map((image: ProductImageData, idx: number) => (
               <div
                 key={idx}
-                className="flex h-screen w-screen shrink-0 items-center"
+                className="flex h-dvh w-dvw shrink-0 items-center"
               >
                 <img
                   className="h-full w-full object-contain"

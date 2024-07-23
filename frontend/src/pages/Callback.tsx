@@ -5,7 +5,7 @@ const Callback = () => {
   useOauthCallback();
 
   return (
-    <div className="w-scrren h-screen">
+    <div className="h-dvh w-dvw">
       <Loading text="로그인" />
     </div>
   );

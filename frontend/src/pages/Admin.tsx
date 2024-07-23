@@ -17,7 +17,7 @@ const Admin = () => {
   }, [userId]);
   if (loading) return <Loading text="로딩중..." />;
   return (
-    <div className="flex h-screen w-screen">
+    <div className="flex h-dvh w-dvw">
       <AdminSideBar />
       <div className="h-full flex-1">
         <Outlet />

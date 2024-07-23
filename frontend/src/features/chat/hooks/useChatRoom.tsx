@@ -109,12 +109,12 @@ const useChatRoom = (selectedChannelId: number) => {
       }
     };
 
-    // const options = {
-    //   root: null,
-    //   rootMargin: "20px",
-    //   threshold: 0,
-    // };
-    const observer = new IntersectionObserver(handleObserver);
+    const options = {
+      root: null,
+      rootMargin: "20px",
+      threshold: 0,
+    };
+    const observer = new IntersectionObserver(handleObserver, options);
     if (loader.current) observer.observe(loader.current);
 
     return () => {
