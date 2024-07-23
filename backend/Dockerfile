@@ -9,7 +9,7 @@ WORKDIR /app
 COPY --chown=node:node package*.json .
 COPY --chown=node:node ./prisma ./prisma
 
-RUN npm ci --only=production && npm cache clean --force
+RUN npm ci
 
 COPY --chown=node:node . .
 

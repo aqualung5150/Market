@@ -162,8 +162,8 @@ export class ProductService {
 
       // delete images from storage
       deletedImages.map((image) => {
-        unlink(`./uploads/productImages/thumb/${image.url}`, () => {});
-        unlink(`./uploads/productImages/main/${image.url}`, () => {});
+        unlink(`uploads/productImages/thumb/${image.url}`, () => {});
+        unlink(`uploads/productImages/main/${image.url}`, () => {});
       });
     });
   }
@@ -217,8 +217,8 @@ export class ProductService {
       });
       // delete image files
       images.images.map((image) => {
-        unlink(`./uploads/productImages/thumb/${image.url}`, () => {});
-        unlink(`./uploads/productImages/main/${image.url}`, () => {});
+        unlink(`uploads/productImages/thumb/${image.url}`, () => {});
+        unlink(`uploads/productImages/main/${image.url}`, () => {});
       });
     });
   }
@@ -248,8 +248,8 @@ export class ProductService {
 
       images.forEach((imageSet) => {
         imageSet.images.forEach((image) => {
-          unlink(`./uploads/productImages/thumb/${image.url}`, () => {});
-          unlink(`./uploads/productImages/main/${image.url}`, () => {});
+          unlink(`uploads/productImages/thumb/${image.url}`, () => {});
+          unlink(`uploads/productImages/main/${image.url}`, () => {});
         });
       });
     });

@@ -69,7 +69,7 @@ export class ProductController {
     @Query('impolicy') impolicy: string,
   ): StreamableFile {
     const file = fs.createReadStream(
-      `./uploads/productImages/${impolicy}/${imageName}`,
+      `uploads/productImages/${impolicy}/${imageName}`,
     );
 
     return new StreamableFile(file);

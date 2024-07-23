@@ -68,7 +68,7 @@ export class UserController {
   @Get('profileImage/:imageName')
   getProfileImage(@Param('imageName') imageName: string): StreamableFile {
     const file = fs.createReadStream(
-      path.join('./uploads/profileImages/' + imageName),
+      path.join('uploads/profileImages/' + imageName),
     );
 
     return new StreamableFile(file);
@@ -101,7 +101,7 @@ export class UserController {
     return await this.userService
       .updateUser(req.user.id, data, filename ? filename : undefined)
       .catch(() => {
-        fs.unlinkSync(`./uploads/profileImages/${filename}`);
+        fs.unlinkSync(`uploads/profileImages/${filename}`);
       });
   }
 }
