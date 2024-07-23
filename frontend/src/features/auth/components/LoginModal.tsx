@@ -6,6 +6,7 @@ import axios from "axios";
 import { setUser } from "features/user/userSlice";
 import { setOpenLogin } from "../loginSlice";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const LoginModal = () => {
   const { inputProps: email } = useFormInput("test@test.com");
@@ -13,6 +14,15 @@ const LoginModal = () => {
   const [error, setError] = useState("");
   const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=${process.env.REACT_APP_GOOGLE_RESPONSE_TYPE}&scope=email+profile`;
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const onPopState = () => {
+      console.log("onPop");
+      dispatch(setOpenLogin(false));
+      window.removeEventListener("popstate", onPopState);
+    };
+    window.addEventListener("popstate", onPopState);
+  }, []);
 
   const handleSumbmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -37,7 +47,7 @@ const LoginModal = () => {
 
   return (
     <div
-      className="fixed left-0 top-0 z-10 flex h-screen w-screen items-center justify-center bg-black bg-opacity-50"
+      className="fixed left-0 top-0 z-10 flex h-dvh w-dvw items-center justify-center bg-black bg-opacity-50"
       onClick={() => {
         dispatch(setOpenLogin(false));
         sessionStorage.removeItem("redirect");
