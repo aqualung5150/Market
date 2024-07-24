@@ -9,10 +9,13 @@ const useChat = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Close chat when go back
+    // prevent background scroll
+    document.body.style.overflow = "hidden";
+    // close chat when go back
     const onPopState = () => dispatch(setOpenChat(false));
     window.addEventListener("popstate", onPopState);
     return () => {
+      document.body.style.overflow = "auto";
       window.removeEventListener("popstate", onPopState);
     };
   }, []);
