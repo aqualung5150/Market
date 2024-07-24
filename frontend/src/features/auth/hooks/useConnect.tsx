@@ -42,6 +42,27 @@ const useConnect = () => {
         transports: ["websocket"],
       });
 
+      // reconnect
+      connection.on("connect_error", async (err) => {
+        console.log(
+          `socket.io connect_error - '${err.message}'. reconnecting`,
+        );
+        setTimeout(async () => {
+          if (isTokenExpired()) {
+            try {
+              const res = await refreshToken();
+              console.log("new token generated");
+              dispatch(setUser(res.data));
+              connection.connect();
+            } catch (err) {
+              // 리프레시토큰까지 만료된 경우
+              console.log("refresh token expired");
+              dispatch(resetUser());
+            }
+          }
+        }, 3000);
+      });
+
       setSocket(connection);
     };
 

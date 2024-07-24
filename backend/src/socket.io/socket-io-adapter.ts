@@ -37,7 +37,7 @@ const createJwtMiddleware =
 
     try {
       if (!token) {
-        throw new Error();
+        throw new Error('no token');
       }
       const payload = jwtService.verify(token, {
         secret: process.env.JWT_ACCESS_TOKEN_SECRET,
@@ -45,8 +45,8 @@ const createJwtMiddleware =
       socket.userId = payload.id;
 
       next();
-    } catch {
-      logger.debug('FORBIDDEN');
-      next(new Error('FORBIDDEN'));
+    } catch (err) {
+      logger.debug(`REFUSED - ${err.message}`);
+      next(new Error(`REFUSED - ${err.message}`));
     }
   };
