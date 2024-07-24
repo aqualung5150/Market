@@ -59,20 +59,26 @@ const LoginModal = () => {
         className="flex h-[400px] w-[500px] flex-col items-center justify-center gap-5 rounded bg-white shadow-xl"
       >
         <div className="text-2xl">로그인</div>
-        <input
-          // type="email // -> 'admin'으로 로그인하려 하면 브라우저에서 계속 email형식 검사함.
-          className={`h-12 w-56 rounded border p-2 outline-none ${error && "border-red-500"}`}
-          {...email}
-          placeholder="Email"
-        />
-        <input
-          type="password"
-          className={`h-12 w-56 rounded border p-2 outline-none ${error && "border-red-500"}`}
-          {...password}
-          placeholder="Password"
-        />
-        {error && <p className="text-sm text-red-500">{error}</p>}
-        <button type="submit" className="hidden" />
+        <div className="flex justify-center gap-2">
+          <div className="flex flex-col gap-2">
+            <input
+              // type="email // -> 'admin'으로 로그인하려 하면 브라우저에서 계속 email형식 검사함.
+              className={`h-12 w-56 rounded border p-2 outline-none ${error && "border-red-500"}`}
+              {...email}
+              placeholder="Email"
+            />
+            <input
+              type="password"
+              className={`h-12 w-56 rounded border p-2 outline-none ${error && "border-red-500"}`}
+              {...password}
+              placeholder="Password"
+            />
+          </div>
+          <button type="submit" className="button-green h-full w-20">
+            로그인
+          </button>
+        </div>
+        {error && <span className="text-sm text-red-500">{error}</span>}
         <a href={googleAuthUrl}>
           <GoogleLogin className="h-14 w-56" />
         </a>
