@@ -9,12 +9,12 @@ const useChat = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const onPopState = () => {
-      console.log("onPop");
-      dispatch(setOpenChat(false));
+    // Close chat when go back
+    const onPopState = () => dispatch(setOpenChat(false));
+    window.addEventListener("popstate", onPopState);
+    return () => {
       window.removeEventListener("popstate", onPopState);
     };
-    window.addEventListener("popstate", onPopState);
   }, []);
 
   useEffect(() => {
