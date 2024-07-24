@@ -72,11 +72,14 @@ const ProductForm = () => {
         ></textarea>
       </div>
       <button
-        className={`h-14 w-[120px] ${disabled.disabled ? "button-white" : "button-green"}`}
+        className={`flex h-14 w-[120px] items-center justify-center gap-1 ${disabled.disabled ? "button-white" : "button-green"}`}
         type="submit"
         disabled={disabled.disabled && true}
       >
-        {type === "modify" ? "수정" : "등록"}
+        {disabled.disabled && (
+          <p className="h-4 w-4 animate-spin rounded-full border-2 border-black border-b-transparent" />
+        )}
+        <span>{type === "modify" ? "수정" : "등록"}</span>
       </button>
     </form>
   );
