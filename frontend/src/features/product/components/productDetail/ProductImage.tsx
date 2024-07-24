@@ -14,7 +14,7 @@ const ProductImage = ({ data }: ProductImageProps) => {
         {data.images.map((image: ProductImageData, idx: number) => (
           <div
             key={idx}
-            className="relative aspect-square w-full shrink-0"
+            className="relative w-full shrink-0"
             onClick={() => setImageIndex(idx)}
           >
             <img

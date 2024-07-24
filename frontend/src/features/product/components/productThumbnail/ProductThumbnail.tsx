@@ -10,7 +10,7 @@ const ProductThumbnail = ({ product }: { product: ProductData }) => {
       to={`/product/${product.id}`}
       className="flex aspect-[3/5] w-full cursor-pointer flex-col rounded-lg bg-white shadow lg:aspect-[2/3]"
     >
-      <div className="relative aspect-square w-full overflow-hidden rounded-t-lg">
+      <div className="relative w-full overflow-hidden rounded-t-lg">
         <img
           loading="lazy"
           className="aspect-square w-full rounded-t-lg object-cover transition-transform duration-200 hover:scale-110"

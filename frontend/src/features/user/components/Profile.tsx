@@ -18,9 +18,9 @@ const Profile = () => {
   if (data)
     return (
       <div className="flex w-full flex-col items-center gap-10 p-10">
-        <div className="aspect-square w-full max-w-96">
+        <div className="w-full max-w-96">
           <img
-            className="aspect-square h-full max-w-full rounded-full object-cover"
+            className="aspect-square h-full w-full rounded-full object-cover"
             src={`${process.env.REACT_APP_API_URL}/users/profileImage/${data.image}`}
           />
         </div>

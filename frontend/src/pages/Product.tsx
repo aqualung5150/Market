@@ -28,7 +28,7 @@ const Product = () => {
       <div className="flex h-full w-full flex-col items-center gap-10 bg-white p-5 2xl:w-2/3">
         <div className="flex w-full grid-cols-2 flex-col gap-10 lg:grid">
           <ProductStatusContext.Provider value={{ status, setStatus }}>
-            <div className="aspect-square w-full select-none rounded-2xl shadow">
+            <div className="w-full select-none rounded-2xl shadow">
               <ProductImage data={data} />
             </div>
             <div className="flex w-full flex-1 flex-col gap-2 rounded-2xl">

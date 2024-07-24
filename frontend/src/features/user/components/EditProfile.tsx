@@ -41,10 +41,10 @@ const EditProfile = () => {
       onSubmit={handleSubmit}
       className="flex w-full flex-1 flex-col items-center gap-10 p-10"
     >
-      <div className="aspect-square w-full max-w-96">
+      <div className="w-full max-w-96">
         <img
           loading="lazy"
-          className="aspect-square h-full max-w-full cursor-pointer rounded-full object-cover shadow"
+          className="aspect-square h-full w-full cursor-pointer rounded-full object-cover shadow"
           src={file.url}
           onClick={() => profileImage.current?.click()}
         />
