@@ -21,7 +21,7 @@ const Header = () => {
   const dispatch = useDispatch();
 
   return (
-    <header className="sticky top-0 z-10 border-b bg-white font-[D2Coding]">
+    <header className="sticky top-0 z-10 border-b bg-white">
       <nav className="mx-auto flex h-16 w-[92%] items-center justify-between">
         {/* <div className="flex items-center"> */}
         <Link
