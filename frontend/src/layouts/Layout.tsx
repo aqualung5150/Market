@@ -8,10 +8,10 @@ import Footer from "./Footer";
 const Layout = () => {
   const dispatch = useDispatch();
   return (
-    <div className="flex h-dvh w-dvw flex-col overflow-y-auto">
+    <div className="flex h-dvh w-dvw flex-col">
       <Header />
       <main
-        className="flex flex-1 justify-center bg-white"
+        className="mt-16 flex flex-1 justify-center bg-white"
         onClick={() => dispatch(setToggle(false))}
       >
         <Outlet />
