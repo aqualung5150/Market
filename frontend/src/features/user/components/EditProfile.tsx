@@ -5,6 +5,7 @@ import useSelectImage from "hooks/useSelectImage";
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "../userSlice";
+import { ReactComponent as CameraIcon } from "assets/camera.svg";
 
 const EditProfile = () => {
   const user = useSelector((state: RootState) => state.user);
@@ -41,13 +42,16 @@ const EditProfile = () => {
       onSubmit={handleSubmit}
       className="flex w-full flex-1 flex-col items-center gap-10 p-10"
     >
-      <div className="w-full max-w-96">
+      <div
+        className="group relative flex w-full max-w-96 cursor-pointer items-center justify-center rounded-full"
+        onClick={() => profileImage.current?.click()}
+      >
         <img
           loading="lazy"
-          className="aspect-square h-full w-full cursor-pointer rounded-full object-cover shadow"
+          className="aspect-square h-full w-full rounded-full object-cover shadow group-hover:brightness-75"
           src={file.url}
-          onClick={() => profileImage.current?.click()}
         />
+        <CameraIcon className="invisible absolute h-24 w-24 stroke-gray-300 group-hover:visible" />
         <input
           type="file"
           onChange={file.handleFileChange}

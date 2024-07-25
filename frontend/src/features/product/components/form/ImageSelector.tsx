@@ -37,7 +37,7 @@ const ImageSelector = ({
         onClick={() => selectFile.current?.click()}
         className="mr-1 flex h-24 w-24 min-w-24 cursor-pointer flex-col items-center justify-center rounded bg-gray-200 shadow"
       >
-        <CameraIcon className="h-8 w-8 pt-1" />
+        <CameraIcon className="h-8 w-8 stroke-black" />
         <span className="text-xs">{files.length} / 5</span>
       </button>
       <div className="flex overflow-auto">

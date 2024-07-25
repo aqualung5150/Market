@@ -10,7 +10,7 @@ import { useEffect } from "react";
 
 const LoginModal = () => {
   const { inputProps: email } = useFormInput("test@test.com");
-  const { inputProps: password } = useFormInput("12341234aA!");
+  const { inputProps: password } = useFormInput("12341234qQ!");
   const [error, setError] = useState("");
   const googleAuthUrl = `https://accounts.google.com/o/oauth2/auth?client_id=${process.env.REACT_APP_GOOGLE_CLIENT_ID}&redirect_uri=${process.env.REACT_APP_GOOGLE_REDIRECT_URI}&response_type=${process.env.REACT_APP_GOOGLE_RESPONSE_TYPE}&scope=email+profile`;
   const dispatch = useDispatch();
