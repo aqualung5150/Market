@@ -19,7 +19,7 @@ async function hash(text: string) {
 async function main() {
   return prisma.$transaction(async (tx) => {
     // seed admin user
-    const hashedPassword = await hash(process.env.ADMIN_PASSWORD);
+    const adminPassword = await hash(process.env.ADMIN_PASSWORD);
     await tx.user.upsert({
       where: {
         id: 1,
@@ -28,7 +28,21 @@ async function main() {
       create: {
         email: 'admin',
         nickname: 'admin',
-        password: hashedPassword,
+        password: adminPassword,
+      },
+    });
+
+    // seed test user
+    const testPassword = await hash(process.env.TEST_PASSWORD);
+    await tx.user.upsert({
+      where: {
+        id: 2,
+      },
+      update: {},
+      create: {
+        email: 'test@test.com',
+        nickname: '테스트계정',
+        password: testPassword,
       },
     });
 
