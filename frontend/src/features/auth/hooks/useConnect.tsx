@@ -60,7 +60,7 @@ const useConnect = () => {
               dispatch(resetUser());
             }
           }
-        }, 3000);
+        }, 1000);
       });
 
       setSocket(connection);
