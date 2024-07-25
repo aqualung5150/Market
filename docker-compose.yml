@@ -26,7 +26,7 @@ services:
     env_file:
       - .env
     volumes:
-      - photo_volume:/app/uploads
+      - uploads_volume:/app/uploads
 
   frontend:
     build: ./frontend
@@ -47,20 +47,41 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      - certbot_conf_volume:/etc/letsencrypt
+      - certbot_www_volume:/var/www/certbot
     command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
   
   certbot:
+    container_name: certbot
     image: certbot/certbot
     restart: unless-stopped
     volumes:
-      - ./data/certbot/conf:/etc/letsencrypt
-      - ./data/certbot/www:/var/www/certbot
+      - certbot_conf_volume:/etc/letsencrypt
+      - certbot_www_volume:/var/www/certbot
+      - certbot_volume:/var/lib/letsencrypt
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   postgresql_volume:
-    external: false
-  photo_volume:
-    external: false
+    external: true
+
+  uploads_volume:
+    external: true
+
+  certbot_volume:
+    external: true
+
+  certbot_conf_volume:
+    name: certbot_conf_volume
+    driver_opts:
+      type: none
+      device: ${PWD}/data/certbot/conf
+      o: bind
+
+  certbot_www_volume:
+    name: certbot_www_volume
+    driver_opts:
+      type: none
+      device: ${PWD}/data/certbot/www
+      o: bind
+
