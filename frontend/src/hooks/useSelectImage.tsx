@@ -7,8 +7,8 @@ const useSelectImage = (initialUrl: string = "") => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      if (file.size > 5 * 1024 * 1024) {
-        alert("5MB 미만의 이미지만 업로드가 가능합니다.");
+      if (file.size > 10 * 1024 * 1024) {
+        alert("10MB 미만의 이미지만 업로드가 가능합니다.");
         e.target.value = "";
       } else {
         setFile(file);

@@ -19,8 +19,8 @@ const useSelectImages = () => {
           invalidFileLength = true;
           break;
           // 사이즈 제한
-        } else if (file.size > 5 * 1024 * 1024) {
-          alert("5MB 미만의 이미지만 업로드가 가능합니다.");
+        } else if (file.size > 10 * 1024 * 1024) {
+          alert("10MB 미만의 이미지만 업로드가 가능합니다.");
         } else {
           selectedFiles.push(file);
         }

@@ -40,7 +40,7 @@ import { RolesGuard } from 'src/roles/roles.guard';
 const storage = {
   storage: multer.memoryStorage(),
   limits: {
-    fileSize: 5 * 1024 * 1024,
+    fileSize: 10 * 1024 * 1024,
   },
   fileFilter: (req, file, cb) => {
     if (file.mimetype.match(/image\/(png|jpeg|gif)/)) {
@@ -191,16 +191,16 @@ export class ProductController {
   }
 
   // TEST
-  @Post('dummy5150')
-  async createDummy() {
-    return await this.productService.createTestDummy();
-  }
-  @Post('deleteAll5150')
-  async deleteAll() {
-    return await this.productService.deleteAll();
-  }
-  @Post('dummyUpdate5150')
-  async updateDummy() {
-    return await this.productService.dummyStatus();
-  }
+  // @Post('dummy5150')
+  // async createDummy() {
+  //   return await this.productService.createTestDummy();
+  // }
+  // @Post('deleteAll5150')
+  // async deleteAll() {
+  //   return await this.productService.deleteAll();
+  // }
+  // @Post('dummyUpdate5150')
+  // async updateDummy() {
+  //   return await this.productService.dummyStatus();
+  // }
 }
