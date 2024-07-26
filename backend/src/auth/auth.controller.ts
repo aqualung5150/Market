@@ -43,10 +43,11 @@ export class AuthController {
     });
     res.cookie('access_token', accessToken, {
       httpOnly: true,
+      secure:true,
     });
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      // secure:true, <- ssl프로토콜 구현하자. todo
+      secure:true,
     });
 
     const decode = this.jwtService.decode<JwtPayload>(accessToken);
@@ -112,10 +113,11 @@ export class AuthController {
     // res.setHeader('Authorization', 'Bearer ' + [accessToken, refreshToken]);
     res.cookie('access_token', accessToken, {
       httpOnly: true,
+      secure:true,
     });
     res.cookie('refresh_token', refreshToken, {
       httpOnly: true,
-      // secure:true, <- ssl프로토콜 구현하자. todo
+      secure:true,
     });
 
     const decode = this.jwtService.decode<JwtPayload>(accessToken);
@@ -171,9 +173,11 @@ export class AuthController {
   async logout(@Res() res: Response) {
     res.clearCookie('access_token', {
       httpOnly: true,
+      secure:true,
     });
     res.clearCookie('refresh_token', {
       httpOnly: true,
+      secure:true,
     });
     return res.send({
       message: 'logout - success',
