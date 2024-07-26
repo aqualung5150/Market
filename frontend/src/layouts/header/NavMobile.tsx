@@ -107,7 +107,7 @@ const NavMobile = ({ toggle }: { toggle: boolean }) => {
                 </>
               )}
               <li
-                className="flex w-fit items-center gap-2 text-xl font-semibold"
+                className="flex w-fit cursor-pointer items-center gap-2 text-xl font-semibold"
                 onClick={() => {
                   dispatch(setToggle(false));
                   dispatch(setOpenChat(true));
@@ -138,7 +138,7 @@ const NavMobile = ({ toggle }: { toggle: boolean }) => {
       ) : (
         <span
           onClick={() => dispatch(logout("/"))}
-          className="w-fit text-sm text-gray-500"
+          className="w-fit cursor-pointer text-sm text-gray-500"
         >
           로그아웃
         </span>

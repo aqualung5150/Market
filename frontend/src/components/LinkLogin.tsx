@@ -27,7 +27,7 @@ const LinkLogin = ({
 
   return (
     <a
-      className={className}
+      className={className + " cursor-pointer"}
       onClick={() => {
         onClick && onClick();
         handleClick(to, redirectAfterLogin);
