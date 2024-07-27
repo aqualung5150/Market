@@ -18,7 +18,9 @@ const SearchBar = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex w-full items-center gap-2">
-      <SearchIcon className="h-10 w-10 stroke-gray-500" />
+      <button>
+        <SearchIcon className="h-10 w-10 stroke-gray-500" />
+      </button>
       <input
         className="w-full rounded border p-2 outline-none"
         placeholder="어떤 상품을 찾으시나요?"
