@@ -18,11 +18,7 @@ const LoginModal = () => {
   useEffect(() => {
     // Close modal when go back
     const onPopState = () => dispatch(setOpenLogin(false));
-    window.addEventListener("popstate", onPopState);
-
-    return () => {
-      window.removeEventListener("popstate", onPopState);
-    }
+    window.addEventListener("popstate", onPopState, { once: true });
   }, []);
 
   const handleSumbmit = async (e: React.FormEvent<HTMLFormElement>) => {

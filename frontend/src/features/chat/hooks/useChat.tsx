@@ -13,10 +13,9 @@ const useChat = () => {
     document.body.style.overflow = "hidden";
     // close chat when go back
     const onPopState = () => dispatch(setOpenChat(false));
-    window.addEventListener("popstate", onPopState);
+    window.addEventListener("popstate", onPopState, { once: true });
     return () => {
       document.body.style.overflow = "auto";
-      window.removeEventListener("popstate", onPopState);
     };
   }, []);
 
