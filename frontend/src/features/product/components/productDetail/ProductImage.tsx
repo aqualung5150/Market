@@ -60,13 +60,12 @@
 
 import Carousel from "components/Carousel";
 import ProductStatusContext from "features/product/context/ProductStatusContext";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useState } from "react";
 import { ProductImageData, ProductImageProps } from "types/product";
 import { ReactComponent as CheckIcon } from "assets/check.svg";
 
 const ProductImage = ({ data }: ProductImageProps) => {
-  const ref = useRef(null);
-  const [index, setIndex] = useState(-1);
+  const [index, setIndex] = useState(0);
   const [screenView, setScreenView] = useState(false);
   const status = useContext(ProductStatusContext).status;
 
@@ -78,7 +77,7 @@ const ProductImage = ({ data }: ProductImageProps) => {
         autoSlide={true}
       >
         {data.images.map((image: ProductImageData, idx: number) => (
-          <div ref={ref} key={idx} className="relative w-full shrink-0">
+          <div key={idx} className="relative w-full shrink-0">
             <img
               className="aspect-square w-full rounded-2xl object-cover"
               draggable={false}
