@@ -3,4 +3,7 @@ interface CarouselProps {
   autoSlide?: boolean;
   autoSlideInterval?: number;
   initialIndex?: number;
+  onClick?: () => void;
+  setCurIndex?: React.Dispatch<SetStateAction<number>>;
 }
+
