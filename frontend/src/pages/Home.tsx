@@ -48,15 +48,19 @@ const Home = () => {
               onClick={() => setSelected(idx)}
               className={`${spread ? (selected !== idx ? `${translate[idx]} shadow` : "translate-y-40 shadow lg:translate-y-96") : "shadow-sm"} absolute h-28 w-28 cursor-pointer rounded-xl bg-gray-100 p-2 transition-transform duration-700 ease-out lg:h-80 lg:w-80 lg:p-5`}
             >
-              <Link
-                to={`/product/${e.id}`}
-                className={`${selected !== idx && "pointer-events-none"}`}
-              >
+              {selected !== idx ? (
                 <img
                   className="aspect-square rounded-xl object-cover"
                   src={`${process.env.REACT_APP_API_URL}/product/productImage/${e.images[0].url}?impolicy=main`}
                 />
-              </Link>
+              ) : (
+                <Link to={`/product/${e.id}`}>
+                  <img
+                    className="aspect-square rounded-xl object-cover"
+                    src={`${process.env.REACT_APP_API_URL}/product/productImage/${e.images[0].url}?impolicy=main`}
+                  />
+                </Link>
+              )}
             </div>
           ))}
       </div>
