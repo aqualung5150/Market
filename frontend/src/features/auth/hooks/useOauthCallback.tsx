@@ -13,7 +13,6 @@ const useOauthCallback = () => {
   const url = `${process.env.REACT_APP_BASE_URL}/api/auth/google?code=${code}`;
 
   useEffect(() => {
-    console.log(code);
     axios
       .post(url)
       .then((res) => {

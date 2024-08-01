@@ -56,7 +56,6 @@ const useSignUp = () => {
           alert("회원가입에 실패했습니다.");
         }
       } else {
-        console.log("Invalid...");
         setValidations(newValidations);
       }
     },

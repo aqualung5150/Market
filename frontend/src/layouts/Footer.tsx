@@ -2,7 +2,6 @@ import React from "react";
 import { ReactComponent as GithubIcon } from "assets/github.svg";
 
 const Footer = () => {
-  console.log("Footer");
   return (
     <footer className="flex h-20 min-h-20 w-full items-center justify-center gap-4 bg-gray-100 p-5">
       <a
