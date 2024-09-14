@@ -8,7 +8,7 @@ const ProductModify = ({ data }: { data: ProductData }) => {
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
   const [openSetStatus, setOpenSetStatus] = useState(false);
   return (
-    <div className="flex h-16 cursor-pointer rounded-2xl bg-gray-200 shadow-sm">
+    <div className="flex h-16 rounded-2xl bg-gray-200 shadow-sm">
       <button
         onClick={() => setOpenSetStatus(true)}
         className="flex-1 border-r border-gray-300"
