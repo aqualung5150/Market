@@ -15,7 +15,7 @@ const Modal = ({ open, onClose, children }: ModalProps) => {
       >
         <div className="flex items-center justify-end rounded-t border-b p-4 md:p-5">
           {onClose && (
-            <CloseIcon onClick={onClose} className="h-12 w-12 stroke-black" />
+            <CloseIcon onClick={onClose} className="h-12 w-12 cursor-pointer stroke-black" />
           )}
         </div>
 
