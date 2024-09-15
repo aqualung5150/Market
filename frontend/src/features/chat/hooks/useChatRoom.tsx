@@ -1,7 +1,7 @@
 import { RootState } from "app/store";
 import { SocketContext } from "context/SocketContext";
 import useFormInput from "hooks/useFormInput";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { SocketMessageData } from "types/chat";
 import { PublicUser } from "types/user";
@@ -26,6 +26,13 @@ const useChatRoom = (selectedChannelId: number) => {
     setMessageInput("");
   };
 
+  const fetchNextMessages = useCallback(() => {
+    socket?.emit("getMessagesReq", {
+      channelId: selectedChannelId,
+      cursor,
+    });
+  }, [selectedChannelId, cursor]);
+
   useEffect(() => {
     if (!socket) return;
 
@@ -47,6 +54,11 @@ const useChatRoom = (selectedChannelId: number) => {
           return [...prev];
         });
       }
+    };
+
+    const concatMessages = ({ messages, nextCursor }: any) => {
+      setMessagesData((prev) => prev.concat(messages));
+      setCursor(nextCursor); // set cursor as last message's id
     };
 
     const readMessage = (messageId: number) => {
@@ -75,62 +87,27 @@ const useChatRoom = (selectedChannelId: number) => {
 
     // Listen
     socket.on("sendMessageRes", addNewMessage);
+    socket.on("getMessagesRes", concatMessages);
     socket.on("readMessagesRes", readMessages);
     socket.on("readMessageRes", readMessage);
     socket.on("getRoomUsersRes", getRoomUsers);
 
     return () => {
       socket.off("sendMessageRes", addNewMessage);
+      socket.off("getMessagesRes", concatMessages);
       socket.off("readMessagesRes", readMessages);
       socket.off("readMessageRes", readMessage);
       socket.on("getRoomUsersRes", getRoomUsers);
     };
   }, [socket]);
 
-  // Infinite Scroll
-  const loader = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!socket || cursor < 0) return; // last message loaded
-
-    const concatMessages = ({ messages, nextCursor }: any) => {
-      setMessagesData((prev) => prev.concat(messages));
-      setCursor(nextCursor); // set cursor as last message's id
-    };
-
-    socket.on("getMessagesRes", concatMessages);
-
-    const handleObserver = (entries: any) => {
-      const target = entries[0];
-      if (target.isIntersecting) {
-        socket?.emit("getMessagesReq", {
-          channelId: selectedChannelId,
-          cursor,
-        });
-      }
-    };
-
-    const options = {
-      root: null,
-      rootMargin: "20px",
-      threshold: 0,
-    };
-    const observer = new IntersectionObserver(handleObserver, options);
-    if (loader.current) observer.observe(loader.current);
-
-    return () => {
-      if (loader.current) observer.unobserve(loader.current);
-
-      socket.off("getMessagesRes", concatMessages);
-    };
-  }, [cursor]);
-
   return {
     activated,
     roomUsers,
     messagesData,
-    loader,
     messageInput,
     handleSubmit,
+    fetchNextMessages
   };
 };
 

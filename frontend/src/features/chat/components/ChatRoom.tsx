@@ -2,21 +2,22 @@ import { ChatRoomProps, SocketMessageData } from "types/chat";
 import useChatRoom from "../hooks/useChatRoom";
 import Message from "./Message";
 import MessageInput from "./MessageInput";
+import InfiniteScroll from "components/InfiniteScroll";
 
 const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
   const {
     activated,
     roomUsers,
     messagesData,
-    loader,
     messageInput,
     handleSubmit,
+    fetchNextMessages
   } = useChatRoom(selectedChannelId);
 
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex h-full w-full flex-1 flex-col"
+      className="flex h-full w-full flex-col"
     >
       <div className="flex items-center gap-2 bg-gray-100 px-3 py-2">
         {roomUsers.map((user, idx) => (
@@ -33,15 +34,15 @@ const ChatRoom = ({ selectedChannelId }: ChatRoomProps) => {
           </div>
         ))}
       </div>
-      <div
-        style={{ overflowAnchor: "none" }}
-        className="sticky flex flex-1 flex-col-reverse gap-2 overflow-auto bg-stone-200 px-3 py-2 shadow-inner"
+      <InfiniteScroll
+        className="flex-1 gap-2 bg-stone-200 px-3 py-2 shadow-inner"
+        reverse={true}
+        fetchNextPage={fetchNextMessages}
       >
         {messagesData.map((messageData: SocketMessageData) => (
           <Message key={messageData.id} {...messageData} />
         ))}
-        <div ref={loader} />
-      </div>
+      </InfiniteScroll>
       <MessageInput disabled={!activated} {...messageInput} />
     </form>
   );

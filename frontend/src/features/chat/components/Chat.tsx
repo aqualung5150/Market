@@ -36,7 +36,7 @@ const Chat = () => {
           <div
             className={`${
               selectedChannelId || sendTo ? "w-full" : "hidden"
-            } lg:inline-block lg:w-2/3`}
+            } lg:inline-block lg:w-2/3 h-full`}
           >
             {selectedChannelId ? (
               // set key props to re-mount component
