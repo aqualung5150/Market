@@ -37,7 +37,7 @@ const InfiniteScroll = ({
       }}
     >
       {children}
-      <div ref={observerTarget} />
+      <div style={{ flex: "0 0 1px" }} ref={observerTarget}/>
     </div>
   );
 };
