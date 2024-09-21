@@ -289,7 +289,7 @@ export class ChatService {
             : undefined,
         },
         orderBy: {
-          createdAt: 'desc',
+          id: 'desc'
         },
       });
 
